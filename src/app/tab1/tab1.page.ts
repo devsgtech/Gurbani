@@ -18,7 +18,7 @@ export class Tab1Page implements OnInit {
   serverFileArray: any;
 
   isPlayingAll = false;
-
+  newtestFile:any;
   testnextFileIndex: any;
   constructor(public platform: Platform,
     private file: File,
@@ -253,5 +253,100 @@ playAll(){
 
   closeMenu() {
     this.menu.close();
+  }
+
+  indexx :any;
+
+  nextplaynn() {
+    this.indexx = this.indexx + 1;
+    const nextFileIndex = this.indexx;
+    const nextFile = this.serverFileArray[nextFileIndex];
+    let isSingle = false;
+    this.nn(nextFile, nextFileIndex, isSingle, nextFileIndex);
+  }
+nn(sFile = null, index = 0, isSingle = false, i=0){
+  this.indexx = index;
+  Tab1Page.scrollTo(index);
+    if (sFile && !sFile.isFileDownloaded) {
+      // sFile.isDownloading = true;
+      console.log('sFile', sFile.isDownloading, sFile);
+      // this.prepareAudioFile([sFile]);
+    }
+    if (this.newtestFile) {
+      this.stop();
+    }
+    let currentPlayFile: any;
+    if (sFile) {
+      currentPlayFile = sFile;
+      this.serverFileArray[index].isPlaying = true;
+    } else {
+      currentPlayFile = this.serverFileArray[index];
+    }
+    if (!isSingle) {
+      this.isPlayingAll = true;
+    }
+    const file: MediaObject =this.media.create(currentPlayFile.url);
+    this.newtestFile = file;
+    this.newtestFile.play();
+    
+    this.newtestFile.onSuccess.subscribe(() => {
+      this.serverFileArray[index].isPlaying = false;
+      if(sFile){
+        this.stop()
+      }
+      if ((i + 1) == this.serverFileArray.length) {
+        // do nothing
+        console.log('inside if section')
+       } else {
+        
+         if(isSingle == false){
+          this.plyAll(sFile = null, index = index + 1 , isSingle = false,i + 1 )
+         }
+       }
+    })
+    
+    // if(!isSingle){
+    //   this.plyAll(sFile = null, index = index + 1 , isSingle = false)
+    // }
+   
+}
+  testPlay(i = 0,playall = false){
+    this.isPlayingAll = true;
+    // this.stop(0);
+  var self = this;
+  console.log('Click testpaly', i)
+  const file: MediaObject =this.media.create(this.serverFileArray[i].url);
+  this.newtestFile = file;
+  this.newtestFile.play();
+  this.serverFileArray[i].isDownloading = false;
+  this.serverFileArray[i].isPlaying = true;
+  let duration = this.newtestFile.getDuration();
+  console.log('duration',duration);
+  this.newtestFile.getCurrentPosition().then((position) => {
+    console.log('position',position);
+  });
+   this.newtestFile.onSuccess.subscribe(() => {
+    if ((i + 1) == this.serverFileArray.length) {
+      // do nothing
+      console.log('inside if section')
+     } else {
+       if(playall == true){
+
+       }
+      // this.serverFileArray[i].isPlaying = false;
+      // self.testPlay(i + 1);
+      // console.log('inside Else section')
+     }
+  })
+  }
+
+  plyAll(sFile = null,index = 0,isSingle = false, i){
+    Tab1Page.scrollTo(index);
+    this.nn(sFile, index, isSingle,i)
+  }
+  stop(){
+    if (this.newtestFile) {
+      this.newtestFile.stop();
+    }
   }
 }

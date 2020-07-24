@@ -23,7 +23,7 @@
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
       <ion-item no-margin [id]="'currentPlayItemId'+i">
         <ion-label><h2>{{sf.title1}}</h2></ion-label>
-        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?playRecording(sf, i, true): stopPlayRecording()">
+        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?nn(sf, i, true,i): stop()">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
@@ -49,11 +49,11 @@
   <ion-fab-button color="myWhite" class="back-prev" (click)="prevplay()" [disabled]="isPlayingAll && testnextFileIndex > 0 ?false:true">
     <ion-icon name="arrow-back"></ion-icon>
   </ion-fab-button>
-  <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?playAll(): stopPlayRecording()">
+  <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?plyAll(): stop()">
     <span *ngIf="isPlayingAll" >Stop</span>
     <span *ngIf="!isPlayingAll">Play all</span>
   </ion-fab-button>
-  <ion-fab-button color="myWhite" class="back-prev" (click)="nextplay()" [disabled]="isPlayingAll && serverFileArray.length -1  != testnextFileIndex ?false:true">
+  <ion-fab-button color="myWhite" class="back-prev" (click)="nextplaynn()" [disabled]="isPlayingAll && serverFileArray.length -1  != testnextFileIndex ?false:true">
     <ion-icon name="arrow-forward" ></ion-icon>
     <!-- [disabled]="isPlayingAll?false:true" -->
   </ion-fab-button>

@@ -39,7 +39,7 @@ ion-item{
             }
             --background-checked: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
             --border-color: grey;
-            --color	:black;
+            --color	:var( --ion-color-primary-dark);
             // --color-checked: white;
             height: 35px;
             display: flex;

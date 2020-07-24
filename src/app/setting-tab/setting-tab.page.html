@@ -17,11 +17,11 @@
     <ion-item>
       <div>
       <label>Screen mode</label>
-      <ion-segment  mode="ios" [value]='theme'>
-        <ion-segment-button value="day"  mode="ios">
+      <ion-segment  mode="ios" [value]='dd' [(ngModel)]="dd" (ngModelChange)="change()" >
+        <ion-segment-button [value]="1"  mode="ios">
           <div><ion-icon name="sunny"></ion-icon> <ion-label>Day</ion-label></div>
         </ion-segment-button>
-        <ion-segment-button value="night"  mode="ios">
+        <ion-segment-button [value]="0"  mode="ios">
           <div><ion-icon name="moon"></ion-icon> <ion-label>Night</ion-label></div>
         </ion-segment-button>
       </ion-segment>
@@ -61,5 +61,5 @@
       </ion-range>
       </div>
     </ion-item>
-  <ion-button (click)="toggleDarkMode()">Toggle Dark</ion-button>
+  <!-- <ion-button (click)="toggleDarkMode()">Toggle Dark</ion-button> -->
 </ion-content>

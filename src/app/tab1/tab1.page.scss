@@ -117,10 +117,10 @@ ion-header{
     ion-content{
       --padding-start: 16px;
       --padding-end: 16px;
-      --background: black;
+      --background: var(--ion-color-success-dark);
       --color: var(--ion-color-success-contrast);
         ion-item{
-          --background: black;
+          --background: var(--ion-color-success-dark);
           color: var(--ion-color-success-contrast);
           --padding-start: 0;
           --inner-padding-end: 0;

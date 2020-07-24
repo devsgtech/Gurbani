@@ -8,8 +8,10 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['./setting-tab.page.scss'],
 })
 export class SettingTabPage implements OnInit {
-  theme= 'day';
   font: any = 12;
+  dd:any = 1;
+  true = true;
+  false = false;
   constructor(
     public changeui:ChangeUIService,
     private platform: Platform,
@@ -33,8 +35,14 @@ export class SettingTabPage implements OnInit {
       this.changeui.fontSize = 'font-24'
     }
   }
+change(){
+  console.log(this.dd,'sdf')
+  let data_ = this.dd==1 ? false : this.true; 
+  console.log(data_,'data_')
 
-  toggleDarkMode(){
-    this.changeui.toggleApp();
-  }
+  this.changeui.setAppTheme(data_);
+}
+  // toggleDarkMode(){
+  //   this.changeui.toggleApp();
+  // }
 }
