@@ -8,15 +8,28 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+import {Media} from '@ionic-native/media/ngx';
+import {File} from '@ionic-native/file/ngx';
+import {FileTransfer, FileTransferObject} from '@ionic-native/file-transfer/ngx';
+import { SQLite } from '@ionic-native/sqlite/ngx';
+import { HttpClientModule } from '@angular/common/http';
+import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicModule.forRoot(), 
+    AppRoutingModule,
+    HttpClientModule,
+  ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Media,
+    File, FileTransfer,
+    SQLite,
+    SQLitePorter,AndroidPermissions,
   ],
   bootstrap: [AppComponent]
 })

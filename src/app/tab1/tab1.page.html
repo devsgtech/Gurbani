@@ -1,17 +1,85 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+    <ion-button slot="start" fill="clear" color="dark" (click)="openFirst()">
+      <img src="../../../assets/icon/filter.svg" alt="filter">
+    </ion-button>
+    <ion-select mode="ios" interface="popover" [interfaceOptions]="{header: 'Select Ang'}" slot="start" placeholder="Select by">
+      <ion-select-option value="1">First Letter (Start)</ion-select-option>
+      <ion-select-option value="2">First Letter (Start)</ion-select-option>
+      <ion-select-option value="3">Ang/Vaar</ion-select-option>
+      <ion-select-option value="4">Full Word(Gurmukhi)</ion-select-option>
+      <ion-select-option value="5">Full Word(English)</ion-select-option>
+    </ion-select> 
+    <ion-item no-padding>
+      <ion-label slot="end" no-padding>
+        <ion-icon name="search" color="white"></ion-icon>
+      </ion-label>
+      <ion-input type="text"  placeholder="Search"></ion-input>
+    </ion-item>
   </ion-toolbar>
 </ion-header>
+<ion-content>
+  <ion-list>
+    <ng-container *ngFor="let sf of serverFileArray; let i=index">
+      <ion-item no-margin [id]="'currentPlayItemId'+i">
+        <ion-label><h2>{{sf.title1}}</h2></ion-label>
+        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?playRecording(sf, i, true): stopPlayRecording()">
+          <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
+          <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
+          <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item no-margin class="bottomItem">
+        <ion-label>
+          <p *ngIf="sf.title2"  [ngClass]="changeui.fontSize">{{sf.title2}}</p>
+          <p *ngIf="sf.title3"  [ngClass]="changeui.fontSize">{{sf.title3}}</p>
+        </ion-label>
+      </ion-item>
+      <div padding-horizontal>
+        <ion-progress-bar value="{{getProgressVal(sf.position, sf.duration)}}"></ion-progress-bar>
+      </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+      <!--<p>{{ sf.position*1000-1800000 | date:'mm:ss' }}</p>
+      <p *ngIf="sf.duration == -1" >&#45;&#45;:&#45;&#45;</p>
+      <p *ngIf="sf.duration != -1">{{ sf.duration*1000-1800000 | date:'mm:ss' }}</p>-->
+    </ng-container>
+  </ion-list>
 </ion-content>
+<ion-fab vertical="bottom" horizontal="center" slot="fixed">
+  <ion-fab-button color="myWhite" class="back-prev" (click)="prevplay()" [disabled]="isPlayingAll && testnextFileIndex > 0 ?false:true">
+    <ion-icon name="arrow-back"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?playAll(): stopPlayRecording()">
+    <span *ngIf="isPlayingAll" >Stop</span>
+    <span *ngIf="!isPlayingAll">Play all</span>
+  </ion-fab-button>
+  <ion-fab-button color="myWhite" class="back-prev" (click)="nextplay()" [disabled]="isPlayingAll && serverFileArray.length -1  != testnextFileIndex ?false:true">
+    <ion-icon name="arrow-forward" ></ion-icon>
+    <!-- [disabled]="isPlayingAll?false:true" -->
+  </ion-fab-button>
+</ion-fab>
+
+
+<ion-menu side="end" menuId="first" swipe-gesture='false' contentId="main">
+  
+  <ion-content>
+    <h4>Filter</h4>
+
+    <ion-item>
+      <ion-label position="stacked" class="smallMarginBottom">Writer</ion-label>
+      <ion-select placeholder="Select One" class="filter-select">
+        <ion-select-option value="a">All</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked" class="smallMarginBottom">Raag</ion-label>
+      <ion-select placeholder="Select One" class="filter-select">
+        <ion-select-option value="a">All</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button (click)="closeMenu()">Apply</ion-button>
+  </ion-content>
+</ion-menu>
+

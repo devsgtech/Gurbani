@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <label>
+        <p class="p0">School of</p>
+        <p class="p1">GURUBANI</p>
+      </label>
+    </ion-title>
+    <ion-label slot="end" class="reset">
+      Reset
+    </ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-item>
+      <div>
+      <label>Screen mode</label>
+      <ion-segment  mode="ios" [value]='theme'>
+        <ion-segment-button value="day"  mode="ios">
+          <div><ion-icon name="sunny"></ion-icon> <ion-label>Day</ion-label></div>
+        </ion-segment-button>
+        <ion-segment-button value="night"  mode="ios">
+          <div><ion-icon name="moon"></ion-icon> <ion-label>Night</ion-label></div>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    </ion-item>
+
+    <div class="toggle-switch">
+      <label >English Translation By</label>
+      <ion-item lines="none">
+        <ion-label slot="start">Dr. Sant Singh Khalsa</ion-label>
+        <ion-toggle  mode="ios" slot="end"></ion-toggle>
+      </ion-item>
+    </div>
+    <ion-item>
+      <div>
+        <label>Font Size</label>
+      <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="font" (ngModelChange)="changeFont()" snaps color="dark">
+        <ion-label slot="start">A</ion-label>
+        <ion-label slot="end">A</ion-label>
+      </ion-range>
+      </div>
+    </ion-item>
+
+    <div class="toggle-switch">
+      <label>Phonetic Translation By</label>
+      <ion-item lines="none">
+        <ion-label slot="start">Dr. Sant Singh Khalsa</ion-label>
+        <ion-toggle  mode="ios" slot="end"></ion-toggle>
+      </ion-item>
+    </div>
+    <ion-item>
+      <div>
+        <label>Font Size</label>
+      <ion-range min="10" max="40" step="10" value="20" snaps color="dark">
+        <ion-label slot="start">a</ion-label>
+        <ion-label slot="end">A</ion-label>
+      </ion-range>
+      </div>
+    </ion-item>
+  <ion-button (click)="toggleDarkMode()">Toggle Dark</ion-button>
+</ion-content>

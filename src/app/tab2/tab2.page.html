@@ -1,17 +1,37 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      <label>
+        <p class="p0">School of</p>
+        <p class="p1">GURUBANI</p>
+      </label>
     </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content>
+  <ion-list>
+    <ng-container *ngFor="let sf of serverFileArray; let i=index">
+      <ion-item no-margin [id]="'currentPlayItemId'+i">
+        <ion-label><h2>{{sf.title1}}</h2></ion-label>
+        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?playRecording(sf, i, true): stopPlayRecording()">
+          <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
+          <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
+          <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item no-margin class="bottomItem">
+        <ion-label>
+          <p *ngIf="sf.title2">{{sf.title2}}</p>
+          <p *ngIf="sf.title3">{{sf.title3}}</p>
+        </ion-label>
+      </ion-item>
+      <div padding-horizontal>
+        <ion-progress-bar value="{{getProgressVal(sf.position, sf.duration)}}"></ion-progress-bar>
+      </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+      <!--<p>{{ sf.position*1000-1800000 | date:'mm:ss' }}</p>
+      <p *ngIf="sf.duration == -1" >&#45;&#45;:&#45;&#45;</p>
+      <p *ngIf="sf.duration != -1">{{ sf.duration*1000-1800000 | date:'mm:ss' }}</p>-->
+    </ng-container>
+  </ion-list>
 </ion-content>

@@ -1,5 +1,7 @@
 {
-  "name": "Gurbani",
-  "integrations": {},
+  "name": "newGurubani",
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

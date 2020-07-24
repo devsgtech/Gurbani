@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="23" height="23" viewBox="0 0 23 23">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_3" data-name="Rectangle 3" width="23" height="23" transform="translate(35)" fill="#b7b9be" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="bar-icon-search" transform="translate(-35)" clip-path="url(#clip-path)">
+    <g id="search_4_" data-name="search(4)" transform="translate(35 1.917)">
+      <path id="Path_1" data-name="Path 1" d="M22.719,17.531l-3.663-3.663A5.769,5.769,0,1,0,17.7,15.223l3.663,3.663a.958.958,0,0,0,1.355-1.355Zm0,0" fill="#b7b9be"/>
+      <path id="Path_2" data-name="Path 2" d="M.958,1.917H16.531a.958.958,0,1,0,0-1.917H.958a.958.958,0,1,0,0,1.917Zm0,0" fill="#b7b9be"/>
+      <path id="Path_3" data-name="Path 3" d="M.958,6.708H7.906a.958.958,0,0,0,0-1.917H.958a.958.958,0,0,0,0,1.917Zm0,0" fill="#b7b9be"/>
+      <path id="Path_4" data-name="Path 4" d="M7.906,14.375H.958a.958.958,0,1,0,0,1.917H7.906a.958.958,0,1,0,0-1.917Zm0,0" fill="#b7b9be"/>
+      <path id="Path_5" data-name="Path 5" d="M.958,11.5H5.989a.958.958,0,1,0,0-1.917H.958a.958.958,0,0,0,0,1.917Zm0,0" fill="#b7b9be"/>
+    </g>
+  </g>
+</svg>

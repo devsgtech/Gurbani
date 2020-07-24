@@ -1,0 +1,42 @@
+ion-title{
+    label{
+        .p0{
+            margin: 0;
+            font-weight: 600;
+            font-size: small;
+        }
+        .p1{
+            margin: 0;
+            color: #27a501;
+        }
+    }
+}
+
+ion-card{
+    --background: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
+    ion-item{
+        --background: transparent;
+        color: white;
+    }
+}
+
+
+@media (prefers-color-scheme: light) {
+    ion-toolbar {
+      --background: white;
+      color: black;
+    }
+    .verticalScrollContainer {
+      background: white;
+    }
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    ion-toolbar {
+      --background: black;
+      color: white;
+    }
+    .verticalScrollContainer {
+      background: black;
+    }
+  }

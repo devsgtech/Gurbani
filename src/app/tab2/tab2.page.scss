@@ -1,0 +1,113 @@
+ion-toolbar{
+  
+  background: var(--ion-color-success-contrast) !important;
+}
+ion-title{
+ 
+    label{
+        .p0{
+            margin: 0;
+            font-weight: 600;
+            font-size: small;
+        }
+        .p1{
+            margin: 0;
+            color: #27a501;
+        }
+    }
+}
+  ion-content{
+    ion-list{
+      ion-item{
+        width: 100%;
+        --ion-item-border-color: #ffffff;
+        h2, p{
+          white-space: normal;
+        }
+        p:first-child{
+          font-family:  Montserrat, sans-serifrrat !important;
+        }
+        p:last-child{
+          font-family: MontserratItalic, sans-seriftalic;
+        }
+        ion-button {
+          background: #27a501;
+          background: -moz-linear-gradient(-45deg, #27a501 0%, #cff12b 100%);
+          background: -webkit-linear-gradient(-45deg, #27a501 0%,#cff12b 100%);
+          background: linear-gradient(135deg, #27a501 0%,#cff12b 100%);
+          color: #ffffff;
+          border-radius: 100px;
+          height: 40px;
+          width: 40px;
+        }
+      }
+      .bottomItem{
+        border-bottom: 1px dashed #c2c2c2;
+      }
+      ion-progress-bar{
+        --background: none;
+        --progress-background: var(--ion-color-myGreen);
+      }
+    }
+  }
+  
+  ion-fab{
+    display: flex;
+    left: 0;
+    right: 0;
+    margin: 0;
+    /* background: red; */
+    justify-content: center;
+    align-items: center;
+  
+  }
+  .ion-fab-button{
+    background: #27a501;
+    background: -moz-linear-gradient(-45deg, #27a501 0%, #cff12b 100%);
+    background: -webkit-linear-gradient(-45deg, #27a501 0%,#cff12b 100%);
+    background: linear-gradient(135deg, #27a501 0%,#cff12b 100%);
+    color: #ffffff;
+    border-radius: 100px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .back-prev{
+    background: var(--ion-color-dark) !important;
+    background: -moz-linear-gradient(var(--ion-color-dark) );
+    background: -webkit-linear-gradient(var(--ion-color-dark) !important);
+    background: linear-gradient(var(--ion-color-dark) !important );
+    color: #ffffff;
+    border-radius: 100px;
+  }
+  
+  .filter-select{
+    border: solid 1px;
+  }
+  
+  .smallMarginBottom{
+    margin-bottom: 8px;
+  }
+  
+  ion-menu{
+    z-index: 9999;
+    --width: 65%;
+    ion-content{
+      --padding-start: 16px;
+      --padding-end: 16px;
+      --background: black;
+      --color: white;
+        ion-item{
+          --background: black;
+          color: white;
+          --padding-start: 0;
+        }
+        ion-button{
+          --background: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
+          color: #ffffff;
+          border-radius: 100px;
+          width: 100%;
+        }
+    }
+  }
+  
