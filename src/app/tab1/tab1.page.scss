@@ -114,14 +114,18 @@ ion-header{
   ion-menu{
     z-index: 9999;
     --width: 65%;
+    h4{
+      color: var(--ion-color-dark);
+    }
     ion-content{
       --padding-start: 16px ;
       --padding-end: 16px;
       --background: var(--ion-color-success-dark);
       --color: var(--ion-color-success-contrast);
         ion-item{
-          --background: var(--ion-color-success-dark);
-          color: var(--ion-color-success-contrast);
+          --background: transparent;
+          color: var(--ion-color-dark);
+          --color: var(--ion-color-dark);
           --padding-start: 0;
           --inner-padding-end: 0;
         }

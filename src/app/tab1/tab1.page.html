@@ -3,9 +3,9 @@
     <ion-button slot="start" fill="clear" color="dark" (click)="openFirst()">
       <img src="../../../assets/icon/filter.svg" alt="filter">
     </ion-button>
-    <ion-select mode="ios" interface="popover" [interfaceOptions]="{header: 'Select Ang'}" slot="start" placeholder="Select by">
+    <ion-select mode="ios" interface="popover" [interfaceOptions]="{header: 'Select Ang'}" slot="start" placeholder="Select by" [(ngModel)]="searchOpt" >
       <ion-select-option value="1">First Letter (Start)</ion-select-option>
-      <ion-select-option value="2">First Letter (Start)</ion-select-option>
+      <ion-select-option value="2">First Letter (Anywhere)</ion-select-option>
       <ion-select-option value="3">Ang/Vaar</ion-select-option>
       <ion-select-option value="4">Full Word(Gurmukhi)</ion-select-option>
       <ion-select-option value="5">Full Word(English)</ion-select-option>
@@ -14,7 +14,7 @@
       <ion-label slot="end" no-padding>
         <ion-icon name="search" color="white"></ion-icon>
       </ion-label>
-      <ion-input type="text"  placeholder="Search"></ion-input>
+      <ion-input type="text"  placeholder="Search"  debounce="500" (ionChange)="searchWord($event)"></ion-input>
     </ion-item>
   </ion-toolbar>
 </ion-header>
@@ -23,7 +23,9 @@
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
       <ion-item no-margin [id]="'currentPlayItemId'+i">
         <ion-label><h2>{{sf.title1}}</h2></ion-label>
-        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?nn(sf, i, true,i): stop()">
+        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?plyAll(sf, i, true,i): stopSingleFile()">
+        <!-- <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?playRecording(sf, i, true): stopPlayRecording()"> -->
+         
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
@@ -46,10 +48,12 @@
   </ion-list>
 </ion-content>
 <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-  <ion-fab-button color="myWhite" class="back-prev" (click)="prevplay()" [disabled]="isPlayingAll && testnextFileIndex > 0 ?false:true">
+  <ion-fab-button color="myWhite" class="back-prev" (click)="prevplaynn()" [disabled]="isPlayingAll && indexx > 0 ?false:true">
     <ion-icon name="arrow-back"></ion-icon>
   </ion-fab-button>
-  <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?plyAll(): stop()">
+  <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?plyAll1(): stopAll()">
+  <!-- <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?playAll(): stopPlayRecording()"> -->
+
     <span *ngIf="isPlayingAll" >Stop</span>
     <span *ngIf="!isPlayingAll">Play all</span>
   </ion-fab-button>

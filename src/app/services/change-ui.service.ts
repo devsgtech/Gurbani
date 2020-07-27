@@ -8,7 +8,7 @@ export class ChangeUIService {
   phonetic = '';
   english  = '';
 
-  fontSize = 'font-12';
+  fontSize = 'font-16';
   darkMode : boolean = false;
   constructor(
     private platform: Platform,

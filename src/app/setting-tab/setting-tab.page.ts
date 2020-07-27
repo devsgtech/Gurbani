@@ -8,7 +8,7 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['./setting-tab.page.scss'],
 })
 export class SettingTabPage implements OnInit {
-  font: any = 12;
+  font: any = 16;
   dd:any = 1;
   true = true;
   false = false;
@@ -18,6 +18,7 @@ export class SettingTabPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.changeFont();
   }
 
   changeFont(){

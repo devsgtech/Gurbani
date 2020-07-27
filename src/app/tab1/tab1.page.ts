@@ -12,14 +12,16 @@ import { ChangeUIService } from '../services/change-ui.service';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
+  searchOpt: any;
   storageDirectory: any; currPlayingFile: MediaObject;
   getDurationInterval: any;
   getPositionInterval: any;
   serverFileArray: any;
-
+  serverFileArrayCopy: any;
   isPlayingAll = false;
   newtestFile:any;
   testnextFileIndex: any;
+  stopall:boolean =false;
   constructor(public platform: Platform,
     private file: File,
     private transfer: FileTransfer,
@@ -54,6 +56,7 @@ export class Tab1Page implements OnInit {
       { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '9.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/9.mp3', title3: 'So how can you become truthful? And how can the veil of illusion be torn away?', title2: 'Kiv Sachiaaraa Hoeeai Kiv Koorrai Thuttai Paal ||', title1: 'ਕਿਵ ਸਚਿਆਰਾ ਹੋਈਐ ਕਿਵ ਕੂੜੈ ਤੁਟੈ ਪਾਲਿ ॥', },
       { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '10.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/10.mp3', title3: 'O Nanak, it is written that you shall obey the Hukam of His Command, and walk in the Way of His Will. ||1||', title2: 'Hukam Rajaaee Chalanaa Naanak Likhiaa Naal ||1||', title1: 'ਹੁਕਮਿ ਰਜਾਈ ਚਲਣਾ ਨਾਨਕ ਲਿਿਖਆ ਨਾਲਿ ॥1॥', }
     ];
+   this.serverFileArrayCopy = this.serverFileArray;
     this.prepareAudioFile();
   }
   ionViewWillLeave() {
@@ -162,10 +165,10 @@ export class Tab1Page implements OnInit {
           } else {
             sFile.position = position;
           }
-        } else { // if (position >= sFile.duration)
+        } else { 
           this.stopPlayRecording();
           this.testnextFileIndex = index + 1
-          // const nextFileIndex = (index + 1);
+        
           const nextFileIndex = this.testnextFileIndex;
           if (this.serverFileArray.length > nextFileIndex && !isSingle) {
             const nextFile = this.serverFileArray[nextFileIndex];
@@ -258,14 +261,36 @@ playAll(){
   indexx :any;
 
   nextplaynn() {
-    this.indexx = this.indexx + 1;
-    const nextFileIndex = this.indexx;
-    const nextFile = this.serverFileArray[nextFileIndex];
-    let isSingle = false;
-    this.nn(nextFile, nextFileIndex, isSingle, nextFileIndex);
+
+    this.stopAll();
+    console.log(this.stopall,'this.stopall')
+
+  setTimeout(()=>{    
+      this.indexx = this.indexx + 1;
+      this.stopall = false;
+      console.log(this.stopall,'this.stopall')
+
+      this.plyAll1(null, this.indexx, false, this.indexx);
+
+ }, 1000);
   }
-nn(sFile = null, index = 0, isSingle = false, i=0){
+  prevplaynn() {
+    this.stopAll();
+    console.log(this.stopall,'this.stopall')
+
+    setTimeout(()=>{ 
+      this.indexx = this.indexx - 1;
+      this.stopall = false;
+      console.log(this.stopall,'this.stopall')
+      this.plyAll1(null, this.indexx, false, this.indexx);
+
+ }, 1000);
+    
+  }
+newPlay(sFile = null, index = 0, isSingle = false, i=0){
   this.indexx = index;
+  console.log('inside')
+
   Tab1Page.scrollTo(index);
     if (sFile && !sFile.isFileDownloaded) {
       // sFile.isDownloading = true;
@@ -273,13 +298,14 @@ nn(sFile = null, index = 0, isSingle = false, i=0){
       // this.prepareAudioFile([sFile]);
     }
     if (this.newtestFile) {
-      this.stop();
+      this.stopSingleFile();
     }
     let currentPlayFile: any;
     if (sFile) {
       currentPlayFile = sFile;
       this.serverFileArray[index].isPlaying = true;
     } else {
+      this.serverFileArray[index].isPlaying = true;
       currentPlayFile = this.serverFileArray[index];
     }
     if (!isSingle) {
@@ -288,65 +314,101 @@ nn(sFile = null, index = 0, isSingle = false, i=0){
     const file: MediaObject =this.media.create(currentPlayFile.url);
     this.newtestFile = file;
     this.newtestFile.play();
-    
     this.newtestFile.onSuccess.subscribe(() => {
       this.serverFileArray[index].isPlaying = false;
       if(sFile){
-        this.stop()
+        this.stopSingleFile();
+        sFile.isPlaying = false
       }
       if ((i + 1) == this.serverFileArray.length) {
         // do nothing
         console.log('inside if section')
        } else {
-        
          if(isSingle == false){
           this.plyAll(sFile = null, index = index + 1 , isSingle = false,i + 1 )
          }
-       }
+       } 
     })
-    
-    // if(!isSingle){
-    //   this.plyAll(sFile = null, index = index + 1 , isSingle = false)
-    // }
-   
 }
-  testPlay(i = 0,playall = false){
-    this.isPlayingAll = true;
-    // this.stop(0);
-  var self = this;
-  console.log('Click testpaly', i)
-  const file: MediaObject =this.media.create(this.serverFileArray[i].url);
-  this.newtestFile = file;
-  this.newtestFile.play();
-  this.serverFileArray[i].isDownloading = false;
-  this.serverFileArray[i].isPlaying = true;
-  let duration = this.newtestFile.getDuration();
-  console.log('duration',duration);
-  this.newtestFile.getCurrentPosition().then((position) => {
-    console.log('position',position);
-  });
-   this.newtestFile.onSuccess.subscribe(() => {
-    if ((i + 1) == this.serverFileArray.length) {
-      // do nothing
-      console.log('inside if section')
-     } else {
-       if(playall == true){
 
-       }
-      // this.serverFileArray[i].isPlaying = false;
-      // self.testPlay(i + 1);
-      // console.log('inside Else section')
-     }
-  })
-  }
-
-  plyAll(sFile = null,index = 0,isSingle = false, i){
+plyAll(sFile = null,index = 0,isSingle = false, i){
     Tab1Page.scrollTo(index);
-    this.nn(sFile, index, isSingle,i)
+    if(!this.stopall || sFile){
+      console.log('inside section')
+      if(isSingle){
+        this.stopAll()
+        this.isPlayingAll = false;
+      }
+      this.newPlay(sFile, index, isSingle,i)
+    }
   }
-  stop(){
+  plyAll1(sFile = null,index = 0,isSingle = false, i){
+    this.stopall = false;
+    this.plyAll(sFile, index, isSingle,i)
+  }
+
+  stopSingleFile(){
+    if(this.stopall == false){
+      this.newtestFile.pause()
+    } else {
+      if (this.newtestFile) {
+        this.newtestFile.stop();
+        this.newtestFile.release();
+      }
+    }
+    console.log('Stop Single File section');
+    this.setPlayingDefault();
+  }
+
+  stopAll(){
     if (this.newtestFile) {
       this.newtestFile.stop();
+      this.newtestFile.release();
     }
+    this.setPlayingDefault();
+    this.isPlayingAll = false;
+    this.stopall = true;
+  }
+
+
+  searchWord(ev){
+    console.log(this.searchOpt, 'this.searchOpt');
+    switch (this.searchOpt) {
+      case '1':
+        this.firstWordSearch(ev);
+        break;
+      case '2':   // 2: playing
+        this.searchAnywhere(ev);
+        break;
+      case '3':   // 3: pause
+      
+        break;
+      case '4':   // 4: stop
+
+        break;
+      default:
+       
+        break;
+    }
+  
+  }
+
+  searchAnywhere(ev){
+    console.log('searchAnywhere');
+
+    this.serverFileArray = this.serverFileArrayCopy;
+    const val = ev.target.value.trim();
+    this.serverFileArray = this.serverFileArray.filter((item) => {
+      return (item.title3.toLowerCase().indexOf(val.toLowerCase()) > -1) || (item.title2.toLowerCase().indexOf(val.toLowerCase()) > -1);
+  })
+  }
+  firstWordSearch(ev){
+    console.log('firstWordSearch');
+
+    this.serverFileArray = this.serverFileArrayCopy;
+    const val = ev.target.value.trim();
+    this.serverFileArray = this.serverFileArray.filter((item) => {
+      return (item.title3.split(' ')[0].toLowerCase().indexOf(val.toLowerCase()) > -1) || (item.title2.split(' ')[0].toLowerCase().indexOf(val.toLowerCase()) > -1);
+  })
   }
 }
