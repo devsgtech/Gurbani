@@ -10,6 +10,7 @@ import { ActionSheetController } from '@ionic/angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 // import { DatabaseService } from '../database.service';
 import { downloadData } from '../services/downloadData';
+import {Storage} from '@ionic/storage';
 
 @Component({
   selector: 'app-tab1',
@@ -45,7 +46,8 @@ export class Tab1Page implements OnInit {
     public actionSheetController: ActionSheetController,
     private androidPermissions: AndroidPermissions,
     private downloadData : downloadData,
-    private media: Media) {
+    private media: Media,
+              private storage: Storage) {
     this.platform.ready().then(() => {
       if (this.platform.is('ios')) {
         this.storageDirectory = this.file.dataDirectory;
@@ -654,4 +656,12 @@ stopPlaying(){
   }
 }
 ///////////////DOWNLOAD AUDIO PLAY END///////////////////////
+
+  saveLocalFav(sf) {
+    sf.isFavourite = !(sf?.isFavourite);
+    this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
+      sdata.push(sf);
+      this.storage.set('_SGTECH_GURBANI_FAV', sdata);
+    }).catch(e=> console.log(e));
+  }
 }

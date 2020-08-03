@@ -36,7 +36,9 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic-native/toast": "^5.27.0",
     "@ionic/angular": "^5.0.0",
+    "@ionic/storage": "^2.3.0",
     "cordova-android": "^8.1.0",
+    "cordova-ios": "5.1.1",
     "cordova-plugin-android-permissions": "^1.0.2",
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-camera": "^4.1.0",
@@ -102,7 +104,8 @@
       "cordova-plugin-android-permissions": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   }
 }

@@ -10,8 +10,8 @@
       <ion-select-option value="4">Full Word(Gurmukhi)</ion-select-option>
       <ion-select-option value="5">Full Word(English)</ion-select-option>
     </ion-select> 
-    <ion-item no-padding>
-      <ion-label slot="end" no-padding (click)="searchWord()">
+    <ion-item class="ion-no-padding">
+      <ion-label slot="end" class="ion-no-padding" (click)="searchWord()">
         <ion-icon name="search" color="white"></ion-icon>
       </ion-label>
       <ion-input type="text"  placeholder="Search"  debounce="500" (ionChange)="searchWord($event)"></ion-input>
@@ -46,22 +46,25 @@
 
   <ion-list>
     <ng-container *ngFor="let sf of listItemFromDb; let i=index">
-      <ion-item no-margin [id]="'currentPlayItemId'+i">
+      <ion-item class="ion-no-margin" [id]="'currentPlayItemId'+i">
         <ion-label><h2>{{sf?sf.sggs_darpan: ''}}</h2></ion-label>
         
         <!-- <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?plyAll(sf, i, true,i): stopSingleFile()"> -->
-          <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?download(sf, i, true): stopPlaying()">
+          <ion-button fill="clear" slot="end" (click)="!sf.isPlaying?download(sf, i, true): stopPlaying()">
      
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
         </ion-button>
       </ion-item>
-      <ion-item no-margin class="bottomItem">
+      <ion-item class="bottomItem ion-no-margin">
         <ion-label>
           <p *ngIf="sf.transliteration"  [ngClass]="changeui.fontSize">{{sf?sf.transliteration: ''}}</p>
           <p *ngIf="sf.english_ssk"  [ngClass]="changeui.fontSize">{{sf?sf.english_ssk: ''}}</p>
         </ion-label>
+        <ion-button fill="clear" slot="end" (click)="saveLocalFav(sf)">
+          <ion-icon name="heart" [color]="sf?.isFavourite?'white':'danger'"></ion-icon>
+        </ion-button>
       </ion-item>
       <!-- <div padding-horizontal>
         <ion-progress-bar value="{{getProgressVal(sf.position, sf.duration)}}"></ion-progress-bar>

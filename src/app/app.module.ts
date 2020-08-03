@@ -15,12 +15,15 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import {IonicStorageModule} from '@ionic/storage';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), 
     AppRoutingModule,
     HttpClientModule,
+    IonicStorageModule.forRoot({name: '_SgtechSchoolOfGurbani'}),
   ],
   providers: [
     StatusBar,
