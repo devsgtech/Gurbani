@@ -16,7 +16,16 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
   providedIn: 'root'
 })
 export class UploaderService {
-
+  firebaseConfig = {
+    apiKey: "AIzaSyAmQqObxqY22gdi22t6q7B3GWFLJ7tD1_U",
+    authDomain: "testgurubani.firebaseapp.com",
+    databaseURL: "https://testgurubani.firebaseio.com",
+    projectId: "testgurubani",
+    storageBucket: "testgurubani.appspot.com",
+    messagingSenderId: "642914656660",
+    appId: "1:642914656660:web:afbca0550ca523de1f6f81",
+    measurementId: "G-N087DSBFXQ"
+  };
   constructor(private platform: Platform,
               // private actionSheetCtrl: ActionSheetController,
               // private camera: Camera,

@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {Media} from '@ionic-native/media/ngx';
 import {File} from '@ionic-native/file/ngx';
-import {FileTransfer, FileTransferObject} from '@ionic-native/file-transfer/ngx';
+import {FileTransfer, FileTransferObject,  } from '@ionic-native/file-transfer/ngx';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
@@ -30,6 +30,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
     File, FileTransfer,
     SQLite,
     SQLitePorter,AndroidPermissions,
+    FileTransferObject, 
   ],
   bootstrap: [AppComponent]
 })

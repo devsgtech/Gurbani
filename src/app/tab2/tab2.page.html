@@ -13,7 +13,7 @@
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
       <ion-item no-margin [id]="'currentPlayItemId'+i">
         <ion-label><h2>{{sf.title1}}</h2></ion-label>
-        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?playRecording(sf, i, true): stopPlayRecording()">
+        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?download(sf, i, true): stopPlaying()">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
@@ -33,5 +33,6 @@
       <p *ngIf="sf.duration == -1" >&#45;&#45;:&#45;&#45;</p>
       <p *ngIf="sf.duration != -1">{{ sf.duration*1000-1800000 | date:'mm:ss' }}</p>-->
     </ng-container>
+   
   </ion-list>
 </ion-content>

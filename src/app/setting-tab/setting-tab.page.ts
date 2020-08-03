@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ChangeUIService } from '../services/change-ui.service';
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
+import { DbService } from '../services/newdb';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { iGurubaniDB } from '../services/gurubaniDb';
+import { shabadDB } from '../services/shabadDB';
 
 @Component({
   selector: 'app-setting-tab',
@@ -12,9 +17,18 @@ export class SettingTabPage implements OnInit {
   dd:any = 1;
   true = true;
   false = false;
+  @Input() name: string;
+  mainForm: FormGroup;
+  Data= [];
   constructor(
     public changeui:ChangeUIService,
     private platform: Platform,
+    // private igdb: DbService,
+    // private igdb : iGurubaniDB,
+    private igdb : shabadDB,
+    public formBuilder: FormBuilder,
+    private toast: ToastController,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -43,7 +57,55 @@ change(){
 
   this.changeui.setAppTheme(data_);
 }
-  // toggleDarkMode(){
-  //   this.changeui.toggleApp();
-  // }
+ 
+
+// ngOnInit() {
+//   this.igdb.dbState().subscribe((res) => {
+//     console.log('res', res);
+//     if(res){
+//       this.igdb.fetchSongs().subscribe(item => {
+//        console.log('item', item);
+//         this.Data = item
+//       })
+//     }
+//   });
+
+//   this.mainForm = this.formBuilder.group({
+//     artist: [''],
+//     song: ['']
+//   })
+
+//   console.log('Data', this.Data);
+// }
+
+// storeData() {
+//   this.igdb.addSong(
+//     this.mainForm.value.artist,
+//     this.mainForm.value.song
+//   ).then((res) => {
+//     this.mainForm.reset();
+//   })
+// }
+
+// deleteSong(id){
+//   this.igdb.deleteSong(id).then(async(res) => {
+//     let toast = await this.toast.create({
+//       message: 'Song deleted',
+//       duration: 2500
+//     });
+//     toast.present();      
+//   })
+// }
+
+// getData(){
+//   this.igdb.getSongs().then((res) => {
+//    console.log('Resopnse GetData0', res);
+//    this.Data = res;
+//   })
+// }
+
+// remove(){
+//   this.Data =[];
+//   console.log('remove Data', this.Data);
+// }
 }
