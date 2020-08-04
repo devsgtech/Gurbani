@@ -313,7 +313,7 @@ export class Tab1Page implements OnInit {
     this.download(sFile, i, isSingle);
   }
 
-  plyAll(sFile = null, index = 0, isSingle = false, i) {
+  plyAll(sFile = null, index = 0, isSingle = false, i = 0) {
     Tab1Page.scrollTo(index);
     if (!this.stopall || sFile) {
       if (isSingle) {
@@ -323,7 +323,7 @@ export class Tab1Page implements OnInit {
       this.newPlay(sFile, index, isSingle, i)
     }
   }
-  plyAll1(sFile = null, index = 0, isSingle = false, i) {
+  plyAll1(sFile = null, index = 0, isSingle = false, i = 0) {
     this.stopall = false;
     this.plyAll(sFile, index, isSingle, i)
   }
@@ -536,26 +536,30 @@ export class Tab1Page implements OnInit {
 
 
   //////////////DOWNLOAD AUDIO PLAY START///////////////////////
-  download(sf, i, dd) {
+  async download(sf, i, dd) {
     this.stopPlaying();
-    this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
-      .then(status => {
-        if (status.hasPermission) {
-          this.createShabad(sf, i, dd);
-        }
-        else {
-          this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
-            .then(status => {
-              if (status.hasPermission) {
-                this.createShabad(sf, i, dd);
-              }
-            });
-        }
-      });
+    await this.platform.ready();
+    if (this.platform.is('android')) {
+      this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
+        .then(status => {
+          if (status.hasPermission) {
+            this.createShabad(sf, i, dd);
+          } else {
+            this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
+              .then(status => {
+                if (status.hasPermission) {
+                  this.createShabad(sf, i, dd);
+                }
+              });
+          }
+        });
+    } else if (this.platform.is('ios')) {
+      this.createShabad(sf, i, dd);
+    }
   }
 
    createShabad(sf, i, dd) {
-    this.file.createDir(this.file.externalRootDirectory, '.shabad', false).then(response => {
+    this.file.createDir(this.storageDirectory, '.shabad', false).then(response => {
       this.createAngDir(sf, i, dd);
     }).catch(err => {
       if (err.message == 'PATH_EXISTS_ERR') {
@@ -565,8 +569,8 @@ export class Tab1Page implements OnInit {
   }
 
   createAngDir(sf, i, dd) {
-    console.log('CreateDirc Function', this.file.externalRootDirectory + '.shabad', 'ang_' + sf.ang_id)
-    this.file.createDir(this.file.externalRootDirectory + '.shabad', 'ang_' + sf.ang_id, false).then(response => {
+    console.log('CreateDirc Function', this.storageDirectory + '.shabad', 'ang_' + sf.ang_id)
+    this.file.createDir(this.storageDirectory + '.shabad', 'ang_' + sf.ang_id, false).then(response => {
       console.log('Ang Directory created', response);
       this.downloadAudioFile(sf, i, dd)
     }).catch(err => {
@@ -579,10 +583,10 @@ export class Tab1Page implements OnInit {
 
 
   downloadAudioFile(sf, i, dd) {
-    let checkFileUrl = this.file.externalRootDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/';
+    let checkFileUrl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/';
     let FileName = 'shabad_' + sf._id + '.mp3';
     this.file.checkFile(checkFileUrl, FileName).then((entry) => {
-      let nurl = this.file.externalRootDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3';
+      let nurl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3';
       sf.isDownloading = false;
       this.ply1(sf, i, dd, nurl);
     })
@@ -594,8 +598,8 @@ export class Tab1Page implements OnInit {
           this.checkNetwork();
         } else{
           sf.isDownloading = true;
-        fileTransfer.download(url, this.file.externalRootDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
-          let nurl = this.file.externalRootDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3';
+        fileTransfer.download(url, this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
+          let nurl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3';
           this.ply1(sf, i, dd, nurl);
         })
           .catch((err) => {

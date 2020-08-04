@@ -96,9 +96,9 @@ ion-header{
   
   .back-prev{
     background: var(--ion-color-dark) !important;
-    background: -moz-linear-gradient(var(--ion-color-dark));
-    background: -webkit-linear-gradient(var(--ion-color-dark) );
-    background: linear-gradient(var(--ion-color-dark));
+    // background: -moz-linear-gradient(var(--ion-color-dark));
+    // background: -webkit-linear-gradient(var(--ion-color-dark) );
+    // background: linear-gradient(var(--ion-color-dark));
     color: var(--ion-color-success-contrast);
     border-radius: 100px;
   }
