@@ -101,7 +101,8 @@ export class shabadDB {
   }
 
   getDataOffset(offset) {
-    return this.storage.executeSql('SELECT * FROM shabad LIMIT 10 OFFSET ?', [offset]).then(res => {
+    'Select * FROM shabad WHERE source_id="G" LIMIT 0, 20'
+    return this.storage.executeSql('SELECT * FROM shabad WHERE source_id="G" LIMIT 10 OFFSET ?', [offset]).then(res => {
       let items = [];
       if (res.rows.length > 0) {
         items = this.setData(res);
@@ -112,7 +113,7 @@ export class shabadDB {
 
   searchShabadAnyWhereLoadMoreandOffset(data) {
     let text = '%' + data.searchString + '%'
-    return this.storage.executeSql('SELECT * FROM shabad WHERE transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?', [text, text, data.offset]).then(res => {
+    return this.storage.executeSql('SELECT * FROM shabad WHERE source_id="G" AND transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?', [text, text, data.offset]).then(res => {
       let items = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
@@ -126,7 +127,7 @@ export class shabadDB {
   searchShabadFirstWordLoadMoreandOffset(data) {
     let text = data.searchString + '%'
 
-    return this.storage.executeSql('SELECT * FROM shabad WHERE transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?', [text, text, data.offset]).then(res => {
+    return this.storage.executeSql('SELECT * FROM shabad WHERE source_id="G" AND transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?', [text, text, data.offset]).then(res => {
       let items = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {

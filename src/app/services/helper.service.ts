@@ -11,7 +11,7 @@ import {
   PopoverController,
   ToastController
 } from '@ionic/angular'; 
-import {Toast} from '@ionic-native/toast/ngx';
+// import {Toast} from '@ionic-native/toast/ngx';
 // import {Keyboard} from '@ionic-native/keyboa//rd/ngx';
 import {DatePipe} from '@angular/common';
 import _ from 'lodash';
@@ -39,7 +39,7 @@ export class HelperService {
               private modalCtrl: ModalController,
               private popOverCtrl: PopoverController,
               private menuCtrl: MenuController,
-              private nativeToast: Toast,
+              // private nativeToast: Toast,
               // private keyboard: Keyboard,
               private statusBar: StatusBar,
               private datePipe: DatePipe,
@@ -107,36 +107,36 @@ export class HelperService {
     });
     return await this.loading.present();
   }
-  async presentNewToast(msg = 'No action required.', dur = '2000', pos = 'bottom') {
-    this.dismissLoading();
-    if (this.platform.is('android') || this.platform.is('ios')) {
-      try {
-        this.nativeToast.hide().catch(() => {
-        });
-      } catch (e) {
-      }
-      this.nativeToast.showWithOptions({
-        message: msg,
-        duration: _.toNumber(dur),
-        position: pos,
-        addPixelsY: pos === 'bottom' ? (-150) : 0,
-      }).subscribe(() => {
-      });
-    } else {
-      try {
-        this.toastCtrl.dismiss().catch(() => {
-        });
-      } catch (e) {
-      }
-      this.toast = await this.toastCtrl.create({
-        message: msg,
-        duration: +dur,
-        position: pos === 'center' ? 'middle' : pos === 'top' ? 'top' : 'bottom'
-      });
-      this.toast.present().catch(() => {
-      });
-    }
-  }
+  // async presentNewToast(msg = 'No action required.', dur = '2000', pos = 'bottom') {
+  //   this.dismissLoading();
+  //   if (this.platform.is('android') || this.platform.is('ios')) {
+  //     try {
+  //       this.nativeToast.hide().catch(() => {
+  //       });
+  //     } catch (e) {
+  //     }
+  //     this.nativeToast.showWithOptions({
+  //       message: msg,
+  //       duration: _.toNumber(dur),
+  //       position: pos,
+  //       addPixelsY: pos === 'bottom' ? (-150) : 0,
+  //     }).subscribe(() => {
+  //     });
+  //   } else {
+  //     try {
+  //       this.toastCtrl.dismiss().catch(() => {
+  //       });
+  //     } catch (e) {
+  //     }
+  //     this.toast = await this.toastCtrl.create({
+  //       message: msg,
+  //       duration: +dur,
+  //       position: pos === 'center' ? 'middle' : pos === 'top' ? 'top' : 'bottom'
+  //     });
+  //     this.toast.present().catch(() => {
+  //     });
+  //   }
+  // }
   async presentAlert(head = '', msg = '', subHeader = '', cssClass = '', confirmText = 'Okay',) {
     this.onScrollCloseKeyBoard();
     const alert = await this.alertCtrl.create({

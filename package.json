@@ -30,6 +30,7 @@
     "@ionic-native/image-picker": "^5.27.0",
     "@ionic-native/keyboard": "^5.27.0",
     "@ionic-native/media": "^5.27.0",
+    "@ionic-native/network": "^5.27.0",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/sqlite": "^5.27.0",
     "@ionic-native/sqlite-porter": "^5.27.0",
@@ -46,6 +47,7 @@
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-file-transfer": "^1.7.1",
     "cordova-plugin-media": "^5.0.3",
+    "cordova-plugin-network-information": "^2.0.2",
     "cordova-plugin-telerik-imagepicker": "^2.3.3",
     "cordova-plugin-x-toast": "^2.7.2",
     "cordova-sqlite-storage": "^5.0.0",
@@ -101,7 +103,8 @@
       "cordova-sqlite-storage": {},
       "uk.co.workingedge.cordova.plugin.sqliteporter": {},
       "cordova-plugin-file-transfer": {},
-      "cordova-plugin-android-permissions": {}
+      "cordova-plugin-android-permissions": {},
+      "cordova-plugin-network-information": {}
     },
     "platforms": [
       "android",

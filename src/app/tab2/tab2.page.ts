@@ -7,6 +7,7 @@ import { MenuController } from '@ionic/angular';
 import { shabadDB } from '../services/shabadDB';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { downloadData } from '../services/downloadData';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-tab2',
@@ -28,6 +29,7 @@ export class Tab2Page implements OnInit {
     private igdb: shabadDB,
     private menu: MenuController,
     private downloadData : downloadData,
+    private storage: Storage,
     private media: Media) {
     this.platform.ready().then(() => {
       if (this.platform.is('ios')) {
@@ -62,6 +64,9 @@ export class Tab2Page implements OnInit {
   }
   ionViewWillLeave() {
     this.stopPlayRecording();
+  }
+  ionViewWillEnter() {
+    this.getDataFromLocalStorage();
   }
   prepareAudioFile(singleFile = []) {
     this.platform.ready().then(() => {
@@ -230,7 +235,8 @@ export class Tab2Page implements OnInit {
   }
 
   download(sf, i, dd) {
-    this. stopPlaying();
+    console.log('usflr', sf,)
+    console.log('index', i,)
     this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
       .then(status => {
         if (status.hasPermission) {
@@ -259,6 +265,7 @@ export class Tab2Page implements OnInit {
 
   createAngDir(sf, i, dd) {
     let ang_id = 1;
+    console.log('CreateDirc Function',this.file.externalRootDirectory + 'shabad', 'ang_' + ang_id)
     this.file.createDir(this.file.externalRootDirectory + 'shabad', 'ang_' + ang_id, false).then(response => {
       console.log('Ang Directory created', response);
       this.downloadAudioFile(sf, i, dd)
@@ -277,7 +284,12 @@ export class Tab2Page implements OnInit {
     let url = 'https://firebasestorage.googleapis.com/v0/b/testgurubani.appspot.com/o/ang_' + ang_id + '%2Fshabad_' + shabad_id + '.mp3?alt=media&token=fcfe83f3-f21c-4d77-a4b8-438f0e53281a'
     let checkFileUrl = this.file.externalRootDirectory + '/shabad/' + 'ang_' + ang_id +'/'; 
     let FileName = 'shabad_' + shabad_id + '.mp3';
-    
+    console.log('ulr', url,)
+    console.log('index', i,)
+    console.log('ang_id', ang_id,)
+    console.log('shabad_id', shabad_id,)
+
+
     this.file.checkFile(checkFileUrl, FileName).then((entry) => {
       let nurl = this.file.externalRootDirectory + '/shabad/' + 'ang_' + ang_id + '/shabad_' + shabad_id + '.mp3';
       sf.isDownloading = false;
@@ -285,15 +297,25 @@ export class Tab2Page implements OnInit {
     })
       .catch((err) => {
         sf.isDownloading = true;
-        this.downloadData.newDownLoadAudioFile(url,ang_id,shabad_id).then(response => {
-          this.ply1(sf, i, dd, response);
-        }).catch(err => {
-          console.log('downLodaData Common Error', err)
-        });
+        let url = 'https://firebasestorage.googleapis.com/v0/b/testgurubani.appspot.com/o/ang_' + ang_id + '%2Fshabad_' + shabad_id + '.mp3?alt=media&token=fcfe83f3-f21c-4d77-a4b8-438f0e53281a'
+      const fileTransfer: FileTransferObject = this.transfer.create();
+         fileTransfer.download(url, this.file.externalRootDirectory + '/shabad/' + 'ang_' + ang_id + '/shabad_' + shabad_id + '.mp3').then((entry) => {
+            let nurl = this.file.externalRootDirectory + '/shabad/' + 'ang_' + ang_id + '/shabad_' + shabad_id + '.mp3';
+            this.ply1(sf, i, dd, nurl); 
+          })
+            .catch((err) => {
+                console.log('download Erro', err);
+            });
+        // this.downloadData.newDownLoadAudioFile(url,ang_id,shabad_id).then(response => {
+        //   this.ply1(sf, i, dd, response);
+        // }).catch(err => {
+        //   console.log('downLodaData Common Error', err)
+        // });
       });
   }
 
   ply1(sf, i, dd, url) {
+    sf.isDownloading = false;
     sf.isPlaying = true;
     const file: MediaObject = this.media.create(url);
     this.driveAudio = file;
@@ -308,5 +330,10 @@ export class Tab2Page implements OnInit {
     }
   }
 
+  getDataFromLocalStorage() {
+    this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
+      console.log(sdata, 'Storage Data',sdata)
+    }).catch(e => console.log("Error =>" ,e));
+  }
 }
 

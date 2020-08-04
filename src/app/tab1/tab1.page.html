@@ -44,13 +44,13 @@
     </ng-container>
   </ion-list> -->
 
-  <ion-list>
+  <ion-list >
     <ng-container *ngFor="let sf of listItemFromDb; let i=index">
       <ion-item class="ion-no-margin" [id]="'currentPlayItemId'+i">
         <ion-label><h2>{{sf?sf.sggs_darpan: ''}}</h2></ion-label>
         
         <!-- <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?plyAll(sf, i, true,i): stopSingleFile()"> -->
-          <ion-button fill="clear" slot="end" (click)="!sf.isPlaying?download(sf, i, true): stopPlaying()">
+          <ion-button fill="clear" slot="end" (click)="!sf.isPlaying?plyAll1(sf, i, true): stopPlaying()">
      
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>

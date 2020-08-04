@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import {IonicStorageModule} from '@ionic/storage';
+import {Network} from '@ionic-native/network/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,6 +35,7 @@ import {IonicStorageModule} from '@ionic/storage';
     SQLite,
     SQLitePorter,AndroidPermissions,
     FileTransferObject, 
+    Network,
   ],
   bootstrap: [AppComponent]
 })
