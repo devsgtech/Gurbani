@@ -14,6 +14,7 @@ import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
 import { newhelper } from '../services/newhelper';
+import { VARS } from '../services/constantString';
 
 @Component({
   selector: 'app-tab1',
@@ -22,6 +23,7 @@ import { newhelper } from '../services/newhelper';
 })
 export class Tab1Page implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  
   driveAudio: any;
   searchOpt: any;
   storageDirectory: any; currPlayingFile: MediaObject;
@@ -41,6 +43,9 @@ export class Tab1Page implements OnInit {
   indexx: any;
   searchOffset = 0;
   online :boolean = true;
+  disablePrev:boolean = true;
+  disableNext:boolean = true;
+
   constructor(public platform: Platform,
     private file: File,
     private igdb: shabadDB,
@@ -77,6 +82,7 @@ export class Tab1Page implements OnInit {
     this.stopAll()
   }
   ionViewWillEnter() {
+   this.setFavourite();
     this.online = (this.network.type !== this.network.Connection.NONE);
     this.network.onChange().subscribe((ev) => {
       this.online = (ev.type === 'online');
@@ -286,7 +292,7 @@ export class Tab1Page implements OnInit {
       this.indexx = this.indexx + 1;
       this.stopall = false;
       this.plyAll1(null, this.indexx, false, this.indexx);
-    }, 1000);
+    }, 100);
 
   }
   prevplaynn() {
@@ -296,7 +302,7 @@ export class Tab1Page implements OnInit {
       this.stopall = false;
       console.log(this.stopall, 'this.stopall')
       this.plyAll1(null, this.indexx, false, this.indexx);
-    }, 1000);
+    }, 100);
   }
   newPlay(sFile = null, index = 0, isSingle = false, i = 0) {
     this.indexx = index;
@@ -313,6 +319,7 @@ export class Tab1Page implements OnInit {
     this.download(sFile, i, isSingle);
   }
 
+  
   plyAll(sFile = null, index = 0, isSingle = false, i = 0) {
     Tab1Page.scrollTo(index);
     if (!this.stopall || sFile) {
@@ -340,6 +347,8 @@ export class Tab1Page implements OnInit {
   }
 
   stopAll() {
+    this.disablePrev = true;
+    this.disableNext = true;
     if (this.driveAudio) {
       this.driveAudio.stop();
       this.driveAudio.release();
@@ -394,6 +403,7 @@ export class Tab1Page implements OnInit {
     await actionSheet.present();
   }
 
+  
   ///////////////////DataBase fetch and search///////////////////////
 
   searchWord(ev = null) {
@@ -443,7 +453,7 @@ export class Tab1Page implements OnInit {
       })
       this.listItemFromDbCopy = this.listItemFromDb;
     })
-
+    this.setFavourite();
   }
 
   searchAnywhere(ev) {
@@ -455,6 +465,8 @@ export class Tab1Page implements OnInit {
       this.listItemFromDb = res;
       this.listItemFromDbCopy = this.listItemFromDb;
     })
+    this.setFavourite();
+
   }
 
   firstWordSearch(ev) {
@@ -466,6 +478,8 @@ export class Tab1Page implements OnInit {
       this.listItemFromDb = res;
       this.listItemFromDbCopy = this.listItemFromDb;
     })
+    this.setFavourite();
+
   }
 
 
@@ -489,6 +503,7 @@ export class Tab1Page implements OnInit {
         event.target.complete();
       })
     }
+    this.setFavourite();
   }
 
   searchShabadAnyWhereLoadMoreandOffset(event) {
@@ -509,6 +524,8 @@ export class Tab1Page implements OnInit {
       this.listItemFromDbCopy = this.listItemFromDb;
       event.target.complete();
     })
+    this.setFavourite();
+
   }
 
   searchShabadFirstWordLoadMoreandOffset(event) {
@@ -528,6 +545,7 @@ export class Tab1Page implements OnInit {
       this.listItemFromDbCopy = this.listItemFromDb;
       event.target.complete();
     })
+    this.setFavourite();
   }
 
 
@@ -559,7 +577,7 @@ export class Tab1Page implements OnInit {
   }
 
    createShabad(sf, i, dd) {
-    this.file.createDir(this.storageDirectory, '.shabad', false).then(response => {
+    this.file.createDir(this.storageDirectory, VARS.shabadDirectory, false).then(response => {
       this.createAngDir(sf, i, dd);
     }).catch(err => {
       if (err.message == 'PATH_EXISTS_ERR') {
@@ -569,12 +587,9 @@ export class Tab1Page implements OnInit {
   }
 
   createAngDir(sf, i, dd) {
-    console.log('CreateDirc Function', this.storageDirectory + '.shabad', 'ang_' + sf.ang_id)
-    this.file.createDir(this.storageDirectory + '.shabad', 'ang_' + sf.ang_id, false).then(response => {
-      console.log('Ang Directory created', response);
+    this.file.createDir(this.storageDirectory + VARS.shabadDirectory, VARS.angDir + sf.ang_id, false).then(response => {
       this.downloadAudioFile(sf, i, dd)
     }).catch(err => {
-      console.log('Could not create directory "my_downloads" ', err);
       if (err.message == 'PATH_EXISTS_ERR') {
         this.downloadAudioFile(sf, i, dd)
       }
@@ -583,23 +598,22 @@ export class Tab1Page implements OnInit {
 
 
   downloadAudioFile(sf, i, dd) {
-    let checkFileUrl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/';
+    let checkFileUrl = this.storageDirectory + '/'+ VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/';
     let FileName = 'shabad_' + sf._id + '.mp3';
     this.file.checkFile(checkFileUrl, FileName).then((entry) => {
-      let nurl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3';
+      let nurl = this.storageDirectory + '/' + VARS.shabadDirectory+ '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
       sf.isDownloading = false;
       this.ply1(sf, i, dd, nurl);
     })
       .catch((err) => {
-       
-        let url = 'https://firebasestorage.googleapis.com/v0/b/testgurubani.appspot.com/o/ang_' + sf.ang_id + '%2Fshabad_' + sf._id + '.mp3?alt=media&token=fcfe83f3-f21c-4d77-a4b8-438f0e53281a'
+       const url = this.newHelper.returnDownloadUrl(sf.ang_id, sf._id);
         const fileTransfer: FileTransferObject = this.transfer.create();
         if(!this.online){
           this.checkNetwork();
         } else{
           sf.isDownloading = true;
-        fileTransfer.download(url, this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
-          let nurl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3';
+        fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
+          let nurl = this.storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
           this.ply1(sf, i, dd, nurl);
         })
           .catch((err) => {
@@ -644,14 +658,47 @@ export class Tab1Page implements OnInit {
 
   
   ///////////////DOWNLOAD AUDIO PLAY END///////////////////////
-
+setFavourite(){
+  this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
+    if(sdata){
+      sdata.map(i=>{
+       this.listItemFromDb.map(li=>{
+         if(li._id == i._id){
+           li.isFavourite = true;
+         } else{
+           li.isFavourite = false;
+         }
+       })
+      })
+    } 
+    if(sdata.length == 0 ){
+      this.listItemFromDb.map(li=>{
+          li.isFavourite = false;
+      })
+    }
+   }).catch(e => console.log(e));
+}
   saveLocalFav(sf) {
     sf.isFavourite = !(sf?.isFavourite);
     this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
       if (!sdata){
         sdata = [];
       } 
+      let availableBefore : any = false;
+      sdata.map(i=>{
+        if(i._id == sf._id){
+          availableBefore = true;
+        }
+        console.log(i,'Storage')
+      });
+
+      console.log(availableBefore,'availableBefore')
+
+      if(!availableBefore || availableBefore != true){
+      console.log('Push Into SDATAfore')
+
         sdata.push(sf);
+      }
       this.storage.set('_SGTECH_GURBANI_FAV', sdata);
     }).catch(e => console.log(e));
   }

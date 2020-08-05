@@ -17,6 +17,9 @@ ion-title{
     }
 }
   ion-content{
+    .empty-fav{
+      text-align: center;
+    }
     ion-list{
       ion-item{
         width: 100%;

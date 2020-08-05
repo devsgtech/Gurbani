@@ -19,37 +19,26 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <!-- <ion-list>
-    <ng-container *ngFor="let sf of serverFileArray; let i=index">
-      <ion-item no-margin [id]="'currentPlayItemId'+i">
-        <ion-label><h2>{{sf.title1}}</h2></ion-label>
-        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?plyAll(sf, i, true,i): stopSingleFile()">
-     
-          <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
-          <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
-          <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
-        </ion-button>
-      </ion-item>
-      <ion-item no-margin class="bottomItem">
-        <ion-label>
-          <p *ngIf="sf.title2"  [ngClass]="changeui.fontSize">{{sf.title2}}</p>
-          <p *ngIf="sf.title3"  [ngClass]="changeui.fontSize">{{sf.title3}}</p>
-        </ion-label>
-      </ion-item>
-      <div padding-horizontal>
-        <ion-progress-bar value="{{getProgressVal(sf.position, sf.duration)}}"></ion-progress-bar>
-      </div>
-
-     
-    </ng-container>
-  </ion-list> -->
-
-  <ion-list >
+  <ion-list *ngIf="!listItemFromDb.length" >
+    <ion-item class="ion-no-margin" *ngFor="let sf of [1,2,3,4,5,6,7];">
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="listItemFromDb.length" >
     <ng-container *ngFor="let sf of listItemFromDb; let i=index">
       <ion-item class="ion-no-margin" [id]="'currentPlayItemId'+i">
         <ion-label><h2>{{sf?sf.sggs_darpan: ''}}</h2></ion-label>
         
-        <!-- <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?plyAll(sf, i, true,i): stopSingleFile()"> -->
           <ion-button fill="clear" slot="end" (click)="!sf.isPlaying?plyAll1(sf, i, true): stopPlaying()">
      
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
@@ -66,14 +55,9 @@
           <ion-icon name="heart" [color]="sf?.isFavourite?'white':'danger'"></ion-icon>
         </ion-button>
       </ion-item>
-      <!-- <div padding-horizontal>
-        <ion-progress-bar value="{{getProgressVal(sf.position, sf.duration)}}"></ion-progress-bar>
-      </div> -->
-
-     
     </ng-container>
   </ion-list>
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="listItemFromDb.length">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data...">
@@ -81,7 +65,7 @@
   </ion-infinite-scroll>
 </ion-content>
 <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-  <ion-fab-button color="myWhite" class="back-prev" (click)="prevplaynn()" [disabled]="isPlayingAll && indexx > 0 ?false:true">
+  <ion-fab-button color="myWhite" class="back-prev" (click)="prevplaynn()"  [ngStyle]="{'visibility': (isPlayingAll && (indexx > 0)) ? 'visible' : 'hidden' }">
     <ion-icon name="arrow-back"></ion-icon>
   </ion-fab-button>
   <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?plyAll1(): stopAll()">
@@ -90,7 +74,7 @@
     <span *ngIf="isPlayingAll" >Stop</span>
     <span *ngIf="!isPlayingAll">Play all</span>
   </ion-fab-button>
-  <ion-fab-button color="myWhite" class="back-prev" (click)="nextplaynn()" [disabled]="isPlayingAll && serverFileArray.length -1  != testnextFileIndex ?false:true">
+  <ion-fab-button color="myWhite" class="back-prev" (click)="nextplaynn()"  [ngStyle]="{'visibility': (isPlayingAll && (listItemFromDb.length -1  != indexx)) ? 'visible' : 'hidden' }">
     <ion-icon name="arrow-forward" ></ion-icon>
   
   </ion-fab-button>

@@ -9,10 +9,13 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list>
-    <ng-container *ngFor="let sf of serverFileArray; let i=index">
+  <h2 class="empty-fav" *ngIf="listItemFromDb.length == 0">
+    Empty Favourite List
+  </h2>
+  <ion-list *ngIf="listItemFromDb.length">
+    <ng-container *ngFor="let sf of listItemFromDb; let i=index">
       <ion-item no-margin [id]="'currentPlayItemId'+i">
-        <ion-label><h2>{{sf.title1}}</h2></ion-label>
+        <ion-label><h2>{{sf.sggs_darpan}}</h2></ion-label>
         <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?download(sf, i, true): stopPlaying()">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
@@ -21,13 +24,16 @@
       </ion-item>
       <ion-item no-margin class="bottomItem">
         <ion-label>
-          <p *ngIf="sf.title2">{{sf.title2}}</p>
-          <p *ngIf="sf.title3">{{sf.title3}}</p>
+          <p *ngIf="sf.transliteration"  [ngClass]="changeui.fontSize">{{sf?sf.transliteration: ''}}</p>
+          <p *ngIf="sf.english_ssk"  [ngClass]="changeui.fontSize">{{sf?sf.english_ssk: ''}}</p>
         </ion-label>
+        <ion-button fill="clear" slot="end" (click)="removaFavourite(i)">
+          <ion-icon name="trash-outline" color="danger"></ion-icon>
+        </ion-button>
       </ion-item>
-      <div padding-horizontal>
+      <!-- <div padding-horizontal>
         <ion-progress-bar value="{{getProgressVal(sf.position, sf.duration)}}"></ion-progress-bar>
-      </div>
+      </div> -->
 
       <!--<p>{{ sf.position*1000-1800000 | date:'mm:ss' }}</p>
       <p *ngIf="sf.duration == -1" >&#45;&#45;:&#45;&#45;</p>
