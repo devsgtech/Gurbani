@@ -19,22 +19,8 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list *ngIf="!listItemFromDb.length" >
-    <ion-item class="ion-no-margin" *ngFor="let sf of [1,2,3,4,5,6,7];">
-      <ion-label>
-        <h3>
-          <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
-        </h3>
-        <p>
-          <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
-        </p>
-        <p>
-          <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
-        </p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
-  <ion-list *ngIf="listItemFromDb.length" >
+ 
+  <ion-list >
     <ng-container *ngFor="let sf of listItemFromDb; let i=index">
       <ion-item class="ion-no-margin" [id]="'currentPlayItemId'+i">
         <ion-label><h2>{{sf?sf.sggs_darpan: ''}}</h2></ion-label>
@@ -57,7 +43,7 @@
       </ion-item>
     </ng-container>
   </ion-list>
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="listItemFromDb.length">
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" >
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data...">
