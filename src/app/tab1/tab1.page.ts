@@ -1,20 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Platform, IonInfiniteScroll } from '@ionic/angular';
-import { File } from '@ionic-native/file/ngx';
-import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
-import { Media, MediaObject } from '@ionic-native/media/ngx';
-import { MenuController } from '@ionic/angular';
-import { ChangeUIService } from '../services/change-ui.service';
-import { shabadDB } from '../services/shabadDB';
-import { ActionSheetController } from '@ionic/angular';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActionSheetController, IonInfiniteScroll, MenuController, Platform, ToastController} from '@ionic/angular';
+import {File} from '@ionic-native/file/ngx';
+import {FileTransfer, FileTransferObject} from '@ionic-native/file-transfer/ngx';
+import {Media, MediaObject} from '@ionic-native/media/ngx';
+import {ChangeUIService} from '../services/change-ui.service';
+import {shabadDB} from '../services/shabadDB';
+import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 // import { DatabaseService } from '../database.service';
-import { downloadData } from '../services/downloadData';
-import { Storage } from '@ionic/storage';
-import { ToastController } from '@ionic/angular';
-import { Network } from '@ionic-native/network/ngx';
-import { newhelper } from '../services/newhelper';
-import { VARS } from '../services/constantString';
+import {downloadData} from '../services/downloadData';
+import {Storage} from '@ionic/storage';
+import {Network} from '@ionic-native/network/ngx';
+import {newhelper} from '../services/newhelper';
+import {VARS} from '../services/constantString';
 
 @Component({
   selector: 'app-tab1',
@@ -35,7 +32,7 @@ export class Tab1Page implements OnInit {
   newtestFile: any;
   testnextFileIndex: any;
   stopall: boolean = false;
-  listItemFromDb: any;
+  listItemFromDb: any = [];
   listItemFromDbCopy: any;
   raagSelect = '';
   offset = 0;
@@ -493,7 +490,7 @@ export class Tab1Page implements OnInit {
       console.log('Done');
       this.igdb.getDataOffset(this.offset).then((res) => {
         console.log('Resopnse GetData0', res);
-        if (res.length == 0) {
+        if (res && res.length == 0) {
           event.target.disabled = true;
         }
         res.map(item => {
@@ -515,7 +512,7 @@ export class Tab1Page implements OnInit {
     console.log('data', data, this.searchOffset);
     this.igdb.searchShabadAnyWhereLoadMoreandOffset(data).then((res) => {
       console.log('Resopnse GetData0', res);
-      if (res.length == 0) {
+      if (res && res.length == 0) {
         event.target.disabled = true;
       }
       res.map(item => {
@@ -536,7 +533,7 @@ export class Tab1Page implements OnInit {
     }
     this.igdb.searchShabadFirstWordLoadMoreandOffset(data).then((res) => {
       console.log('Resopnse GetData0', res);
-      if (res.length == 0) {
+      if (res && res.length == 0) {
         event.target.disabled = true;
       }
       res.map(item => {
@@ -628,11 +625,11 @@ export class Tab1Page implements OnInit {
   }
 
   ply1(sf, i, dd, url) {
-    console.log('url',url)
+    console.log('url----',url)
     sf.isDownloading = false;
     sf.isPlaying = true;
-    const file: MediaObject = this.media.create(url);
-    this.driveAudio = file;
+    const murl = (this.platform.is('ios')) ? url.replace(/^file:\/\//, '') : url;
+    this.driveAudio = this.media.create(murl);
     this.driveAudio.play();
     this.driveAudio.onSuccess.subscribe(() => {
       // sf.isPlaying = false;
@@ -647,6 +644,9 @@ export class Tab1Page implements OnInit {
           this.plyAll(sf = null, i + 1, dd = false, i + 1)
         }
       }
+    });
+    this.driveAudio.onError.subscribe((e) => {
+      console.log('eee', e);
     })
 
   }
@@ -671,7 +671,7 @@ setFavourite(){
        })
       })
     } 
-    if(sdata.length == 0 ){
+    if(sdata && sdata.length == 0 ){
       this.listItemFromDb.map(li=>{
           li.isFavourite = false;
       })
