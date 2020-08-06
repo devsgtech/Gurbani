@@ -19,7 +19,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
- 
+  
   <ion-list >
     <ng-container *ngFor="let sf of listItemFromDb; let i=index">
       <ion-item class="ion-no-margin" [id]="'currentPlayItemId'+i">
@@ -55,6 +55,8 @@
     <ion-icon name="arrow-back"></ion-icon>
   </ion-fab-button>
   <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?plyAll1(): stopAll()">
+  <!-- <ion-fab-button color="myWhite" class="ion-fab-button" (click)="getShabad()"> -->
+
  
 
     <span *ngIf="isPlayingAll" >Stop</span>

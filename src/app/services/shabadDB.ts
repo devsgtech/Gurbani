@@ -14,6 +14,7 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 export class shabadDB {
   private storage: SQLiteObject;
   listItem = new BehaviorSubject([]);
+  rowCount = 0;
   private isDbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
@@ -44,34 +45,74 @@ export class shabadDB {
 
   // Render fake data
   getFakeData() {
-    this.httpClient.get(
-      'assets/gurubaniSQL/shortShabad.sql',
+    // this.dropTable();
+    // this.createTable();
+    // this.httpClient.get(
+    //   'assets/gurubaniSQL/shabad.sql',
+    //   { responseType: 'text' }
+    // ).subscribe(data => {
+    //   this.sqlPorter.importSqlToDb(this.storage, data)
+    //     .then(_ => {
+    //       this.getSongs();
+    //       this.getCount();
+    //       this.isDbReady.next(true);
+    //     })
+    //     .catch(error => console.error(error));
+    // });
+    this.createTable();
+    
+  }
+
+  dropTable(){
+    let sqli = 'DROP TABLE IF EXISTS `shabad`';
+    this.storage.executeSql(sqli, []).then(res => {
+      console.log('Table Dropped', res);
+    });
+  }
+  data_:any;
+  createTable(){
+    this.data_ = '';
+   let sqli =  'CREATE TABLE IF NOT EXISTS shabad( _id INTEGER PRIMARY KEY AUTOINCREMENT,shabad_no TEXT, source_id TEXT, ng_id TEXT,       line_id TEXT,       writer_id TEXT,     raag_id TEXT,      vishraam TEXT,       green_vishraam TEXT,       first_ltr_start TEXT,      first_ltr_any TEXT  ,      gurmukhi TEXT ,      english_ssk TEXT  ,      english_bms TEXT  ,      punjabi_bms TEXT,      transliteration TEXT ,      sggs_darpan TEXT ,      faridkot_teeka TEXT  )'  
+    return this.storage.executeSql(sqli, []).then(res => {
+      this.data_ = res;
+      console.log(' Table Created res.rows.length ', res.rows.length);
+
+      if(res.rows.length == 0){
+        return this.getCount();
+      } else {
+        return this.newFakedata()
+      }
+    });
+    
+  }
+newFakedata(){
+   return this.httpClient.get(
+      'assets/gurubaniSQL/shabad.sql',
       { responseType: 'text' }
     ).subscribe(data => {
       this.sqlPorter.importSqlToDb(this.storage, data)
         .then(_ => {
-          this.getSongs();
           this.isDbReady.next(true);
+          return  this.getDataOffset(0);
         })
         .catch(error => console.error(error));
     });
-  }
-
-  // Get list
-  getSongs() {
-    //   'select * from shabad order by _id desc limit 20'
-    return this.storage.executeSql('SELECT * FROM shabad', []).then(res => {
-      let items = [];
-      console.log('Gurubani getSong Functions Response', res);
-      if (res.rows.length > 0) {
-        for (var i = 0; i < res.rows.length; i++) {
-          items = this.setData(res);
-        }
+}
+  getCount(){
+    let sqli = 'SELECT COUNT(*) FROM shabad';
+    return this.storage.executeSql(sqli, []).then(res => {
+      console.log('Count Rows Of shabad Created', res);
+      this.rowCount = res.rows.item(0)['COUNT(*)'];
+      if(this.rowCount > 95000){
+        return this.getDataOffset(0);
+      } else {
+        this.newFakedata();
       }
-      return items;
-      // this.listItem.next(items);
+      console.log(res.rows.item(0)['COUNT(*)'],'-<--- No of Counts')
     });
   }
+
+ 
 
 
   searchShabadAnyWhere(text) {
@@ -101,10 +142,12 @@ export class shabadDB {
   }
 
   getDataOffset(offset) {
-    'Select * FROM shabad WHERE source_id="G" LIMIT 0, 20'
+    // 'Select * FROM shabad WHERE source_id="G" LIMIT 0, 20'
     return this.storage.executeSql('SELECT * FROM shabad WHERE source_id="G" LIMIT 10 OFFSET ?', [offset]).then(res => {
-      let items = [];
+      let items :any;
+      console.log('get Data ', res)
       if (res.rows.length > 0) {
+        items = []
         items = this.setData(res);
       }
       return items;

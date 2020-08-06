@@ -32,8 +32,8 @@ export class Tab1Page implements OnInit {
   newtestFile: any;
   testnextFileIndex: any;
   stopall: boolean = false;
-  listItemFromDb: any = [];
-  listItemFromDbCopy: any;
+  listItemFromDb = [];
+  listItemFromDbCopy=[];
   raagSelect = '';
   offset = 0;
   searchString = '';
@@ -79,6 +79,8 @@ export class Tab1Page implements OnInit {
     this.stopAll()
   }
   ionViewWillEnter() {
+    // this.getData();
+    console.log("ion Enter")
    this.setFavourite();
     this.online = (this.network.type !== this.network.Connection.NONE);
     this.network.onChange().subscribe((ev) => {
@@ -436,15 +438,33 @@ export class Tab1Page implements OnInit {
         })
       }
     });
-    setTimeout(() => {
-      this.getData()
-    }, 3000);
+
+      setTimeout(() => {
+        console.log('this.igdb.rowCount0', this.igdb.rowCount)
+        if(this.igdb.rowCount > 95000){
+        console.log('this.igdb.rowCount0 if', this.igdb.rowCount)
+
+          this.getData()
+        } else{
+        console.log('this.igdb.rowCount0 else', this.igdb.rowCount)
+          this.igdb.createTable().then((res) => {
+            console.log('Response after Get Data From DB', res)
+            res.map(item => {
+              this.listItemFromDb.push(item)
+            })
+            this.listItemFromDbCopy = this.listItemFromDb;
+          })
+        }
+      }, 8000);
+      
   }
 
   getData() {
+    console.log('Call Get Function')
     this.listItemFromDb = [];
     this.offset = 0;
     this.igdb.getDataOffset(this.offset).then((res) => {
+      console.log('Response after Get Data From DB', res)
       res.map(item => {
         this.listItemFromDb.push(item)
       })
@@ -701,5 +721,10 @@ setFavourite(){
       }
       this.storage.set('_SGTECH_GURBANI_FAV', sdata);
     }).catch(e => console.log(e));
+  }
+
+  getShabad(){
+    console.log('Call Again get Function');
+    this.getData()
   }
 }
