@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import {LoadingController, Platform} from '@ionic/angular';
 import { Song } from './song';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -15,7 +15,7 @@ import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ng
 })
 
 export class newhelper {
-
+  loading;
     constructor(
         private platform: Platform, 
         private sqlite: SQLite, 
@@ -23,7 +23,7 @@ export class newhelper {
         private sqlPorter: SQLitePorter,
         public toastController: ToastController,
         private file: File,
-      ){}
+        private loadingCtrl: LoadingController ){}
       createShabad(storageDirectory) {
         this.file.createDir(storageDirectory, VARS.shabadDirectory, false).then(response => {
           return  'yes';
@@ -35,7 +35,20 @@ export class newhelper {
           }
         });
       }
-
+  async presentLoadingWithOptions(msg= 'Please wait a moment', customCssClass= 'myLoader') {
+    this.dismissLoading();
+    this.loading = await this.loadingCtrl.create({
+      id: 'myLoader',
+      spinner: 'bubbles',
+      message: msg,
+      translucent: true,
+      cssClass: customCssClass
+    });
+    return await this.loading.present();
+  }
+  dismissLoading() {
+    try { this.loading.dismiss().catch(() => {}); } catch (e) {}
+  }
 
       async presentToastWithOptions(data) {
         const toast = await this.toastController.create({

@@ -12,6 +12,7 @@ import {Storage} from '@ionic/storage';
 import {Network} from '@ionic-native/network/ngx';
 import {newhelper} from '../services/newhelper';
 import {VARS} from '../services/constantString';
+import {HelperService} from '../services/helper.service';
 
 @Component({
   selector: 'app-tab1',
@@ -73,6 +74,7 @@ export class Tab1Page implements OnInit {
     currentId.scrollIntoView({ behavior: 'smooth' });
   }
   ngOnInit() {
+    this.newHelper.presentLoadingWithOptions('Hold on, preparing your data. This may take some time!');
     this.fetchSql()
   }
   ionViewWillLeave() {
@@ -251,6 +253,7 @@ export class Tab1Page implements OnInit {
         this.igdb.fetchSongs().subscribe(item => {
           this.listItemFromDb = item;
           this.listItemFromDbCopy = this.listItemFromDb;
+          this.newHelper.dismissLoading();
         })
       }
     });
@@ -269,6 +272,7 @@ export class Tab1Page implements OnInit {
               this.listItemFromDb.push(item)
             })
             this.listItemFromDbCopy = this.listItemFromDb;
+            this.newHelper.dismissLoading();
           })
         }
       }, 8000);
@@ -285,6 +289,7 @@ export class Tab1Page implements OnInit {
         this.listItemFromDb.push(item)
       })
       this.listItemFromDbCopy = this.listItemFromDb;
+      this.newHelper.dismissLoading();
     })
     this.setFavourite();
   }
@@ -499,11 +504,7 @@ setFavourite(){
     if(sdata){
       sdata.map(i=>{
        this.listItemFromDb.map(li=>{
-         if(li._id == i._id){
-           li.isFavourite = true;
-         } else{
-           li.isFavourite = false;
-         }
+         li.isFavourite = (li._id == i._id);
        })
       })
     } 

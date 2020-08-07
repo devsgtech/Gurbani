@@ -38,7 +38,7 @@
           <p *ngIf="sf.english_ssk"  [ngClass]="changeui.fontSize">{{sf?sf.english_ssk: ''}}</p>
         </ion-label>
         <ion-button fill="clear" slot="end" (click)="saveLocalFav(sf)">
-          <ion-icon name="heart" [color]="sf?.isFavourite?'white':'danger'"></ion-icon>
+          <ion-icon name="heart" [color]="sf?.isFavourite?'danger':'white'"></ion-icon>
         </ion-button>
       </ion-item>
     </ng-container>
