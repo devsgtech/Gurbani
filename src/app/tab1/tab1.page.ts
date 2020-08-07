@@ -12,7 +12,6 @@ import {Storage} from '@ionic/storage';
 import {Network} from '@ionic-native/network/ngx';
 import {newhelper} from '../services/newhelper';
 import {VARS} from '../services/constantString';
-import {HelperService} from '../services/helper.service';
 
 @Component({
   selector: 'app-tab1',
@@ -104,6 +103,7 @@ export class Tab1Page implements OnInit {
   }
 
   nextplaynn() {
+    console.log('next play click')
     this.stopAll();
     setTimeout(() => {
       this.indexx = this.indexx + 1;
@@ -162,7 +162,7 @@ export class Tab1Page implements OnInit {
       }
     }
   }
-
+ 
   stopAll() {
     this.disablePrev = true;
     this.disableNext = true;
@@ -253,7 +253,6 @@ export class Tab1Page implements OnInit {
         this.igdb.fetchSongs().subscribe(item => {
           this.listItemFromDb = item;
           this.listItemFromDbCopy = this.listItemFromDb;
-          this.newHelper.dismissLoading();
         })
       }
     });
@@ -272,7 +271,6 @@ export class Tab1Page implements OnInit {
               this.listItemFromDb.push(item)
             })
             this.listItemFromDbCopy = this.listItemFromDb;
-            this.newHelper.dismissLoading();
           })
         }
       }, 8000);
@@ -289,12 +287,13 @@ export class Tab1Page implements OnInit {
         this.listItemFromDb.push(item)
       })
       this.listItemFromDbCopy = this.listItemFromDb;
-      this.newHelper.dismissLoading();
     })
     this.setFavourite();
   }
 
   searchAnywhere(ev) {
+    this.stopSingleFile()
+    this.stopAll()
     this.infiniteScroll.disabled = false;
     this.searchOffset = 0;
     this.searchString = ev.target.value.trim();
@@ -308,6 +307,8 @@ export class Tab1Page implements OnInit {
   }
 
   firstWordSearch(ev) {
+    this.stopSingleFile()
+    this.stopAll()
     this.infiniteScroll.disabled = false;
     this.searchOffset = 0;
     this.searchString = ev.target.value.trim();
@@ -481,6 +482,7 @@ export class Tab1Page implements OnInit {
       if ((i + 1) == this.listItemFromDb.length) {
         console.log('inside if section')
       } else {
+        sf.isPlaying = false
         if (dd == false) {
           this.plyAll(sf = null, i + 1, dd = false, i + 1)
         }
@@ -504,7 +506,11 @@ setFavourite(){
     if(sdata){
       sdata.map(i=>{
        this.listItemFromDb.map(li=>{
-         li.isFavourite = (li._id == i._id);
+         if(li._id == i._id){
+           li.isFavourite = true;
+         } else{
+           li.isFavourite = false;
+         }
        })
       })
     } 
