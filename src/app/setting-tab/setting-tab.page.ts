@@ -1,11 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ChangeUIService } from '../services/change-ui.service';
-import { Platform, ToastController } from '@ionic/angular';
-import { DbService } from '../services/newdb';
+import { Platform,  } from '@ionic/angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { iGurubaniDB } from '../services/gurubaniDb';
-import { shabadDB } from '../services/shabadDB';
 
 @Component({
   selector: 'app-setting-tab',
@@ -23,12 +19,8 @@ export class SettingTabPage implements OnInit {
   constructor(
     public changeui:ChangeUIService,
     private platform: Platform,
-    // private igdb: DbService,
-    // private igdb : iGurubaniDB,
-    private igdb : shabadDB,
     public formBuilder: FormBuilder,
-    private toast: ToastController,
-    private router: Router,
+   
   ) { }
 
   ngOnInit() {
