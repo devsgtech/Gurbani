@@ -18,6 +18,7 @@ import { ChangeUIService } from '../services/change-ui.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit {
+  favourite = true;
   storageDirectory: any; currPlayingFile: MediaObject;
   getDurationInterval: any;
   getPositionInterval: any;

@@ -1,3 +1,70 @@
-<p>
-  list works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="start" fill="clear" color="dark" (click)="openFirst()">
+      <img src="../../../assets/icon/filter.svg" alt="filter">
+    </ion-button>
+    <ion-select mode="ios" interface="popover" [interfaceOptions]="{header: 'Select Ang'}" slot="start" placeholder="Select by">
+      <ion-select-option value="1">First Letter (Start)</ion-select-option>
+      <ion-select-option value="2">First Letter (Start)</ion-select-option>
+      <ion-select-option value="3">Ang/Vaar</ion-select-option>
+      <ion-select-option value="4">Full Word(Gurmukhi)</ion-select-option>
+      <ion-select-option value="5">Full Word(English)</ion-select-option>
+    </ion-select> 
+    <ion-item no-padding>
+      <ion-label slot="end" no-padding>
+        <ion-icon name="search" color="white"></ion-icon>
+      </ion-label>
+      <ion-input type="text"  placeholder="Search"></ion-input>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ng-container *ngFor="let sf of serverFileArray; let i=index">
+      <ion-item no-margin [id]="'currentPlayItemId'+i">
+        <ion-label><h2>{{sf?sf.sggs_darpan: ''}}</h2></ion-label>
+        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?download(sf, i, true): stopPlayRecording()">
+          <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
+          <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
+          <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item no-margin class="bottomItem">
+        <ion-label>
+          <p *ngIf="sf.transliteration"  [ngClass]="changeui.fontSize">{{sf?sf.transliteration: ''}}</p>
+          <p *ngIf="sf.english_ssk"  [ngClass]="changeui.fontSize">{{sf?sf.english_ssk: ''}}</p>
+        </ion-label>
+        <ion-button fill="clear" slot="end" (click)="saveLocalFav(sf)">
+          <ion-icon name="heart" [color]="sf?.isFavourite?'danger':'white'"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <div padding-horizontal>
+        <ion-progress-bar [value]="getProgressVal(sf.position, sf.duration)"></ion-progress-bar>
+      </div>
+      <!--<p>{{ sf.position*1000-1800000 | date:'mm:ss' }}</p>
+      <p *ngIf="sf.duration == -1" >&#45;&#45;:&#45;&#45;</p>
+      <p *ngIf="sf.duration != -1">{{ sf.duration*1000-1800000 | date:'mm:ss' }}</p>-->
+    </ng-container>
+  </ion-list>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+<ion-fab vertical="bottom" horizontal="center" slot="fixed">
+  <ion-fab-button color="myWhite" class="back-prev" (click)="prevplay()" [disabled]="isPlayingAll && testnextFileIndex > 0 ?false:true">
+    <ion-icon name="arrow-back"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?playAll(): stopPlayRecording()">
+    <span *ngIf="isPlayingAll" >Stop</span>
+    <span *ngIf="!isPlayingAll">Play all</span>
+  </ion-fab-button>
+  <ion-fab-button color="myWhite" class="back-prev" (click)="nextplay()" [disabled]="isPlayingAll && serverFileArray.length -1  != testnextFileIndex ?false:true">
+    <ion-icon name="arrow-forward" ></ion-icon>
+    <!-- [disabled]="isPlayingAll?false:true" -->
+  </ion-fab-button>
+</ion-fab>
+
+

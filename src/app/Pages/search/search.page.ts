@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class SearchPage {
   constructor(){}
+  favourite = false;
 }
