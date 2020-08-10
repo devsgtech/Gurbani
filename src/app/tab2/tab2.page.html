@@ -16,7 +16,7 @@
     <ng-container *ngFor="let sf of listItemFromDb; let i=index">
       <ion-item no-margin [id]="'currentPlayItemId'+i">
         <ion-label><h2>{{sf.sggs_darpan}}</h2></ion-label>
-        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?download(sf, i, true): stopPlaying()">
+        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?download(sf, i, true): stopPlaying(sf)">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>

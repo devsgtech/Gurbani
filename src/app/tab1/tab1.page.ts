@@ -12,6 +12,7 @@ import {Storage} from '@ionic/storage';
 import {Network} from '@ionic-native/network/ngx';
 import {newhelper} from '../services/newhelper';
 import {VARS} from '../services/constantString';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-tab1',
@@ -212,7 +213,7 @@ export class Tab1Page implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          this.raagSelect = this.raagSelect;
+          // this.raagSelect = this.raagSelect;
           console.log('Cancel clicked');
         }
       }]
@@ -253,6 +254,7 @@ export class Tab1Page implements OnInit {
         this.igdb.fetchSongs().subscribe(item => {
           this.listItemFromDb = item;
           this.listItemFromDbCopy = this.listItemFromDb;
+          this.newHelper.dismissLoading();
         })
       }
     });
@@ -271,6 +273,7 @@ export class Tab1Page implements OnInit {
               this.listItemFromDb.push(item)
             })
             this.listItemFromDbCopy = this.listItemFromDb;
+            this.newHelper.dismissLoading();
           })
         }
       }, 8000);
@@ -287,6 +290,7 @@ export class Tab1Page implements OnInit {
         this.listItemFromDb.push(item)
       })
       this.listItemFromDbCopy = this.listItemFromDb;
+      this.newHelper.dismissLoading();
     })
     this.setFavourite();
   }
@@ -394,7 +398,7 @@ export class Tab1Page implements OnInit {
 
   //////////////DOWNLOAD AUDIO PLAY START///////////////////////
   async download(sf, i, dd) {
-    this.stopPlaying();
+    this.stopPlaying(sf);
     await this.platform.ready();
     if (this.platform.is('android')) {
       this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
@@ -469,6 +473,9 @@ export class Tab1Page implements OnInit {
   ply1(sf, i, dd, url) {
     console.log('url----',url)
     sf.isDownloading = false;
+    /*_.forEach(this.listItemFromDb, (vv) => {
+      vv.isPlaying = false;
+    });*/
     sf.isPlaying = true;
     const murl = (this.platform.is('ios')) ? url.replace(/^file:\/\//, '') : url;
     this.driveAudio = this.media.create(murl);
@@ -491,9 +498,13 @@ export class Tab1Page implements OnInit {
     this.driveAudio.onError.subscribe((e) => {
       console.log('eee', e);
     })
+    this.driveAudio.onStatusUpdate.subscribe((status) => {
+      console.log('media status', status);
+    });
 
   }
-  stopPlaying() {
+  stopPlaying(sf) {
+    sf? sf.isPlaying = false:null;
     if (this.driveAudio) {
       this.driveAudio.stop();
     }

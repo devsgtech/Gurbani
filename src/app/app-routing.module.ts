@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path: 'setting-tab',
     loadChildren: () => import('./setting-tab/setting-tab.module').then( m => m.SettingTabPageModule)
+  },
+  {
+    path: 'search',
+    loadChildren: () => import('./Pages/search/search.module').then( m => m.SearchPageModule)
   }
 ];
 @NgModule({

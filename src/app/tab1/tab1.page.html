@@ -25,7 +25,7 @@
       <ion-item class="ion-no-margin" [id]="'currentPlayItemId'+i">
         <ion-label><h2>{{sf?sf.sggs_darpan: ''}}</h2></ion-label>
         
-          <ion-button fill="clear" slot="end" (click)="!sf.isPlaying?plyAll1(sf, i, true): stopPlaying()">
+          <ion-button fill="clear" slot="end" (click)="!sf.isPlaying?plyAll1(sf, i, true): stopPlaying(sf)">
      
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
