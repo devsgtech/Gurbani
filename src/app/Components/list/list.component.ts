@@ -10,6 +10,7 @@ import { ChangeUIService } from 'src/app/services/change-ui.service';
 import { VARS } from 'src/app/services/constantString';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Network } from '@ionic-native/network/ngx';
+import { downloadData } from '../../services/downloadData';
 
 @Component({
   selector: 'app-list',
@@ -41,6 +42,7 @@ export class ListComponent implements OnInit {
     private androidPermissions: AndroidPermissions,
     private storage: Storage,
     private network: Network,
+    private downloadData : downloadData,
     private media: Media) {
     this.platform.ready().then(() => {
       if (this.platform.is('ios')) {
@@ -59,7 +61,8 @@ export class ListComponent implements OnInit {
   }
   ngOnInit() {
     if(this.isfav == true){
-      console.log('Favourite Tab')
+      console.log('Favourite Tab');
+      // this.getDataFromLocalStorage()
     }else{
       console.log('Fetch data From DB Search tab');
       this.fetchSql();
@@ -85,6 +88,10 @@ export class ListComponent implements OnInit {
 
   
   ionViewWillEnter() {
+    if(this.isfav == true){
+      console.log('Favourite Tab');
+      this.getDataFromLocalStorage()
+    }
     this.testnextFileIndex = 0;
     // this.getData();
     console.log("ion Enter")
@@ -219,9 +226,7 @@ export class ListComponent implements OnInit {
       console.log('sFile', sFile.isDownloading, sFile);
       // this.prepareAudioFile([sFile]);
     }
-    if (this.currPlayingFile) {
-      this.stopPlayRecording();
-    }
+    
     let currentPlayFile: any;
     if (sFile) {
       currentPlayFile = sFile;
@@ -270,8 +275,10 @@ playAll(){
     if(this.isPlayingAll) {
       this.testnextFileIndex = 0;
     }
-    this.currPlayingFile.stop();
-    this.currPlayingFile.release();
+    if(this.currPlayingFile){
+      this.currPlayingFile.stop();
+      this.currPlayingFile.release();
+    }
     clearInterval(this.getDurationInterval);
     clearInterval(this.getPositionInterval);
     this.setPlayingDefault();
@@ -287,6 +294,32 @@ playAll(){
     console.log('progress Value', (e / f).toFixed(3))
     return (e / f).toFixed(3);
   }
+/////////////////DB Search///////////////////////
+
+searchWord(ev = null) {
+  console.log(this.searchOpt, 'this.searchOpt');
+  this.searchOffset = 0;
+  this.searchString = ev.target.value.trim();
+  switch (this.searchOpt) {
+    case '1':
+      this.firstWordSearch(ev);
+      break;
+    case '2':   // 2: playing
+      this.searchAnywhere(ev);
+      break;
+    case '3':   // 3: pause
+
+      break;
+    case '4':   // 4: stop
+
+      break;
+    default:
+      this.searchAnywhere(ev);
+      break;
+  }
+
+}
+/////////////////DB Search End///////////////////
 /////////////////LOAD DATA From DB///////////////////////////
 fetchSql() {
   this.newHelper.presentLoadingWithOptions('Hold on, preparing your data. This may take some time!');
@@ -436,6 +469,9 @@ searchShabadFirstWordLoadMoreandOffset(event) {
 }
 ////////////////LOAD DATA FROM DB END//////////////////////
 async download(sf, i, dd) {
+  if (this.currPlayingFile) {
+    this.stopPlayRecording();
+  }
   sf = this.serverFileArray[i];
   console.log('SfFull Data', sf)
   await this.platform.ready();
@@ -485,7 +521,6 @@ downloadAudioFile(sf, i, dd) {
   this.file.checkFile(checkFileUrl, FileName).then((entry) => {
     let nurl = this.storageDirectory + '/' + VARS.shabadDirectory+ '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
     sf.isDownloading = false;
-    // this.ply1(sf, i, dd, nurl);
     this.playRecording(sf, i, dd,nurl)
 
   })
@@ -500,7 +535,6 @@ downloadAudioFile(sf, i, dd) {
         let nurl = this.storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
         sf.isDownloading = false;
         this.playRecording(sf, i, dd,nurl);
-        // this.ply1(sf, i, dd, nurl);
       })
         .catch((err) => {
           if (err.http_status == 404) {
@@ -527,7 +561,7 @@ setFavourite(){
        })
       })
     } 
-    if(sdata && sdata.length == 0 ){
+    if(!sdata || sdata.length == 0 ){
       this.serverFileArray.map(li=>{
           li.isFavourite = false;
       })
@@ -559,4 +593,29 @@ setFavourite(){
     }).catch(e => console.log(e));
   }
 ///////////////Set Favourite Section End////////////////
+
+
+/////////////////Get Data From Local Sorage for Favourite Start//////////////////
+getDataFromLocalStorage() {
+ 
+    this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
+      console.log(sdata, 'Storage Data',sdata)
+      this.serverFileArray = sdata;
+    }).catch(e => console.log("Error =>" ,e));
+ 
+}
+
+
+removaFavourite(i) {
+  console.log('i',i)
+  this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
+  console.log('sdata',sdata[i])
+   sdata.splice(i, 1);
+    this.serverFileArray = sdata;
+    this.storage.set('_SGTECH_GURBANI_FAV', sdata);
+  }).catch(e => console.log(e));
+}
+/////////////////Get Data From Local Sorage for Favourite End//////////////////
+
+
 }

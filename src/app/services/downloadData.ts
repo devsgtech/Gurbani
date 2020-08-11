@@ -4,6 +4,8 @@ import { Platform } from '@ionic/angular';
 import { FileTransferObject ,FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { VARS } from './constantString';
+import { newhelper } from './newhelper';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,8 @@ export class downloadData {
         private file: File,
         private transfer: FileTransfer,
         private androidPermissions: AndroidPermissions,
+        private newHelper: newhelper,
+
        ) {}
 
        createShabad(sf, i, dd) {
@@ -39,6 +43,22 @@ export class downloadData {
         });
       }
 
+
+      downloadAudioFile(url, storageDirectory,sf){
+        const fileTransfer: FileTransferObject = this.transfer.create();
+        fileTransfer.download(url, storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
+          let nurl = storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
+          sf.isDownloading = false;
+          return nurl;
+          // this.ply1(sf, i, dd, nurl);
+        })
+          .catch((err) => {
+            if (err.http_status == 404) {
+              sf.isDownloading = false;
+              this.newHelper.presentToastWithOptions('File Not Found on Server')
+            }
+          });
+      }
       
   
 
