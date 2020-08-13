@@ -1,0 +1,80 @@
+Sat Sri Akal Ji,
+ 
+Following is the Analysis of the tasks associated with the App and the doubts:
+ 
+Data capturing Tasks:
+--------------------------
+- Get whole gurbani of Sri Guru Granth Sahib Ji and save it line by line in database along with translation in english for each line.
+- Create audio files for each line.
+- Save information in database that which line link to which audio file.
+ 
+Doubt/clarification:
+------------------------
+1.       So the audio will only be played in gurmukhi. Do you mean showing translation below the line written in gurmukhi language? if yes then do you know source from where we can get translation of gurbani in different languages?
+
+ 
+
+[B.S.K.] Translation only in english ( later we can put more information in different languages 
+
+ 
+2. iGurbani app provides multiple sculptures like Sri Guru Granth Sahib Ji, Sri Dasam Granth Sahib Ji, Amrit Kirtan, Bhai Gurdas Ji Vaaran, Bhai Nand Lal Ji.
+Do you want the new app to have all these sculptures or Only Sri Guru Granth Sahib Ji?
+ 
+[B.S.K.] only Siri Guru Granth Sahib
+ 
+3. Do you want this app to be accessible without internet? If yes then the application data will be very big due to large size of audio files, It may be more than 1 GB, The app data will also needs to be downloaded along with the app, otherwise the app will not work.
+      Note: Alternatively if we allow the app to work with internet, then there will not be need to download the large app data, because in that case we will download the audio file on click a line and then play the audio for the selected line.
+      - In this case the app must be connected to internet for doing search and playing audio.
+      - We will need a web server to host the audio files.
+**Let us know which approach you want us to implement i.e. with internet or without internet?
+[B.S.K.] 
+Audio files should be downloaded with internet connection, but search function should work offline
+4. What will be the name of new app?
+[B.S.K.]  School of Gurbani
+5. Do you want this for both Android and IOS? or only one platform?
+[B.S.K.] Yes
+ 
+ 
+Modules/features list of iGurbani App: (Please tell do you want all these modules/features in the new app? if Not, then please tell which modules we can remove?)
+---------------------------------------------
+1. Search Gurbani
+                a. Search mode:
+                                i. First Letter (Start)
+                                ii. First Letter (Anywhere)
+                                iii. Ang/Vaar
+                                iv. Full Word (Gurmukhi)
+                                v. Full Word (English)
+                b. Sculpture:
+                                i. Sri Guru Granth Sahib Ji,
+                                ii. Sri Dasam Granth Sahib Ji,  No need
+                                iii. Amrit Kirtan No need
+                                iv. Bhai Gurdas Ji Vaaran, No need
+                                v. Bhai Nand Lal Ji No need
+                c. Writers: search only in bani of selected writers. Only guru Granth Sahib
+                d. Raags: i.e. search only in selected Raag.
+                e. Add lines to favorites.
+                f. History of past searches.
+                g. Display Options:
+                                i. Vishram/Larivaar
+                                ii. Day Mode
+                                iii. Gurmukhi - show or hide always show
+                                iv. Font size + or -
+                                v. Vishram description.
+                                vi. Transliteration.
+                                vii. English Translation: by multiple persons - with enable/disable option an font +/-
+                                viii. Punjabi translation: by multiple persons - with enable/disable option an font +/-
+3. Favorites Tab.
+2. Read Bani Tab:
+                - Japji Sahib.
+                - Jaap Sahib.
+                - Tvaiprasad Svaiye
+                - Chaupai Sahib
+                - Anand Sahib
+                - Sukhmani Sahib.
+ 
+ 
+Feature needed in new App (Additional to iGurbani App):
+--------------------------
+1. On click of a line in search result, Play the audio for that line.
+ 
+Note: Please send us list/description of any other new features that you want in new app additional to above mentioned.

@@ -205,3 +205,14 @@ body.dark {
 
   --ion-tab-bar-background: #1f1f1f;
 }
+
+.filter-modal{
+  z-index: 20001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50%;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 50%;
+}

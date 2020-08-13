@@ -17,10 +17,11 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import {IonicStorageModule} from '@ionic/storage';
 import {Network} from '@ionic-native/network/ngx';
+import { FilterModalComponentComponent } from './Modal/filter-modal-component/filter-modal-component.component';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent,FilterModalComponentComponent],
+  entryComponents: [FilterModalComponentComponent],
   imports: [BrowserModule, IonicModule.forRoot(), 
     AppRoutingModule,
     HttpClientModule,

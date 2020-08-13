@@ -1,6 +1,6 @@
 ion-header{
   ion-toolbar{
-    padding: 0 8px;
+    // padding: 0 8px;
 
     ion-button, ion-select, ion-input, ion-label{
       height: 40px;
@@ -154,4 +154,7 @@ ion-menu{
         width: 100%;
       }
   }
+}
+ion-backdrop {
+  opacity: 0.3;
 }

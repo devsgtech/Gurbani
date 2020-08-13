@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tabs',
@@ -7,6 +8,11 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
+  constructor( private modalController: ModalController,) {}
+
+  closeModal(){
+    this.modalController.dismiss();
+
+  }
 
 }

@@ -1,6 +1,12 @@
+<ion-backdrop *ngIf="backdrop"></ion-backdrop>
+
 <ion-header>
+<ion-backdrop *ngIf="backdrop"></ion-backdrop>
+
   <ion-toolbar *ngIf="!isfav">
-    <ion-button slot="start" fill="clear" color="dark" (click)="openFirst()">
+<ion-backdrop *ngIf="backdrop"></ion-backdrop>
+
+    <ion-button slot="start" fill="clear" color="dark" (click)="filterModal()">
       <img src="../../../assets/icon/filter.svg" alt="filter">
     </ion-button>
     <ion-select mode="ios" interface="popover" [interfaceOptions]="{header: 'Select Ang'}" slot="start" placeholder="Select by" [(ngModel)]="searchOpt" >
@@ -18,6 +24,8 @@
     </ion-item>
   </ion-toolbar>
   <ion-toolbar *ngIf="isfav">
+<ion-backdrop *ngIf="backdrop"></ion-backdrop>
+
     <ion-title>
       <label>
         <p class="p0">School of</p>
@@ -27,9 +35,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <h2 class="empty-fav" *ngIf="serverFileArray.length == 0 && isfav">
-    Empty Favourite List
-  </h2>
+  
   <ion-list>
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
       <ion-item no-margin [id]="'currentPlayItemId'+i">

@@ -13,7 +13,11 @@ const routes: Routes = [
   {
     path: 'search',
     loadChildren: () => import('./Pages/search/search.module').then( m => m.SearchPageModule)
+  },  {
+    path: 'filter-modal',
+    loadChildren: () => import('./Modal/filter-modal/filter-modal.module').then( m => m.FilterModalPageModule)
   }
+
 ];
 @NgModule({
   imports: [

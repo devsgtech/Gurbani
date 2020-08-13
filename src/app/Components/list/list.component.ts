@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Platform , IonInfiniteScroll} from '@ionic/angular';
+import { Platform , IonInfiniteScroll, ModalController} from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
@@ -11,6 +11,8 @@ import { VARS } from 'src/app/services/constantString';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { downloadData } from '../../services/downloadData';
+import { FilterModalComponentComponent } from 'src/app/Modal/filter-modal-component/filter-modal-component.component';
+import { raagDB } from 'src/app/services/raagDb';
 
 @Component({
   selector: 'app-list',
@@ -33,6 +35,8 @@ export class ListComponent implements OnInit {
   indexx: any;
   searchOffset = 0;
   online :boolean = true;
+  backdrop : boolean = false;
+  raagData  : any = [];
   constructor(public platform: Platform,
     private file: File,
     private transfer: FileTransfer,
@@ -43,6 +47,8 @@ export class ListComponent implements OnInit {
     private storage: Storage,
     private network: Network,
     private downloadData : downloadData,
+    private raagDb  : raagDB,
+    public modalController: ModalController,
     private media: Media) {
     this.platform.ready().then(() => {
       if (this.platform.is('ios')) {
@@ -60,6 +66,15 @@ export class ListComponent implements OnInit {
     currentId.scrollIntoView({ behavior: 'smooth' });
   }
   ngOnInit() {
+    this.raagDb.dbState().subscribe((res) => {
+      if(res){
+        this.raagDb.fetchSongs().subscribe(item => {
+          this.raagData = item;
+         console.log('Got Data From RAAG' , item)
+        })
+      }
+    });
+    
     if(this.isfav == true){
       console.log('Favourite Tab');
       // this.getDataFromLocalStorage()
@@ -67,19 +82,6 @@ export class ListComponent implements OnInit {
       console.log('Fetch data From DB Search tab');
       this.fetchSql();
     }
-    
-    // this.serverFileArray = [
-    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '1.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/1.mp3', title3: 'One Universal Creator God, TheName Is Truth  Creative Being Personified No Fear No Hatred Image Of The Undying, Beyond Birth, Self-Existent. By Guru\'s Grace~', title2: 'Ikoankaar Sathnaam Karathaa Purakh Nirabho Niravair Akaal Moorath Ajoonee Saibhan Gurprasaadh||', title1: 'ੴ ਸਤਿਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿਰਵੈਰੁ ਅਕਾਲ ਮੂਰਤਿ ਅਜੂਨੀ ਸੈਭੰ ਗੁਰਪ੍ਰਸਾਦਿ ॥', },
-    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '2.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/2.mp3', title3: 'Chant And Meditate:', title2: '|| Jap ||', title1: '॥ ਜਪੁ ॥', },
-    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '3.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/3.mp3', title3: 'True In The Primal Beginning. True Throughout The Ages.', title2: 'Aadh Sach Jugaadh Sach ||', title1: 'ਆਦਿ ਸਚੁ ਜੁਗਾਦਿ ਸਚੁ ॥', },
-    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '4.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/4.mp3', title3: 'True Here And Now. O Nanak, Forever And Ever True. ||1||', title2: 'Hai Bhee Sach Naanak Hosee Bhee Sach ||1||', title1: 'ਹੈ ਭੀ ਸਚੁ ਨਾਨਕ ਹੋਸੀ ਭੀ ਸਚੁ ॥1॥', },
-    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '5.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/5.mp3', title3: 'By thinking, He cannot be reduced to thought, even by thinking hundreds of thousands of times.', title2: 'Sochai Soch N Hovee Jae Sochee Lakh Vaar ||', title1: 'ਸੋਚੈ ਸੋਚਿ ਨ ਹੋਵਈ ਜੇ ਸੋਚੀ ਲਖ ਵਾਰ ॥', },
-    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '6.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/6.mp3', title3: 'By remaining silent, inner silence is not obtained, even by remaining lovingly absorbed deep within.', title2: 'Chupai Chup N Hovee Jae Laae Rehaa Liv Thaar ||', title1: 'ਚੁਪੈ ਚੁਪਿ ਨ ਹੋਵਈ ਜੇ ਲਾਇ ਰਹਾ ਲਿਵ ਤਾਰ ॥', },
-    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '7.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/7.mp3', title3: 'The hunger of the hungry is not appeased, even by piling up loads of worldly goods.', title2: 'Bhukhiaa Bhukh N Outharee Jae Bannaa Pureeaa Bhaar ||', title1: 'ਭੁਖਿਆ ਭੁਖ ਨ ਉਤਰੀ ਜੇ ਬੰਨਾ ਪੁਰੀਆ ਭਾਰ ॥', },
-    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '8.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/8.mp3', title3: 'Hundreds of thousands of clever tricks, but not even one of them will go along with you in the end.', title2: 'Sehas Siaanapaa Lakh Hohi Th Eik N Chalai Naal ||', title1: 'ਸਹਸ ਸਿਆਣਪਾ ਲਖ ਹੋਹਿ ਤ ਇਕ ਨ ਚਲੈ ਨਾਲਿ ॥', },
-    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '9.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/9.mp3', title3: 'So how can you become truthful? And how can the veil of illusion be torn away?', title2: 'Kiv Sachiaaraa Hoeeai Kiv Koorrai Thuttai Paal ||', title1: 'ਕਿਵ ਸਚਿਆਰਾ ਹੋਈਐ ਕਿਵ ਕੂੜੈ ਤੁਟੈ ਪਾਲਿ ॥', },
-    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '10.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/10.mp3', title3: 'O Nanak, it is written that you shall obey the Hukam of His Command, and walk in the Way of His Will. ||1||', title2: 'Hukam Rajaaee Chalanaa Naanak Likhiaa Naal ||1||', title1: 'ਹੁਕਮਿ ਰਜਾਈ ਚਲਣਾ ਨਾਨਕ ਲਿਿਖਆ ਨਾਲਿ ॥1॥', }
-    // ];
     this.prepareAudioFile();
   }
   ionViewWillLeave() {
@@ -343,9 +345,10 @@ fetchSql() {
       console.log('this.igdb.rowCount0 else', this.igdb.rowCount)
         this.igdb.createTable().then((res) => {
           console.log('Response after Get Data From DB', res)
-          res.map(item => {
-            this.serverFileArray.push(item)
-          })
+          this.serverFileArray= res;
+          // res.map(item => {
+          //   this.serverFileArray.push(item)
+          // })
           this.serverFileArrayCopy = this.serverFileArray;
           this.newHelper.dismissLoading();
         })
@@ -617,5 +620,48 @@ removaFavourite(i) {
 }
 /////////////////Get Data From Local Sorage for Favourite End//////////////////
 
+// Filter Modal//////////
+async filterModal(){
+  this.backdrop = true;
+    const modal = await this.modalController.create({
+      showBackdrop: true,
+      component: FilterModalComponentComponent,
+      cssClass: 'filter-modal',
+      componentProps: { raagData: this.raagData }
+    });
+    modal.onDidDismiss()
+    .then((data) => {
+      this.backdrop = false;
+      console.log('Close Modal Data', data.data);
+      this.searchFilterData(data.data)
+  });
+
+    return await modal.present();
+}
+
+searchFilterData(data){
+  console.log('searchFilterData Function Click', data)
+  switch (data.searchMode) {
+    case '0':
+      break;
+    case '1':
+
+      break;
+    case '2':   // 2: playing
+    this.igdb.searchShabadAngVaar(this.searchString).then((res) => {
+      console.log('Resopnse Search Filter Data', res);
+      this.serverFileArray = res;
+      this.serverFileArrayCopy = this.serverFileArray;
+    })
+      break;
+    case '3':   // 3: pause
+     
+      break;
+    case '4':   // 4: stop
+    default:
+     
+      break;
+  }
+}
 
 }

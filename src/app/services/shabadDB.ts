@@ -45,20 +45,6 @@ export class shabadDB {
 
   // Render fake data
   getFakeData() {
-    // this.dropTable();
-    // this.createTable();
-    // this.httpClient.get(
-    //   'assets/gurubaniSQL/shabad.sql',
-    //   { responseType: 'text' }
-    // ).subscribe(data => {
-    //   this.sqlPorter.importSqlToDb(this.storage, data)
-    //     .then(_ => {
-    //       this.getSongs();
-    //       this.getCount();
-    //       this.isDbReady.next(true);
-    //     })
-    //     .catch(error => console.error(error));
-    // });
     this.createTable();
     
   }
@@ -206,5 +192,20 @@ newFakedata(){
       });
     }
     return itt;
+  }
+
+
+  searchShabadAngVaar(text) {
+    text = '%' + text + '%',
+    console.log('Click Search Ang id', 'SELECT * FROM shabad WHERE ang_id LIKE ? LIMIT 10', text)
+    return this.storage.executeSql('SELECT * FROM shabad WHERE ang_id LIKE ? LIMIT 10', [text]).then(res => {
+      let items = [];
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          items = this.setData(res);
+        }
+      }
+      return items;
+    });
   }
 }
