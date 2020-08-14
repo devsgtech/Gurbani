@@ -10,11 +10,14 @@ import { ToastController } from '@ionic/angular';
 import { VARS } from './constantString';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+
 @Injectable({
   providedIn: 'root'
 })
 
 export class newhelper {
+  event$: BehaviorSubject<any> = new BehaviorSubject(null);
+
   loading;
     constructor(
         private platform: Platform, 
@@ -70,5 +73,9 @@ export class newhelper {
 
       returnDownloadUrl(ang_id, _id){
         return VARS.firebaseFolder + ang_id + VARS.audioName + _id + VARS.tokeWithExtention;
+      }
+
+      static checkEventData(ev, evName = null, data = true) {
+        return data ? (ev && ev.eventName  && ev.eventName === evName && ev.data) : (ev && ev.eventName  && ev.eventName === evName);
       }
 }

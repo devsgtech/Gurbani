@@ -1,12 +1,8 @@
 <ion-content>
   <ion-item>
     <ion-label position="stacked">Search Mode</ion-label>
-    <ion-select [(ngModel)]="filterData.searchMode" (ionChange)="change($event)">
-      <ion-select-option value="0">First Letter (Start)</ion-select-option>
-      <ion-select-option value="1">First Letter (Anywhere)</ion-select-option>
-      <ion-select-option value="2">Ang/Vaar</ion-select-option>
-      <ion-select-option value="3">Full Word (Gurmukhi)</ion-select-option>
-      <ion-select-option value="4">Full Word (English)</ion-select-option>
+    <ion-select [(ngModel)]="filterData.searchMode" (ionChange)="setmode($event)" [value]='filterData.searchMode'>
+      <ion-select-option  [value]="search.id" *ngFor="let search of searchmode">{{search.val}}</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item>
@@ -18,13 +14,13 @@
   </ion-item>
   <ion-item>
     <ion-label position="stacked">Writer</ion-label>
-    <ion-select [value]='filterData.writer' [(ngModel)]="filterData.writer">
+    <ion-select [value]='filterData.writer' >
       <ion-select-option value="0">Shri Guru Nanak Dev Ji</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item>
     <ion-label position="stacked">Raag</ion-label>
-    <ion-select (ionChange)="setRaag($event)">
+    <ion-select (ionChange)="setRaag($event)" [value]='filterData.raag'>
       <ion-select-option [value]="raag._id" *ngFor="let raag of raagData">{{raag.raag_english}}</ion-select-option>
       
     </ion-select>

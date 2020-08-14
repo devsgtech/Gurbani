@@ -363,6 +363,10 @@ export class HelperService {
       });
     });
   }
+
+  static checkEventData(ev, evName = null, data = true) {
+    return data ? (ev && ev.eventName  && ev.eventName === evName && ev.data) : (ev && ev.eventName  && ev.eventName === evName);
+  }
   // getApp(type = 'VersionNumber') {
   //   return new Promise(resolve => {
   //     this.platform.ready().then(async () => {

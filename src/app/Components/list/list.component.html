@@ -1,5 +1,5 @@
 <ion-backdrop *ngIf="backdrop"></ion-backdrop>
-<ion-header>
+<!-- <ion-header>
   <ion-backdrop *ngIf="backdrop"></ion-backdrop>
   <ion-toolbar *ngIf="!isfav">
     <ion-backdrop *ngIf="backdrop"></ion-backdrop>
@@ -30,9 +30,8 @@
       </label>
     </ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 <ion-content>
-
   <ion-list>
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
       <ion-item no-margin [id]="'currentPlayItemId'+i">

@@ -8,11 +8,33 @@ import { ModalController } from '@ionic/angular';
 })
 export class FilterModalComponentComponent implements OnInit {
   filterData ={
-    searchMode  : '0',
-    scriptures  : '1',
-    writer      : '0',
-    raag        : '0',
+    searchMode  : null,
+    scriptures  : null,
+    writer      : null,
+    raag        : null,
   }
+  searchmode = [
+    {
+      val :'First Letter (Start)',
+      id  : 0,
+    },
+    {
+      val :'First Letter (Anywhere)',
+      id  : 1,
+    },
+    {
+      val :'Ang/Vaar',
+      id  : 2,
+    },
+    {
+      val :'Full Word (Gurmukhi)',
+      id  : 3,
+    },
+    {
+      val :'Full Word (English)',
+      id  : 4,
+    }
+  ]
   raagData :any ;
   constructor(
     private modalController: ModalController,
@@ -20,14 +42,14 @@ export class FilterModalComponentComponent implements OnInit {
 
   ngOnInit() {}
 
-  change(ev){
-    this.filterData.searchMode = ev.detail.value;
+  setmode(ev){
+    this.filterData.searchMode =ev.detail.value;
   }
   setRaag(ev){
     this.filterData.raag = ev.detail.value;
   }
   applyFilter(e){
-    console.log('this.filterData',this.filterData,)
+    console.log('Apply Function call',this.filterData,)
     this.modalController.dismiss(this.filterData);
   }
 }

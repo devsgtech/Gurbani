@@ -1,1 +1,34 @@
-<app-list [isfav]="favourite"></app-list>
+<ion-header>
+    <ion-backdrop *ngIf="backdrop"></ion-backdrop>
+    <ion-toolbar >
+      <ion-backdrop *ngIf="backdrop"></ion-backdrop>
+      <ion-button slot="start" fill="clear" color="dark" (click)="filterModal()">
+        <img src="../../../assets/icon/filter.svg" alt="filter">
+      </ion-button>
+      <ion-select mode="ios" interface="popover" [interfaceOptions]="{header: 'Select Ang'}" slot="start"
+        placeholder="Select by" [(ngModel)]="searchOpt">
+        <ion-select-option value="1">First Letter (Start)</ion-select-option>
+        <ion-select-option value="2">First Letter (Anywhere)</ion-select-option>
+        <ion-select-option value="3">Ang/Vaar</ion-select-option>
+        <ion-select-option value="4">Full Word(Gurmukhi)</ion-select-option>
+        <ion-select-option value="5">Full Word(English)</ion-select-option>
+      </ion-select>
+      <ion-item class="ion-no-padding">
+        <ion-label slot="end" class="ion-no-padding" >
+          <ion-icon name="search" color="white"></ion-icon>
+        </ion-label>
+        <ion-input type="text" placeholder="Search" debounce="500" (ngModelChange)="searchWord()" (ionChange)="searchWord()" [(ngModel)]="searchString"></ion-input>
+      </ion-item>
+    </ion-toolbar>
+    <ion-toolbar *ngIf="isfav">
+      <ion-backdrop *ngIf="backdrop"></ion-backdrop>
+      <ion-title>
+        <label>
+          <p class="p0">School of</p>
+          <p class="p1">GURUBANI</p>
+        </label>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<app-list [isfav]="favourite" [filterData]="filterData" [searchString]="searchString"></app-list>

@@ -103,6 +103,7 @@ newFakedata(){
 
   searchShabadAnyWhere(text) {
     text = '%' + text + '%'
+    console.log('text in search Db', text)
     return this.storage.executeSql('SELECT * FROM shabad WHERE transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10', [text, text]).then(res => {
       let items = [];
       if (res.rows.length > 0) {
@@ -199,6 +200,20 @@ newFakedata(){
     text = '%' + text + '%',
     console.log('Click Search Ang id', 'SELECT * FROM shabad WHERE ang_id LIKE ? LIMIT 10', text)
     return this.storage.executeSql('SELECT * FROM shabad WHERE ang_id LIKE ? LIMIT 10', [text]).then(res => {
+      let items = [];
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          items = this.setData(res);
+        }
+      }
+      return items;
+    });
+  }
+
+
+  commonFilter(sqlCommand, arrayText){
+    console.log('Common filter Call', sqlCommand ,'-->array',arrayText)
+    return this.storage.executeSql(sqlCommand,arrayText).then(res => {
       let items = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {

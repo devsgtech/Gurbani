@@ -13,6 +13,7 @@ import { Network } from '@ionic-native/network/ngx';
 import { downloadData } from '../../services/downloadData';
 import { FilterModalComponentComponent } from 'src/app/Modal/filter-modal-component/filter-modal-component.component';
 import { raagDB } from 'src/app/services/raagDb';
+// import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-list',
@@ -20,9 +21,11 @@ import { raagDB } from 'src/app/services/raagDb';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-  @Input() isfav: any;
+  @Input()  isfav: any;
+  @Input()  filterData: any;
+  @Input()  searchString:any;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-  searchOpt: any;
+  searchOpt = '';
   storageDirectory: any; currPlayingFile: MediaObject;
   getDurationInterval: any;
   getPositionInterval: any;
@@ -31,12 +34,13 @@ export class ListComponent implements OnInit {
   serverFileArrayCopy: any = [];
   testnextFileIndex: any;
   offset = 0;
-  searchString = '';
+  // searchString = '';
   indexx: any;
   searchOffset = 0;
   online :boolean = true;
   backdrop : boolean = false;
   raagData  : any = [];
+  checkDidFilter : boolean = false;
   constructor(public platform: Platform,
     private file: File,
     private transfer: FileTransfer,
@@ -49,6 +53,7 @@ export class ListComponent implements OnInit {
     private downloadData : downloadData,
     private raagDb  : raagDB,
     public modalController: ModalController,
+    // private helper : HelperService,
     private media: Media) {
     this.platform.ready().then(() => {
       if (this.platform.is('ios')) {
@@ -59,6 +64,12 @@ export class ListComponent implements OnInit {
     });
     this.platform.pause.subscribe(e => {
       this.stopPlayRecording();
+    });
+
+    this.newHelper.event$.subscribe((ev) => {
+      if (newhelper.checkEventData(ev, 'SG_ON_CHANGE_FILTER', false)) {
+        console.log('Hepler Change Event')
+      }
     });
   }
   static scrollTo(index) {
@@ -77,7 +88,7 @@ export class ListComponent implements OnInit {
     
     if(this.isfav == true){
       console.log('Favourite Tab');
-      // this.getDataFromLocalStorage()
+      this.getDataFromLocalStorage()
     }else{
       console.log('Fetch data From DB Search tab');
       this.fetchSql();
@@ -294,7 +305,6 @@ playAll(){
   }
 
   getProgressVal(e, f) {
-    console.log('progress Value', (e / f).toFixed(3))
     return (e / f).toFixed(3);
   }
 /////////////////DB Search///////////////////////
@@ -302,13 +312,13 @@ playAll(){
 searchWord(ev = null) {
   console.log(this.searchOpt, 'this.searchOpt');
   this.searchOffset = 0;
-  this.searchString = ev.target.value.trim();
+  // this.searchString = ev.target.value.trim();
   switch (this.searchOpt) {
     case '1':
-      this.firstWordSearch(ev);
+      this.firstWordSearch(this.searchString);
       break;
     case '2':   // 2: playing
-      this.searchAnywhere(ev);
+      this.searchAnywhere(this.searchString);
       break;
     case '3':   // 3: pause
 
@@ -317,7 +327,7 @@ searchWord(ev = null) {
 
       break;
     default:
-      this.searchAnywhere(ev);
+      this.searchAnywhere(this.searchString);
       break;
   }
 
@@ -382,7 +392,7 @@ searchAnywhere(ev) {
   this.stopPlayRecording();
   this.infiniteScroll.disabled = false;
   this.searchOffset = 0;
-  this.searchString = ev.target.value.trim();
+  // this.searchString = ev.target.value.trim();
   this.igdb.searchShabadAnyWhere(this.searchString).then((res) => {
     console.log('Resopnse GetData0', res);
     this.serverFileArray = res;
@@ -559,9 +569,7 @@ setFavourite(){
        this.serverFileArray.map(li=>{
          if(li._id == i._id){
            li.isFavourite = true;
-         } else{
-           li.isFavourite = false;
-         }
+         } 
        })
       })
     } 
@@ -601,10 +609,14 @@ setFavourite(){
 
 /////////////////Get Data From Local Sorage for Favourite Start//////////////////
 getDataFromLocalStorage() {
- 
+  this.serverFileArray = []
     this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
-      console.log(sdata, 'Storage Data',sdata)
-      this.serverFileArray = sdata;
+      console.log( 'Storage Data',sdata)
+      if(sdata){
+        sdata.map(i=>{
+          this.serverFileArray.push(i)
+        })
+      }
     }).catch(e => console.log("Error =>" ,e));
  
 }
@@ -634,35 +646,20 @@ async filterModal(){
     .then((data) => {
       this.backdrop = false;
       console.log('Close Modal Data', data.data);
-      this.searchFilterData(data.data)
+      // this.searchFilterData(data.data)
   });
 
     return await modal.present();
 }
 
-searchFilterData(data){
-  console.log('searchFilterData Function Click', data)
-  switch (data.searchMode) {
-    case '0':
-      break;
-    case '1':
-
-      break;
-    case '2':   // 2: playing
-    this.igdb.searchShabadAngVaar(this.searchString).then((res) => {
-      console.log('Resopnse Search Filter Data', res);
-      this.serverFileArray = res;
-      this.serverFileArrayCopy = this.serverFileArray;
-    })
-      break;
-    case '3':   // 3: pause
-     
-      break;
-    case '4':   // 4: stop
-    default:
-     
-      break;
-  }
+searchFilterData(sqlText,arrayText){
+  this.checkDidFilter = true;
+  this.igdb.commonFilter(sqlText,arrayText).then((res) => {
+    console.log('Response From Common Filter', res);
+    this.serverFileArray = res;
+    this.serverFileArrayCopy = this.serverFileArray;
+  })
 }
+
 
 }
