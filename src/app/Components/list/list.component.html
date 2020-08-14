@@ -1,31 +1,28 @@
 <ion-backdrop *ngIf="backdrop"></ion-backdrop>
-
 <ion-header>
-<ion-backdrop *ngIf="backdrop"></ion-backdrop>
-
+  <ion-backdrop *ngIf="backdrop"></ion-backdrop>
   <ion-toolbar *ngIf="!isfav">
-<ion-backdrop *ngIf="backdrop"></ion-backdrop>
-
+    <ion-backdrop *ngIf="backdrop"></ion-backdrop>
     <ion-button slot="start" fill="clear" color="dark" (click)="filterModal()">
       <img src="../../../assets/icon/filter.svg" alt="filter">
     </ion-button>
-    <ion-select mode="ios" interface="popover" [interfaceOptions]="{header: 'Select Ang'}" slot="start" placeholder="Select by" [(ngModel)]="searchOpt" >
+    <ion-select mode="ios" interface="popover" [interfaceOptions]="{header: 'Select Ang'}" slot="start"
+      placeholder="Select by" [(ngModel)]="searchOpt">
       <ion-select-option value="1">First Letter (Start)</ion-select-option>
       <ion-select-option value="2">First Letter (Anywhere)</ion-select-option>
       <ion-select-option value="3">Ang/Vaar</ion-select-option>
       <ion-select-option value="4">Full Word(Gurmukhi)</ion-select-option>
       <ion-select-option value="5">Full Word(English)</ion-select-option>
-    </ion-select> 
+    </ion-select>
     <ion-item class="ion-no-padding">
       <ion-label slot="end" class="ion-no-padding" (click)="searchWord()">
         <ion-icon name="search" color="white"></ion-icon>
       </ion-label>
-      <ion-input type="text"  placeholder="Search"  debounce="500" (ionChange)="searchWord($event)"></ion-input>
+      <ion-input type="text" placeholder="Search" debounce="500" (ionChange)="searchWord($event)"></ion-input>
     </ion-item>
   </ion-toolbar>
   <ion-toolbar *ngIf="isfav">
-<ion-backdrop *ngIf="backdrop"></ion-backdrop>
-
+    <ion-backdrop *ngIf="backdrop"></ion-backdrop>
     <ion-title>
       <label>
         <p class="p0">School of</p>
@@ -35,12 +32,15 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  
+
   <ion-list>
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
       <ion-item no-margin [id]="'currentPlayItemId'+i">
-        <ion-label><h2>{{sf?sf.sggs_darpan: ''}}</h2></ion-label>
-        <ion-button color="myWhite" fill="clear" slot="end" (click)="!sf.isPlaying?download(sf, i, true): stopPlayRecording()">
+        <ion-label>
+          <h2>{{sf?sf.sggs_darpan: ''}}</h2>
+        </ion-label>
+        <ion-button color="myWhite" fill="clear" slot="end"
+          (click)="!sf.isPlaying?download(sf, i, true): stopPlayRecording()">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
@@ -48,13 +48,13 @@
       </ion-item>
       <ion-item no-margin class="bottomItem">
         <ion-label>
-          <p *ngIf="sf.transliteration"  [ngClass]="changeui.fontSize">{{sf?sf.transliteration: ''}}</p>
-          <p *ngIf="sf.english_ssk"  [ngClass]="changeui.fontSize">{{sf?sf.english_ssk: ''}}</p>
+          <p *ngIf="sf.transliteration" [ngClass]="changeui.fontSize">{{sf?sf.transliteration: ''}}</p>
+          <p *ngIf="sf.english_ssk" [ngClass]="changeui.fontSize">{{sf?sf.english_ssk: ''}}</p>
         </ion-label>
         <ion-button fill="clear" slot="end" (click)="saveLocalFav(sf)" *ngIf="!isfav">
           <ion-icon name="heart" [color]="sf?.isFavourite?'danger':'white'"></ion-icon>
         </ion-button>
-        <ion-button fill="clear" slot="end" (click)="removaFavourite(i)" *ngIf="isfav"> 
+        <ion-button fill="clear" slot="end" (click)="removaFavourite(i)" *ngIf="isfav">
           <ion-icon name="trash-outline" color="danger"></ion-icon>
         </ion-button>
       </ion-item>
@@ -65,27 +65,25 @@
       <p *ngIf="sf.duration == -1" >&#45;&#45;:&#45;&#45;</p>
       <p *ngIf="sf.duration != -1">{{ sf.duration*1000-1800000 | date:'mm:ss' }}</p>-->
     </ng-container>
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="!isfav" >
-      <ion-infinite-scroll-content
-        loadingSpinner="bubbles"
-        loadingText="Loading more data...">
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="!isfav">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
   </ion-list>
 
 </ion-content>
 <ion-fab vertical="bottom" horizontal="center" slot="fixed" *ngIf="!isfav">
-  <ion-fab-button color="myWhite" class="back-prev" (click)="prevplay()" [disabled]="isPlayingAll && testnextFileIndex > 0 ?false:true">
+  <ion-fab-button color="myWhite" class="back-prev" (click)="prevplay()"
+    [disabled]="isPlayingAll && testnextFileIndex > 0 ?false:true">
     <ion-icon name="arrow-back"></ion-icon>
   </ion-fab-button>
   <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?playAll(): stopPlayRecording()">
-    <span *ngIf="isPlayingAll" >Stop</span>
+    <span *ngIf="isPlayingAll">Stop</span>
     <span *ngIf="!isPlayingAll">Play all</span>
   </ion-fab-button>
-  <ion-fab-button color="myWhite" class="back-prev" (click)="nextplay()" [disabled]="isPlayingAll && serverFileArray.length -1  != testnextFileIndex ?false:true">
-    <ion-icon name="arrow-forward" ></ion-icon>
+  <ion-fab-button color="myWhite" class="back-prev" (click)="nextplay()"
+    [disabled]="isPlayingAll && serverFileArray.length -1  != testnextFileIndex ?false:true">
+    <ion-icon name="arrow-forward"></ion-icon>
     <!-- [disabled]="isPlayingAll?false:true" -->
   </ion-fab-button>
 </ion-fab>
-
-

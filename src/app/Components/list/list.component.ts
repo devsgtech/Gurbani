@@ -142,12 +142,11 @@ export class ListComponent implements OnInit {
     }).catch(e => console.log('e0', e));
   }
   createAudioFile(url): MediaObject {
-    return this.media.create(url);
-    // if (this.platform.is('ios')) {
-    //   return this.media.create((pathToDirectory).replace(/^file:\/\//, '') + '/' + filename);
-    // } else {
-    //   return this.media.create(pathToDirectory + filename);
-    // }
+    if (this.platform.is('ios')) {
+      return this.media.create((url).replace(/^file:\/\//, ''));
+    } else {
+      return this.media.create(url);
+    }
   }
 
   setPlayingDefault() {
@@ -239,6 +238,8 @@ export class ListComponent implements OnInit {
       this.isPlayingAll = true;
     }
     this.currPlayingFile = this.createAudioFile(newUrl)
+    // this.currPlayingFile = this.createAudioFile(this.storageDirectory, currentPlayFile.fileName);
+
     // this.currPlayingFile = this.createAudioFile(this.storageDirectory, currentPlayFile.fileName);
     this.currPlayingFile.play();
     this.setDuration(currentPlayFile);
