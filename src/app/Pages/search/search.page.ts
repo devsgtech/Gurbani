@@ -21,8 +21,8 @@ export class SearchPage  implements OnInit {
   raagData  : any = [];
   filterData ={
     searchMode  : null,
-    scriptures  : null,
-    writer      : null,
+    scriptures  : '1',
+      writer    : '0',
     raag        : null,
   }
   sqlScript = '';

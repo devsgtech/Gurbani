@@ -9,8 +9,8 @@ import { ModalController } from '@ionic/angular';
 export class FilterModalComponentComponent implements OnInit {
   filterData ={
     searchMode  : null,
-    scriptures  : null,
-    writer      : null,
+    scriptures  : '1',
+    writer      : '0',
     raag        : null,
   }
   searchmode = [
@@ -55,8 +55,8 @@ export class FilterModalComponentComponent implements OnInit {
   clearFilter(){
     this.filterData ={
       searchMode  : null,
-      scriptures  : null,
-      writer      : null,
+      scriptures  : '1',
+      writer      : '0',
       raag        : null,
     }
     console.log('Clear Filter Data',this.filterData,)
