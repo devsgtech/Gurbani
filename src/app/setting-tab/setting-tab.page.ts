@@ -13,6 +13,8 @@ export class SettingTabPage implements OnInit {
   dd:any = 1;
   true = true;
   false = false;
+  englishTranslation: any;
+  phoneticFont: any = 16;
   @Input() name: string;
   mainForm: FormGroup;
   Data= [];
@@ -42,10 +44,27 @@ export class SettingTabPage implements OnInit {
       this.changeui.fontSize = 'font-24'
     }
   }
+
+  phoneticchangeFont(){
+    console.log(this.phoneticFont, 'this.font')
+    if(this.phoneticFont == 12 ){
+      this.changeui.phoneticFont = 'font-12'
+    }
+    if(this.phoneticFont == 16 ){
+      this.changeui.phoneticFont = 'font-16'
+    }
+    if(this.phoneticFont == 20 ){
+      this.changeui.phoneticFont = 'font-20'
+    }
+    if(this.phoneticFont == 24 ){
+      this.changeui.phoneticFont = 'font-24'
+    }
+  }
 change(){
   console.log(this.dd,'sdf')
   let data_ = this.dd==1 ? false : this.true; 
   console.log(data_,'data_')
+  console.log('englishTranslation', this.changeui.english)
 
   this.changeui.setAppTheme(data_);
 }

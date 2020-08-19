@@ -52,4 +52,8 @@ export class FilterModalComponentComponent implements OnInit {
     console.log('Apply Function call',this.filterData,)
     this.modalController.dismiss(this.filterData);
   }
+
+  closeModal(){
+    this.modalController.dismiss();
+  }
 }

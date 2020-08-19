@@ -32,10 +32,10 @@
       <label >English Translation By</label>
       <ion-item lines="none">
         <ion-label slot="start">Dr. Sant Singh Khalsa</ion-label>
-        <ion-toggle  mode="ios" slot="end"></ion-toggle>
+        <ion-toggle  mode="ios" slot="end"  [(ngModel)]="changeui.english" ></ion-toggle>
       </ion-item>
     </div>
-    <ion-item>
+    <ion-item *ngIf="changeui.english">
       <div>
         <label>Font Size</label>
       <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="font" (ngModelChange)="changeFont()" snaps color="dark">
@@ -49,13 +49,13 @@
       <label>Phonetic Translation By</label>
       <ion-item lines="none">
         <ion-label slot="start">Dr. Sant Singh Khalsa</ion-label>
-        <ion-toggle  mode="ios" slot="end"></ion-toggle>
+        <ion-toggle  mode="ios" slot="end" [(ngModel)]="changeui.phonetic"></ion-toggle>
       </ion-item>
     </div>
-    <ion-item>
+    <ion-item *ngIf="changeui.phonetic">
       <div>
         <label>Font Size</label>
-      <ion-range min="10" max="40" step="10" value="20" snaps color="dark">
+      <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="phoneticFont" (ngModelChange)="phoneticchangeFont()" snaps color="dark">
         <ion-label slot="start">a</ion-label>
         <ion-label slot="end">A</ion-label>
       </ion-range>

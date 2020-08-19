@@ -348,7 +348,7 @@ fetchSql() {
 
     setTimeout(() => {
       console.log('this.igdb.rowCount0', this.igdb.rowCount)
-      if(this.igdb.rowCount > 95000){
+      if(this.igdb.rowCount > 60000){
       console.log('this.igdb.rowCount0 if', this.igdb.rowCount)
 
         this.getData()
@@ -603,6 +603,9 @@ setFavourite(){
       }
       this.storage.set('_SGTECH_GURBANI_FAV', sdata);
     }).catch(e => console.log(e));
+    if(sf.isFavourite){
+      this.newHelper.presentToastWithOptions('Saved Successfully')
+    }
   }
 ///////////////Set Favourite Section End////////////////
 
@@ -630,6 +633,7 @@ removaFavourite(i) {
     this.serverFileArray = sdata;
     this.storage.set('_SGTECH_GURBANI_FAV', sdata);
   }).catch(e => console.log(e));
+    this.newHelper.presentToastWithOptions('Removed Item Successfully')
 }
 /////////////////Get Data From Local Sorage for Favourite End//////////////////
 

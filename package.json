@@ -27,6 +27,7 @@
     "@ionic-native/downloader": "^5.27.0",
     "@ionic-native/file": "^5.27.0",
     "@ionic-native/file-transfer": "^5.27.0",
+    "@ionic-native/globalization": "^5.28.0",
     "@ionic-native/image-picker": "^5.27.0",
     "@ionic-native/keyboard": "^5.27.0",
     "@ionic-native/media": "^5.27.0",

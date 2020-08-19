@@ -5,10 +5,11 @@ import { Platform } from '@ionic/angular';
   providedIn: 'root'
 })
 export class ChangeUIService {
-  phonetic = '';
-  english  = '';
+  phonetic :Boolean = true;
+  english :Boolean = true;
 
   fontSize = 'font-16';
+  phoneticFont = 'font-16'
   darkMode : boolean = false;
   constructor(
     private platform: Platform,

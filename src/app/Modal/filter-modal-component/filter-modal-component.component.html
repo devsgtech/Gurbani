@@ -1,4 +1,6 @@
 <ion-content>
+  <div >
+    <p><ion-icon name="close-outline"  (click)="closeModal()" role="img" class="md ion-color ion-color-danger hydrated" aria-label="trash outline" ></ion-icon></p>
   <ion-item>
     <ion-label position="stacked">Search Mode</ion-label>
     <ion-select [(ngModel)]="filterData.searchMode" (ionChange)="setmode($event)" [value]='filterData.searchMode'>
@@ -27,4 +29,6 @@
   </ion-item>
 
   <ion-button (click)="applyFilter()">Apply</ion-button>
+
+</div>
 </ion-content>

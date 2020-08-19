@@ -58,7 +58,7 @@ export class shabadDB {
   data_:any;
   createTable(){
     this.data_ = '';
-   let sqli =  'CREATE TABLE IF NOT EXISTS shabad( _id INTEGER PRIMARY KEY AUTOINCREMENT,shabad_no TEXT, source_id TEXT, ng_id TEXT,       line_id TEXT,       writer_id TEXT,     raag_id TEXT,      vishraam TEXT,       green_vishraam TEXT,       first_ltr_start TEXT,      first_ltr_any TEXT  ,      gurmukhi TEXT ,      english_ssk TEXT  ,      english_bms TEXT  ,      punjabi_bms TEXT,      transliteration TEXT ,      sggs_darpan TEXT ,      faridkot_teeka TEXT  )'  
+   let sqli =  'CREATE TABLE IF NOT EXISTS shabad( _id INTEGER PRIMARY KEY AUTOINCREMENT,shabad_no TEXT, source_id TEXT, ng_id TEXT,       line_id TEXT,       writer_id TEXT,     raag_id TEXT,      vishraam TEXT,       green_vishraam TEXT,       first_ltr_start TEXT,      first_ltr_any TEXT  ,      gurmukhi TEXT ,      english_ssk TEXT  ,      english_bms TEXT  ,      punjabi_bms TEXT,      transliteration TEXT ,      sggs_darpan TEXT ,      faridkot_teeka TEXT  ,punjabiVersion TEXT)'  
     return this.storage.executeSql(sqli, []).then(res => {
       this.data_ = res;
       console.log(' Table Created res.rows.length ', res.rows.length);
@@ -89,7 +89,7 @@ newFakedata(){
     return this.storage.executeSql(sqli, []).then(res => {
       console.log('Count Rows Of shabad Created', res);
       this.rowCount = res.rows.item(0)['COUNT(*)'];
-      if(this.rowCount > 95000){
+      if(this.rowCount > 60000){
         return this.getDataOffset(0);
       } else {
         this.newFakedata();
@@ -104,7 +104,7 @@ newFakedata(){
   searchShabadAnyWhere(text) {
     text = '%' + text + '%'
     console.log('text in search Db', text)
-    return this.storage.executeSql('SELECT * FROM shabad WHERE transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10', [text, text]).then(res => {
+    return this.storage.executeSql('SELECT * FROM shabad WHERE source_id="G" AND transliteration LIKE ? OR english_ssk LIKE ?  OR punjabiVersion LIKE ?LIMIT 10', [text, text, text]).then(res => {
       let items = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
@@ -117,7 +117,7 @@ newFakedata(){
 
   searchShabadFirstWord(text) {
     text = text + '%'
-    return this.storage.executeSql('SELECT * FROM shabad WHERE transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10', [text, text]).then(res => {
+    return this.storage.executeSql('SELECT * FROM shabad WHERE transliteration LIKE ? OR english_ssk LIKE ? punjabiVersion LIKE ?  LIMIT 10', [text, text,text]).then(res => {
       let items = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
@@ -143,7 +143,7 @@ newFakedata(){
 
   searchShabadAnyWhereLoadMoreandOffset(data) {
     let text = '%' + data.searchString + '%'
-    return this.storage.executeSql('SELECT * FROM shabad WHERE source_id="G" AND transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?', [text, text, data.offset]).then(res => {
+    return this.storage.executeSql('SELECT * FROM shabad WHERE source_id="G" AND transliteration LIKE ? OR english_ssk LIKE ? OR punjabiVersion LIKE ? LIMIT 10 OFFSET ?', [text, text, text,data.offset]).then(res => {
       let items = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
@@ -157,7 +157,7 @@ newFakedata(){
   searchShabadFirstWordLoadMoreandOffset(data) {
     let text = data.searchString + '%'
 
-    return this.storage.executeSql('SELECT * FROM shabad WHERE source_id="G" AND transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?', [text, text, data.offset]).then(res => {
+    return this.storage.executeSql('SELECT * FROM shabad WHERE source_id="G" AND transliteration LIKE ? OR english_ssk LIKE ? OR punjabiVersion LIKE ? LIMIT 10 OFFSET ?', [text, text,text, data.offset]).then(res => {
       let items = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
@@ -190,6 +190,7 @@ newFakedata(){
         transliteration: res.rows.item(i).transliteration,
         sggs_darpan: res.rows.item(i).sggs_darpan,
         faridkot_teeka: res.rows.item(i).faridkot_teeka,
+         punjabiVersion: res.rows.item(i).punjabiVersion,
       });
     }
     return itt;

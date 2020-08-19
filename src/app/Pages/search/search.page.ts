@@ -43,6 +43,7 @@ export class SearchPage  implements OnInit {
     });
   }
   searchWord(ev = null) {
+
     console.log(this.searchString, 'search String')
     // this.searchString = ev.target.value.trim();
     this.listComp.searchWord();
