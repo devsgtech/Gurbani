@@ -146,5 +146,17 @@ export class SearchPage  implements OnInit {
     this.listComp.searchFilterData(this.sqlScript, arrayText);
   }
 
+  prevplay(){
+    this.listComp.prevplay();
+  }
+  playAll(){
+    this.listComp.playAll();
+  }
+  stopPlayRecording(){
+    this.listComp.stopPlayRecording();
+  }
+  nextplay(){
+    this.listComp.nextplay();
+  }
 
 }

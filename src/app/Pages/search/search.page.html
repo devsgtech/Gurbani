@@ -32,4 +32,6 @@
   </ion-header>
 
 <ion-backdrop *ngIf="backdrop"></ion-backdrop>
-<app-list [isfav]="favourite" [filterData]="filterData" [searchString]="searchString"></app-list>
+<ion-content>
+  <app-list [isfav]="favourite" [filterData]="filterData" [searchString]="searchString"></app-list>
+</ion-content>
