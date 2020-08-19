@@ -41,6 +41,8 @@ export class ListComponent implements OnInit {
   backdrop : boolean = false;
   raagData  : any = [];
   checkDidFilter : boolean = false;
+  sqlText:any;
+  arrayText = [];
   constructor(public platform: Platform,
     private file: File,
     private transfer: FileTransfer,
@@ -656,11 +658,35 @@ async filterModal(){
     return await modal.present();
 }
 
+checkFilterOrNot(event){
+  if(this.checkDidFilter == true){
+    this.loadMorewhenFilter();
+    event.target.complete();
+  } else {
+    this.loadData(event)
+  }
+}
+loadMorewhenFilter(){
+  let length  = this.arrayText.length;
+  let offset  = this.arrayText[length - 1];
+  offset      = offset + 10 ;
+  this.arrayText[length - 1] = offset;
+  this.searchFilterDataNotReset(this.sqlText,this.arrayText);
+}
+
 searchFilterData(sqlText,arrayText){
+  this.serverFileArray = [];
+  this.searchFilterDataNotReset(sqlText,arrayText)
+}
+searchFilterDataNotReset(sqlText,arrayText){
+  this.sqlText = sqlText;
+  this.arrayText = arrayText;
   this.checkDidFilter = true;
   this.igdb.commonFilter(sqlText,arrayText).then((res) => {
     console.log('Response From Common Filter', res);
-    this.serverFileArray = res;
+    res.map(item=>{
+      this.serverFileArray.push(item);
+    })
     this.serverFileArrayCopy = this.serverFileArray;
   })
 }

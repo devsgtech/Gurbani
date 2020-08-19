@@ -26,6 +26,7 @@ export class SearchPage  implements OnInit {
     raag        : null,
   }
   sqlScript = '';
+  checkDidFilter : boolean = false;
   constructor(
     public modalController: ModalController,
     private raagDb  : raagDB,
@@ -43,10 +44,12 @@ export class SearchPage  implements OnInit {
     });
   }
   searchWord(ev = null) {
-
+    if(this.checkDidFilter == true){
+      this.checkFilterDataAndFind()
+    } else {
+      this.listComp.searchWord();
+    }
     console.log(this.searchString, 'search String')
-    // this.searchString = ev.target.value.trim();
-    this.listComp.searchWord();
   }
 
   async filterModal(){
@@ -62,14 +65,23 @@ export class SearchPage  implements OnInit {
         this.backdrop = false;
         this.filterData = data.data;
         this.consoleData();
-        // this.searchFilterData(data.data)
     });
       return await modal.present();
   }
 
   consoleData(){
-    this.checkFilterDataAndFind();
-    // this.listComp.searchFilterData(this.filterData);
+    if(this.filterData.searchMode !== null || this.filterData.raag !== null){
+      this.checkDidFilter = true;
+      this.checkFilterDataAndFind();
+    } else {
+      this.checkDidFilter = false;
+      let text = this.searchString;
+      let arrayText = [];
+      text = '%' + text + '%'
+      arrayText = [text,text,text,0];
+      this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  punjabiVersion LIKE ? OR transliteration LIKE ? OR english_ssk LIKE ?   LIMIT 10 OFFSET ?' 
+      this.listComp.searchFilterData(this.sqlScript, arrayText);
+    }
   }
 
 
@@ -86,13 +98,13 @@ export class SearchPage  implements OnInit {
       switch (this.filterData.searchMode) {
         case 0:
           text = text + '%';
-          arrayText = [text,text,raagText,0];
-          this.sqlScript = 'SELECT * FROM shabad WHERE source_id="G" AND transliteration LIKE ? OR english_ssk LIKE ? AND raag_id LIKE ? LIMIT 10 OFFSET ?'
+          arrayText = [text,text,text,raagText,0];
+          this.sqlScript = 'SELECT * FROM shabad WHERE source_id="G" AND punjabiVersion LIKE ? OR transliteration LIKE ? OR english_ssk LIKE ? AND raag_id LIKE ? LIMIT 10 OFFSET ?'
           break;
         case 1:
           text = '%' + text + '%'
-          arrayText = [text,text,raagText,0];
-          this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  transliteration LIKE ? OR english_ssk LIKE ? AND raag_id LIKE ?  LIMIT 10 OFFSET ?' 
+          arrayText = [text,text,text,raagText,0];
+          this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  punjabiVersion LIKE ? OR transliteration LIKE ? OR english_ssk LIKE ? AND raag_id LIKE ?  LIMIT 10 OFFSET ?' 
           break;
         case 2:   
         arrayText = [parseInt(text),raagText,0];
@@ -100,8 +112,8 @@ export class SearchPage  implements OnInit {
           break;
         default:
           text = '%' + text + '%'
-          arrayText = [text,text,raagText,0];
-          this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  transliteration LIKE ? OR english_ssk LIKE ? AND raag_id LIKE ?  LIMIT 10 OFFSET ?'
+          arrayText = [text,text,text,raagText,0];
+          this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  punjabiVersion LIKE ? OR transliteration LIKE ? OR english_ssk LIKE ? AND raag_id LIKE ?  LIMIT 10 OFFSET ?' 
           break;
       }
     } else if(this.filterData.searchMode !==null){
@@ -110,23 +122,24 @@ export class SearchPage  implements OnInit {
       switch (this.filterData.searchMode) {
         case 0:
           text = text + '%';
-          arrayText = [text,text,0];
-          this.sqlScript = 'SELECT * FROM shabad WHERE source_id="G" AND  transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?'
+          arrayText = [text,text,text,0];
+          this.sqlScript = 'SELECT * FROM shabad WHERE source_id="G" AND   punjabiVersion LIKE ? OR  transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?'
           break;
         case 1:
           text = '%' + text + '%'
-          arrayText = [text,text,0];
-          this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?'
+          arrayText = [text,text,text,0];
+          this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  punjabiVersion LIKE ? OR  transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?'
           break;
         case 2:   
         text = '%' + text + '%'
-        arrayText = [text,text,0];
-        this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?'
+        arrayText = [text,0];
+        this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  ang_id LIKE ?  LIMIT 10 OFFSET ?'
           break;
 
         default:
           text = '%' + text + '%'
-          this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  ang_id LIKE ? AND raag_id LIKE ?  LIMIT 10 OFFSET ?', [text]
+          arrayText = [text,text,text,0];
+          this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  punjabiVersion LIKE ? OR  transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?'
           break;
       }
     }

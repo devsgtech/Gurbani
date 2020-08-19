@@ -48,11 +48,20 @@ export class FilterModalComponentComponent implements OnInit {
   setRaag(ev){
     this.filterData.raag = ev.detail.value;
   }
-  applyFilter(e){
+  applyFilter(){
     console.log('Apply Function call',this.filterData,)
     this.modalController.dismiss(this.filterData);
   }
-
+  clearFilter(){
+    this.filterData ={
+      searchMode  : null,
+      scriptures  : null,
+      writer      : null,
+      raag        : null,
+    }
+    console.log('Clear Filter Data',this.filterData,)
+    this.modalController.dismiss(this.filterData);
+  }
   closeModal(){
     this.modalController.dismiss();
   }

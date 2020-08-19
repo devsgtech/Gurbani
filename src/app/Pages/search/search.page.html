@@ -17,7 +17,7 @@
         <ion-label slot="end" class="ion-no-padding" >
           <ion-icon name="search" color="white"></ion-icon>
         </ion-label>
-        <ion-input type="text" placeholder="Search" debounce="500" [(ngModel)]="searchString" (ngModelChange)="searchWord()"></ion-input>
+        <ion-input type="text" placeholder="Search" debounce="500" [(ngModel)]="searchString" (ngModelChange)="consoleData()"></ion-input>
       </ion-item>
     </ion-toolbar>
     <ion-toolbar *ngIf="isfav">
