@@ -68,11 +68,6 @@ export class ListComponent implements OnInit {
       this.stopPlayRecording();
     });
 
-    this.newHelper.event$.subscribe((ev) => {
-      if (newhelper.checkEventData(ev, 'SG_ON_CHANGE_FILTER', false)) {
-        console.log('Hepler Change Event')
-      }
-    });
   }
   static scrollTo(index) {
     const currentId = document.getElementById('currentPlayItemId' + index);
@@ -83,14 +78,11 @@ export class ListComponent implements OnInit {
       if(res){
         this.raagDb.fetchSongs().subscribe(item => {
           this.raagData = item;
-         console.log('Got Data From RAAG' , item)
         })
       }
     });
-    
     if(this.isfav == true){
-      console.log('Favourite Tab');
-      this.getDataFromLocalStorage()
+      
     }else{
       console.log('Fetch data From DB Search tab');
       this.fetchSql();
@@ -364,6 +356,7 @@ fetchSql() {
           // })
           this.serverFileArrayCopy = this.serverFileArray;
           this.newHelper.dismissLoading();
+          this.setFavourite();
         })
       }
     }, 8000);
@@ -565,6 +558,7 @@ downloadAudioFile(sf, i, dd) {
 
 ///////////////Set Favourite section Start///////////////////
 setFavourite(){
+  console.log('Set Favourite function call')
   this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
     if(sdata){
       sdata.map(i=>{
@@ -613,17 +607,18 @@ setFavourite(){
 
 
 /////////////////Get Data From Local Sorage for Favourite Start//////////////////
+
 getDataFromLocalStorage() {
-  this.serverFileArray = []
+  this.serverFileArray = [];
     this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
       console.log( 'Storage Data',sdata)
       if(sdata){
         sdata.map(i=>{
           this.serverFileArray.push(i)
         })
+        console.log( 'serverFileArray',this.serverFileArray)
       }
     }).catch(e => console.log("Error =>" ,e));
- 
 }
 
 
@@ -688,6 +683,7 @@ searchFilterDataNotReset(sqlText,arrayText){
       this.serverFileArray.push(item);
     })
     this.serverFileArrayCopy = this.serverFileArray;
+    this.setFavourite();
   })
 }
 

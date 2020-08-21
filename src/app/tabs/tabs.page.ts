@@ -10,9 +10,4 @@ export class TabsPage {
 
   constructor( private modalController: ModalController,) {}
 
-  closeModal(){
-    this.modalController.dismiss();
-
-  }
-
 }

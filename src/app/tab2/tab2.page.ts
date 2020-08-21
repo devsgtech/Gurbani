@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewChild} from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
@@ -11,6 +11,7 @@ import { Storage } from '@ionic/storage';
 import { newhelper } from '../services/newhelper';
 import { Network } from '@ionic-native/network/ngx';
 import { ChangeUIService } from '../services/change-ui.service';
+import { ListComponent } from 'src/app/Components/list/list.component';
 
 @Component({
   selector: 'app-tab2',
@@ -18,6 +19,8 @@ import { ChangeUIService } from '../services/change-ui.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit {
+  @ViewChild(ListComponent) listComp:ListComponent;
+
   favourite = true;
   storageDirectory: any; currPlayingFile: MediaObject;
   getDurationInterval: any;
@@ -61,6 +64,7 @@ export class Tab2Page implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.listComp.getDataFromLocalStorage();
     this.online = (this.network.type !== this.network.Connection.NONE);
     this.network.onChange().subscribe((ev) => {
       this.online = (ev.type === 'online');

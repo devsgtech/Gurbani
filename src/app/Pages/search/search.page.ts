@@ -43,6 +43,13 @@ export class SearchPage  implements OnInit {
       }
     });
   }
+
+   ionViewWillLeave() {
+        this.modalController.dismiss();
+    }
+    ionViewWillEnter(){
+      this.listComp.setFavourite()
+    }
   searchWord(ev = null) {
     if(this.checkDidFilter == true){
       this.checkFilterDataAndFind()
