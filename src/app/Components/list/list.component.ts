@@ -221,7 +221,6 @@ export class ListComponent implements OnInit {
             // this.playRecording(nextFile, nextFileIndex, isSingle);
           }
         }
-        console.log('position', position, sFile.duration);
       });
     }, 100);
   }
@@ -299,7 +298,8 @@ playAll(){
   }
 
   getProgressVal(e, f) {
-    return (e / f).toFixed(3);
+    console.log('GetProgress value',parseFloat((e / f).toFixed(3)))
+    return parseFloat((e / f).toFixed(3));
   }
 /////////////////DB Search///////////////////////
 
@@ -332,7 +332,7 @@ fetchSql() {
   this.newHelper.presentLoadingWithOptions('Hold on, preparing your data. This may take some time!');
   this.igdb.dbState().subscribe((res) => {
     if (res) {
-      this.igdb.fetchSongs().subscribe(item => {
+        this.igdb.fetchSongs().subscribe(item => {
         this.serverFileArray = item;
         this.serverFileArrayCopy = this.serverFileArray;
         this.newHelper.dismissLoading();
@@ -685,6 +685,8 @@ searchFilterDataNotReset(sqlText,arrayText){
     this.serverFileArrayCopy = this.serverFileArray;
     this.setFavourite();
   })
+
+  this.prepareAudioFile();
 }
 
 

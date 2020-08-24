@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { raagDB } from 'src/app/services/raagDb';
 import { newhelper } from 'src/app/services/newhelper';
 import { ListComponent } from 'src/app/Components/list/list.component';
-
+import { raags } from '../../services/constantString'
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
@@ -12,13 +12,13 @@ import { ListComponent } from 'src/app/Components/list/list.component';
 })
 export class SearchPage  implements OnInit {
   @ViewChild(ListComponent) listComp:ListComponent;
-  
+  raagData = raags.raagArray;
   backdrop : boolean = false;
   searchOpt: any;
   favourite = false;
   searchOffset = 0;
   searchString = '';
-  raagData  : any = [];
+  // raagData  : any = [];
   filterData ={
     searchMode  : null,
     scriptures  : '1',
@@ -31,21 +31,23 @@ export class SearchPage  implements OnInit {
     public modalController: ModalController,
     private raagDb  : raagDB,
     private helper : newhelper,
+    
   ){}
 
   ngOnInit(){
-    this.raagDb.dbState().subscribe((res) => {
-      if(res){
-        this.raagDb.fetchSongs().subscribe(item => {
-          this.raagData = item;
-         console.log('Got Data From RAAG' , item)
-        })
-      }
-    });
+    // this.raagDb.dbState().subscribe((res) => {
+    //   if(res){
+    //     this.raagDb.fetchSongs().subscribe(item => {
+    //       this.raagData = item;
+    //      console.log('Got Data From RAAG' , item)
+    //     })
+    //   }
+    // });
   }
 
    ionViewWillLeave() {
         this.modalController.dismiss();
+        this.listComp.stopPlayRecording()
     }
     ionViewWillEnter(){
       this.listComp.setFavourite()

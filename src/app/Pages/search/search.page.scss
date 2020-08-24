@@ -29,8 +29,8 @@ ion-header{
           border-radius: 5px 0 0 5px;
         }
         ion-label{
-          color: #ffffff;
-          background: #0F1425;
+          color: var(--ion-color-light) !important;
+          background: var(--ion-color-dark) !important;
           padding: 13px 15px;
           border-radius: 0 5px 5px 0;
           margin: 2px 0;

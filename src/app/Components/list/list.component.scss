@@ -124,6 +124,9 @@ ion-fab{
   border-radius: 100px;
   margin-left: 10px;
   margin-right: 10px;
+  ion-icon{
+    background: var(--ion-color-success-contrast) !important;
+  }
 }
 
 .back-prev{
@@ -133,6 +136,9 @@ ion-fab{
   background: linear-gradient(var(--ion-color-dark) !important );
   color: #ffffff;
   border-radius: 100px;
+  ion-icon{
+    color: var(--ion-color-success-contrast) !important;
+  }
 }
 
 .filter-select{
