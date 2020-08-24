@@ -97,13 +97,13 @@ export class SearchPage  implements OnInit {
 
   checkFilterDataAndFind(){
     this.searchString = this.searchString.trim();
-    let text = this.searchString;
+    let text = '';
+    text = this.searchString;
     let arrayText = [];
+    let raagText ;
+    raagText = this.filterData.raag;
     if(this.filterData.searchMode!==null && this.filterData.raag !==null){
        console.log('Search mode and Raag', this.filterData);
-
-      let raagText ;
-      raagText = this.filterData.raag;
       switch (this.filterData.searchMode) {
         case 0:
           text = text + '%';
@@ -116,7 +116,9 @@ export class SearchPage  implements OnInit {
           this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  punjabiVersion LIKE ? OR transliteration LIKE ? OR english_ssk LIKE ? AND raag_id LIKE ?  LIMIT 10 OFFSET ?' 
           break;
         case 2:   
-        arrayText = [parseInt(text),raagText,0];
+          text = '%' + text + '%',
+          raagText = '%' + raagText + '%'
+        arrayText = [text,raagText,0];
         this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  ang_id LIKE ? AND raag_id LIKE ? LIMIT 10 OFFSET ?'
           break;
         default:
@@ -151,6 +153,10 @@ export class SearchPage  implements OnInit {
           this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  punjabiVersion LIKE ? OR  transliteration LIKE ? OR english_ssk LIKE ? LIMIT 10 OFFSET ?'
           break;
       }
+    } if(this.filterData.searchMode ==null && this.filterData.raag !==null){
+      raagText = '%' + raagText + '%'
+      arrayText = [raagText,0];
+      this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  raag_id LIKE ? LIMIT 10 OFFSET ?'
     }
     this.listComp.searchFilterData(this.sqlScript, arrayText);
   }
