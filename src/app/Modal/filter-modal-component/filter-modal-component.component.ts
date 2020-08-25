@@ -63,6 +63,12 @@ export class FilterModalComponentComponent implements OnInit {
     this.modalController.dismiss(this.filterData);
   }
   closeModal(){
-    this.modalController.dismiss();
+    let data ={
+      searchMode  : this.filterData.searchMode,
+      scriptures  : '1',
+      writer      : '0',
+      raag        : this.filterData.raag,
+    }
+    this.modalController.dismiss(data);
   }
 }
