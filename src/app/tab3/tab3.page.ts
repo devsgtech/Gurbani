@@ -1,117 +1,122 @@
-import { Component, OnInit } from '@angular/core';
-// import { Downloader, DownloadRequest, NotificationVisibility } from '@ionic-native/downloader/ngx';
-// import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
-// import { File } from '@ionic-native/file';
-// import { Platform } from '@ionic/angular';
-// import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-// import { UploaderService } from '../services/uploader.service';
-import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeUIService } from '../services/change-ui.service';
+import { shabadDB } from '../services/shabadDB';
+import { IonInfiniteScroll } from '@ionic/angular';
+
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss']
 })
-export class Tab3Page implements OnInit{
-  private storage: SQLiteObject;
-  private isDbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
+export class Tab3Page implements OnInit {
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   tilesArray = [
     {
       punjabiWord: 'ਜਪੁਜੀ ਸਾਹਿਬ',
-      englishWord: 'Japji Sahib'
+      englishWord: 'Japji Sahib',
+      id: 1,
     },
     {
-      punjabiWord: 'ਜਾਪ ਸਾਹਿਬ ',
-      englishWord: 'Jaap Sahib'
+      punjabiWord: 'ਅਨੰਦੁ ਸਾਹਿਬ',
+      englishWord: 'Anand Sahib',
+      id: 2,
     },
     {
-      punjabiWord: 'ਤ੍ਵਪ੍ਰਸਾਦਿ ਸ੍ਵਯੇ ',
-      englishWord: 'Tav Prasad'
-    },
-    {
-      punjabiWord: 'ਚੌਪਈ ਸਾਹਿਬ',
-      englishWord: 'Chaupai Sahib'
-    },
-    {
-      punjabiWord: 'ਅਨੰਦੁ',
-      englishWord: 'Anand Sahib'
+      punjabiWord: 'ਸੁਖਮਨੀ ਸਾਹਿਬ',
+      englishWord: 'Sukhmani Sahib',
+      id: 3,
     }
-  
   ]
+  sqlText: any;
+  arrayText = [];
+  serverFileArray = [];
+  serverFileArrayCopy = [];
+  sqlScript = '';
 
+  listShow : boolean = false;
   constructor(
-    // private downloader: Downloader,private transerobj: FileTransferObject,
-    // private platform: Platform,private androidPermissions: AndroidPermissions,
-    // private transfer: FileTransfer, private file: File,
-    // public upload: UploaderService,
-    private sqlitePorter: SQLitePorter,
-    private sqlite: SQLite,
-    private httpClient: HttpClient,
-    ) { 
-    }
+    public changeui: ChangeUIService,
+    private igdb: shabadDB,
+  ) {
+  }
 
   ngOnInit() {
   }
 
-  // download(){
-  //   console.log('download cClick ');
+  backToReadTile(){
+    this.listShow = false;
+  }
+  
+  readBook(id) {
+    this.listShow = true;
+    let offset = 0;
+    let limit = 0;
+    let textArray = [];
+    switch (id) {
+      case 1:
+        offset = 0;
+        limit = 385;
+        textArray = [limit, offset]
+        this.sqlScript = "SELECT * FROM shabad WHERE source_id='G' LIMIT ? OFFSET ?";
+        this.searchFilterDataNotReset(this.sqlScript, textArray)
+        break;
+      case 2:
+        offset = 39313;
+        limit = 210;
+        textArray = [limit, offset]
+        this.sqlScript = "SELECT * FROM shabad WHERE source_id='G' LIMIT ? OFFSET ?";
+        this.searchFilterDataNotReset(this.sqlScript, textArray)
+        break;
+      case 3:
+        offset = 11587;
+        limit = 2027;
+        textArray = [limit, offset]
+        this.sqlScript = "SELECT * FROM shabad WHERE source_id='G' LIMIT ? OFFSET ?";
+        this.searchFilterDataNotReset(this.sqlScript, textArray)
+        break;
 
-  //   const url = 'https://firebasestorage.googleapis.com/v0/b/testgurubani.appspot.com/o/splash.png?alt=media&token=218b62eb-0311-4125-b34e-becfd12886aa';
-    
-  //   this.transerobj.download(url, this.file.dataDirectory ).then((entry) => {
-  //   console.log('download complete: ' + entry.toURL());
-  // }, (error) => {
-  //   // handle error
-  //   console.log('error',error);
-  // });
-  // }
-
-
-  downloadFile( ) {
-    // const myFileName = null
-    // const url = 'https://firebasestorage.googleapis.com/v0/b/testgurubani.appspot.com/o/splash.png?alt=media&token=218b62eb-0311-4125-b34e-becfd12886aa';
-    // this.upload.downloadFile(url);
-    // console.log(url,'url');
-    let ccc:any;
-    console.error('inside Download Functions')
-    this.httpClient.get(
-      'assets/iGurbani_Android.sqlite', 
-      {responseType: 'text'}
-    ).subscribe(data => {
-      console.error('inside Download data', data)
-      // this.sqlitePorter.importSqlToDb(this.storage, data)
-      //   .then(_ => {
-      //     this.isDbReady.next(true);
-      //   })
-      //   .catch(error => console.error(error));
-      this.sqlite.create({
-        name: 'iGurubaninew.db',
-        location: 'default'
-      })
-        .then((db: any) => {
-          let dbInstance = db._objectInstance;
-              
-          this.sqlitePorter.importSqlToDb(db, data)
-          .then(() => console.log('Imported'))
-          .catch(e => console.error(e));
-          
-        });
-    });
-    // this.sqlite.create({
-    //   name: 'iGurubaninew.db',
-    //   location: 'default'
-    // })
-    //   .then((db: any) => {
-    //     let dbInstance = db._objectInstance;
-            
-    //     this.sqlitePorter.importSqlToDb(db, sql)
-    //     .then(() => console.log('Imported'))
-    //     .catch(e => console.error(e));
-        
-    //   });
-    
+    }
   }
 
+
+  loadData(event) {
+    let leng = this.serverFileArray.length + 10;
+    for (let i = this.serverFileArray.length; i < leng; i++) {
+      if(i < this.serverFileArrayCopy.length ){
+        this.serverFileArray.push(this.serverFileArrayCopy[i])
+      } else{
+        event.target.disabled = true;
+      }
+    }
+    console.log('this.serverFileArray Length', this.serverFileArray.length);
+    event.target.complete();
+  }
+
+  // loadMorewhenFilter(){
+  //   let length  = this.arrayText.length;
+  //   let offset  = this.arrayText[length - 1];
+  //   offset      = offset + 10 ;
+  //   this.arrayText[length - 1] = offset;
+  //   this.searchFilterDataNotReset(this.sqlText,this.arrayText);
+  // }
+  searchFilterDataNotReset(sqlText, arrayText) {
+    this.serverFileArrayCopy = [];
+    this.serverFileArray = [];
+    this.sqlText = sqlText;
+    this.arrayText = arrayText;
+    this.igdb.commonFilter(sqlText, arrayText).then((res) => {
+      console.log('Lenght Of Data', res.length);
+      console.log('Response From Common Filter', res);
+      res.map(item => {
+        this.serverFileArrayCopy.push(item);
+      })
+      this.pushData();
+    })
+  }
+
+  pushData() {
+    for (let i = 0; i < 10; i++) {
+      this.serverFileArray.push(this.serverFileArrayCopy[i])
+    }
+  }
 }

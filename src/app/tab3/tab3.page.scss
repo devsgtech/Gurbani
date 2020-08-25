@@ -1,14 +1,21 @@
-ion-title{
+ion-toolbar{
+  ion-button{
+    ion-icon{
+      color: var(--ion-color-dark) !important;
+    }
+  }
+  ion-title{
     label{
-        .p0{
-            margin: 0;
-            font-weight: 600;
-            font-size: small;
-        }
-        .p1{
-            margin: 0;
-            color: #27a501;
-        }
+      .p0{
+          margin: 0;
+          font-weight: 600;
+          font-size: small;
+      }
+      .p1{
+          margin: 0;
+          color: #27a501;
+      }
+      }
     }
 }
 
