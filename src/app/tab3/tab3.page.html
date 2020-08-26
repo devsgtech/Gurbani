@@ -4,9 +4,12 @@
       <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
     <ion-title>
-      <label>
+      <label *ngIf="!listShow" >
         <p class="p0">School of</p>
         <p class="p1">GURUBANI</p>
+      </label>
+      <label *ngIf="listShow" >
+        <p class="p1">{{sahibName}}</p>
       </label>
     </ion-title>
   </ion-toolbar>
@@ -15,7 +18,7 @@
 <ion-content>
   <ng-container *ngIf="!listShow">
     <ion-card *ngFor="let item of tilesArray">
-      <ion-item detail="true" (click)="readBook(item.id)">
+      <ion-item detail="true" (click)="readBook(item)">
         <label>
           <p class="pnb-word">{{item.punjabiWord}}</p>
           <p class="eng-word">{{item.englishWord}}</p>
@@ -41,7 +44,14 @@
           <ion-label>
             <h2>{{sf?sf.punjabiVersion: ''}}</h2>
           </ion-label>
+          <ion-button color="myWhite" fill="clear" slot="end"
+          (click)="!sf.isPlaying?download(sf, i, true): stopPlayRecording()">
+          <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
+          <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
+          <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
+        </ion-button>
         </ion-item>
+        
         <ion-item no-margin class="bottomItem">
           <ion-label>
             <p *ngIf="sf.transliteration && changeui.english" [ngClass]="changeui.fontSize">
@@ -50,7 +60,9 @@
             </p>
           </ion-label>
         </ion-item>
-
+        <div padding-horizontal>
+          <ion-progress-bar [value]="getProgressVal(sf.position, sf.duration)"></ion-progress-bar>
+        </div>
       </ng-container>
       <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
         <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
