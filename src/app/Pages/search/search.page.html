@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-backdrop *ngIf="backdrop"></ion-backdrop>
+    <!-- <ion-backdrop *ngIf="backdrop"></ion-backdrop> -->
     <ion-toolbar >
       <ion-backdrop *ngIf="backdrop"></ion-backdrop>
       <ion-button slot="start" fill="clear" color="dark" (click)="filterModal()">
@@ -17,8 +17,11 @@
         <ion-label slot="end" class="ion-no-padding" >
           <ion-icon name="search" color="white"></ion-icon>
         </ion-label>
+
         <ion-input type="text" placeholder="Search" debounce="500" [(ngModel)]="searchString" (ngModelChange)="consoleData()"></ion-input>
       </ion-item>
+      <ion-searchbar animated placeholder="Search" debounce="500" [(ngModel)]="searchString" (ngModelChange)="consoleData()"></ion-searchbar>
+
     </ion-toolbar>
     <ion-toolbar *ngIf="isfav">
       <ion-backdrop *ngIf="backdrop"></ion-backdrop>

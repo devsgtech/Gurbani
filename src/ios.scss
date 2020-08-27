@@ -1,0 +1,32 @@
+.ios {
+    app-search{
+        ion-toolbar{
+            ion-item{
+                display: none;
+            }
+            ion-searchbar{
+                padding-top: 15px;
+                padding-bottom: 15px;
+                height: 52px;
+                --background: var(--ion-color-light);
+            }
+        } 
+        
+    }
+  }
+
+
+  .md {
+    app-search{
+        ion-searchbar{
+            display: none;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            height: 52px;
+            --background: var(--ion-color-light);
+        }
+    }
+  }
+
+
+

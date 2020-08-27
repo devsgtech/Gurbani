@@ -46,7 +46,18 @@ export class SearchPage  implements OnInit {
   }
 
    ionViewWillLeave() {
-        this.modalController.dismiss();
+    this.filterData ={
+      searchMode  : null,
+      scriptures  : '1',
+      writer      : '0',
+      raag        : null,
+    }
+        try{
+          this.modalController.dismiss(this.filterData)
+        } catch (e){
+          console.log('Error e')
+        }
+
         this.listComp.stopPlayRecording()
     }
     ionViewWillEnter(){

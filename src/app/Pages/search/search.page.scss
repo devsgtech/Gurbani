@@ -1,12 +1,14 @@
 ion-header{
+    // padding: 0px 8px 0px 8px;
+    margin: 0px 0px 0px 0px;
     ion-toolbar{
       // padding: 0 8px;
-      padding: 0px 8px 0px 8px;
+      // padding: 0px 8px 0px 8px;
       ion-button, ion-select, ion-input, ion-label{
         height: 40px;
       }
       ion-button{
-        background: #f4f5f8;
+        background:var(--ion-color-light);
         ion-icon{
           padding: 5px 0;
         }
@@ -37,6 +39,9 @@ ion-header{
         }
       }
     }
+  }
+  ion-backdrop{
+    opacity: 0.5;
   }
   
   

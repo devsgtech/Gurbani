@@ -1,3 +1,4 @@
+
 ion-title{
     label{
         .p0{
@@ -40,6 +41,7 @@ ion-item{
             --background-checked: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
             --border-color: grey;
             --color	:var( --ion-color-primary-dark);
+            --indicator-color: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
             // --color-checked: white;
             height: 35px;
             display: flex;

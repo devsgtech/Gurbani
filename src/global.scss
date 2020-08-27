@@ -24,6 +24,8 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+@import "./ios.scss";
+
 
 
 // @media (prefers-color-scheme: light) {
@@ -211,8 +213,12 @@ body.dark {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 15px;
   height: 50%;
     width: 90%;
     margin-left: 5%;
     margin-top: 50%;
+    ion-backdrop{
+      display: none;
+    }
 }

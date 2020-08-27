@@ -43,6 +43,7 @@ export class ListComponent implements OnInit {
   checkDidFilter : boolean = false;
   sqlText:any;
   arrayText = [];
+  cancelAll:boolean = true;
   constructor(public platform: Platform,
     private file: File,
     private transfer: FileTransfer,
@@ -87,6 +88,19 @@ export class ListComponent implements OnInit {
       console.log('Fetch data From DB Search tab');
       this.fetchSql();
     }
+
+    // this.serverFileArray = [
+    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '1.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/1.mp3', title3: 'One Universal Creator God, TheName Is Truth  Creative Being Personified No Fear No Hatred Image Of The Undying, Beyond Birth, Self-Existent. By Guru\'s Grace~', title2: 'Ikoankaar Sathnaam Karathaa Purakh Nirabho Niravair Akaal Moorath Ajoonee Saibhan Gurprasaadh||', title1: 'ੴ ਸਤਿਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿਰਵੈਰੁ ਅਕਾਲ ਮੂਰਤਿ ਅਜੂਨੀ ਸੈਭੰ ਗੁਰਪ੍ਰਸਾਦਿ ॥', },
+    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '2.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/2.mp3', title3: 'Chant And Meditate:', title2: '|| Jap ||', title1: '॥ ਜਪੁ ॥', },
+    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '3.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/3.mp3', title3: 'True In The Primal Beginning. True Throughout The Ages.', title2: 'Aadh Sach Jugaadh Sach ||', title1: 'ਆਦਿ ਸਚੁ ਜੁਗਾਦਿ ਸਚੁ ॥', },
+    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '4.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/4.mp3', title3: 'True Here And Now. O Nanak, Forever And Ever True. ||1||', title2: 'Hai Bhee Sach Naanak Hosee Bhee Sach ||1||', title1: 'ਹੈ ਭੀ ਸਚੁ ਨਾਨਕ ਹੋਸੀ ਭੀ ਸਚੁ ॥1॥', },
+    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '5.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/5.mp3', title3: 'By thinking, He cannot be reduced to thought, even by thinking hundreds of thousands of times.', title2: 'Sochai Soch N Hovee Jae Sochee Lakh Vaar ||', title1: 'ਸੋਚੈ ਸੋਚਿ ਨ ਹੋਵਈ ਜੇ ਸੋਚੀ ਲਖ ਵਾਰ ॥', },
+    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '6.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/6.mp3', title3: 'By remaining silent, inner silence is not obtained, even by remaining lovingly absorbed deep within.', title2: 'Chupai Chup N Hovee Jae Laae Rehaa Liv Thaar ||', title1: 'ਚੁਪੈ ਚੁਪਿ ਨ ਹੋਵਈ ਜੇ ਲਾਇ ਰਹਾ ਲਿਵ ਤਾਰ ॥', },
+    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '7.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/7.mp3', title3: 'The hunger of the hungry is not appeased, even by piling up loads of worldly goods.', title2: 'Bhukhiaa Bhukh N Outharee Jae Bannaa Pureeaa Bhaar ||', title1: 'ਭੁਖਿਆ ਭੁਖ ਨ ਉਤਰੀ ਜੇ ਬੰਨਾ ਪੁਰੀਆ ਭਾਰ ॥', },
+    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '8.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/8.mp3', title3: 'Hundreds of thousands of clever tricks, but not even one of them will go along with you in the end.', title2: 'Sehas Siaanapaa Lakh Hohi Th Eik N Chalai Naal ||', title1: 'ਸਹਸ ਸਿਆਣਪਾ ਲਖ ਹੋਹਿ ਤ ਇਕ ਨ ਚਲੈ ਨਾਲਿ ॥', },
+    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '9.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/9.mp3', title3: 'So how can you become truthful? And how can the veil of illusion be torn away?', title2: 'Kiv Sachiaaraa Hoeeai Kiv Koorrai Thuttai Paal ||', title1: 'ਕਿਵ ਸਚਿਆਰਾ ਹੋਈਐ ਕਿਵ ਕੂੜੈ ਤੁਟੈ ਪਾਲਿ ॥', },
+    //   { duration: -1, position: 0, isFileDownloaded: false, isDownloading: false, fileName: '10.mp3', url: 'https://orientaloutsourcing.com/gurbani_app_audio/ang_1/10.mp3', title3: 'O Nanak, it is written that you shall obey the Hukam of His Command, and walk in the Way of His Will. ||1||', title2: 'Hukam Rajaaee Chalanaa Naanak Likhiaa Naal ||1||', title1: 'ਹੁਕਮਿ ਰਜਾਈ ਚਲਣਾ ਨਾਨਕ ਲਿਿਖਆ ਨਾਲਿ ॥1॥', }
+    // ];
     this.prepareAudioFile();
   }
   ionViewWillLeave() {
@@ -96,12 +110,10 @@ export class ListComponent implements OnInit {
   
   ionViewWillEnter() {
     if(this.isfav == true){
-      console.log('Favourite Tab');
       this.getDataFromLocalStorage()
     }
     this.testnextFileIndex = 0;
     // this.getData();
-    console.log("ion Enter")
    this.setFavourite();
     this.online = (this.network.type !== this.network.Connection.NONE);
     this.network.onChange().subscribe((ev) => {
@@ -272,6 +284,7 @@ export class ListComponent implements OnInit {
   }
 
 playAll(){
+  this.cancelAll = false;
   this.testnextFileIndex = 0;
   // this.playRecording();
   this.download( null, 0,false)
@@ -298,7 +311,6 @@ playAll(){
   }
 
   getProgressVal(e, f) {
-    console.log('GetProgress value',parseFloat((e / f).toFixed(3)))
     return parseFloat((e / f).toFixed(3));
   }
 /////////////////DB Search///////////////////////
@@ -477,6 +489,11 @@ searchShabadFirstWordLoadMoreandOffset(event) {
   this.setFavourite();
 }
 ////////////////LOAD DATA FROM DB END//////////////////////
+cancelAllAndPlayOne(sf, i, dd){
+  this.cancelAll = true;
+  this.download(sf, i, dd)
+}
+
 async download(sf, i, dd) {
   if (this.currPlayingFile) {
     this.stopPlayRecording();
@@ -525,12 +542,24 @@ createAngDir(sf, i, dd) {
 
 
 downloadAudioFile(sf, i, dd) {
+  console.log('check', this.cancelAll,'this.cancelAll  ',sf,'sf'  ,dd,' dd')
   let checkFileUrl = this.storageDirectory + '/'+ VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/';
   let FileName = 'shabad_' + sf._id + '.mp3';
   this.file.checkFile(checkFileUrl, FileName).then((entry) => {
     let nurl = this.storageDirectory + '/' + VARS.shabadDirectory+ '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
     sf.isDownloading = false;
-    this.playRecording(sf, i, dd,nurl)
+   
+    if(this.cancelAll == false && dd == false){
+      console.log('onecancelAll', this.cancelAll,'this.cancelAll  ',sf,'sf' )
+      setTimeout(() => {
+        this.playRecording(sf, i, dd,nurl)
+      }, 500);
+    } 
+   if(this.cancelAll && dd == true){
+    setTimeout(() => {
+      this.playRecording(sf, i, dd,nurl)
+    }, 500);
+   }
 
   })
     .catch((err) => {
@@ -543,7 +572,21 @@ downloadAudioFile(sf, i, dd) {
       fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
         let nurl = this.storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
         sf.isDownloading = false;
-        this.playRecording(sf, i, dd,nurl);
+        
+        console.log('Inside Download For Play', this.cancelAll,'this.cancelAll  ',sf,'sf' )
+        if(this.cancelAll == false && dd == false){
+          console.log('TwocancelAll', this.cancelAll,'this.cancelAll  ',sf,'sf' )
+          setTimeout(() => {
+            this.playRecording(sf, i, dd,nurl)
+          }, 500);
+        } 
+       if(this.cancelAll && dd == true){
+        setTimeout(() => {
+          this.playRecording(sf, i, dd,nurl)
+        }, 500);
+       }
+       
+
       })
         .catch((err) => {
           if (err.http_status == 404) {
@@ -674,6 +717,7 @@ searchFilterData(sqlText,arrayText){
   this.searchFilterDataNotReset(sqlText,arrayText)
 }
 searchFilterDataNotReset(sqlText,arrayText){
+  this.stopPlayRecording()
   this.sqlText = sqlText;
   this.arrayText = arrayText;
   this.checkDidFilter = true;
