@@ -50,6 +50,7 @@ ion-list{
     border-bottom: 1px dashed #c2c2c2;
   }
   ion-progress-bar{
+    --buffer-background: var(--ion-color-success-contrast);
     --background: none;
     --progress-background: var(--ion-color-success);
   }

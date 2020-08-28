@@ -17,9 +17,10 @@ div{
   }
 }
 ion-toolbar{
+    display: flex;
+    align-items: center;
   --background: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
     height: 45px;
-    display: flex;
     .p0{
       color: #FFFF;
     }

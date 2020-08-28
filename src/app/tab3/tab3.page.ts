@@ -141,6 +141,10 @@ export class Tab3Page implements OnInit {
       console.log('Lenght Of Data', res.length);
       console.log('Response From Common Filter', res);
       res.map(item => {
+        item.duration= -1;
+        item.position=0,
+        item.isFileDownloaded= false,
+        item.isDownloading= false,
         this.serverFileArrayCopy.push(item);
       })
       this.pushData();

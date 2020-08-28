@@ -1,9 +1,19 @@
 <ion-backdrop *ngIf="backdrop"></ion-backdrop>
 <ion-content>
+  <div class="favouriteCount" *ngIf="isfav">
+    <h3 >Favourite items</h3>
+    <h3 >[ {{totalFavourite}} ]</h3>
+  </div>
 
+  <div class="noRecord" *ngIf="noRecords && serverFileArray?.length == 0">
+    <h1>
+      No Record Found
+    </h1>
+  </div>
   <ion-list>
+    
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
-      <ion-item no-margin [id]="'currentPlayItemId'+i">
+      <ion-item no-margin [id]="'currentPlayItemId'+i" lines="none">
         <ion-label>
           <h2>{{sf?sf.punjabiVersion: ''}}</h2>
         </ion-label>
@@ -14,12 +24,12 @@
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
         </ion-button>
       </ion-item>
-      <ion-item no-margin class="bottomItem">
-        <ion-label>
+      <ion-item no-margin  lines="none">
+        <ion-label *ngIf="changeui.phonetic || changeui.english">
           <p *ngIf="sf.transliteration && changeui.english" [ngClass]="changeui.fontSize">{{sf?sf.transliteration: ''}}</p>
           <p *ngIf="sf.english_ssk && changeui.phonetic" [ngClass]="changeui.phoneticFont" >{{sf?sf.english_ssk: ''}}</p>
         </ion-label>
-        <ion-button fill="clear" class="no-background" slot="end" (click)="saveLocalFav(sf)" *ngIf="!isfav">
+        <ion-button fill="clear" class="no-background" slot="end" (click)="saveLocalFav(sf,i)" *ngIf="!isfav">
           <!-- <ion-icon name="heart" [color]="sf?.isFavourite?'danger':'white'"></ion-icon> -->
         <ion-icon name="heart" [ngClass]="sf?.isFavourite?'isFav':'notFav'" ></ion-icon>
         </ion-button>
@@ -27,14 +37,14 @@
           <ion-icon name="trash-outline" color="danger"></ion-icon>
         </ion-button>
       </ion-item>
-      <div padding-horizontal>
-        <ion-progress-bar [value]="getProgressVal(sf.position, sf.duration)"></ion-progress-bar>
+      <div padding-horizontal class="bottomItem">
+        <ion-progress-bar [value]="getProgressVal(sf.position, sf.duration,sf)" ></ion-progress-bar>
       </div>
       <!--<p>{{ sf.position*1000-1800000 | date:'mm:ss' }}</p>
       <p *ngIf="sf.duration == -1" >&#45;&#45;:&#45;&#45;</p>
       <p *ngIf="sf.duration != -1">{{ sf.duration*1000-1800000 | date:'mm:ss' }}</p>-->
     </ng-container>
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="checkFilterOrNot($event)" *ngIf="!isfav">
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="checkFilterOrNot($event)" *ngIf="!isfav && serverFileArray?.length > 0">
       <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
@@ -46,9 +56,9 @@
     [disabled]="isPlayingAll && testnextFileIndex > 0 ?false:true">
     <ion-icon name="arrow-back"></ion-icon>
   </ion-fab-button>
-  <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?playAll(): stopPlayRecording()">
-    <span *ngIf="isPlayingAll">Stop</span>
-    <span *ngIf="!isPlayingAll">Play all</span>
+  <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?playAll(): newallStop()">
+    <span *ngIf="newplayAll">Stop</span>
+    <span *ngIf="!newplayAll">Play all</span>
   </ion-fab-button>
   <ion-fab-button color="myWhite" class="back-prev" (click)="nextplay()"
     [disabled]="isPlayingAll && serverFileArray.length -1  != testnextFileIndex ?false:true">

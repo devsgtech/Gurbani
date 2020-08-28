@@ -62,7 +62,7 @@ ion-content{
   .empty-fav{
     text-align: center;
   }
-    height: 100vh;
+    // height: 100vh;
   ion-list{
     ion-item{
       width: 100%;
@@ -94,6 +94,7 @@ ion-content{
       border-bottom: 1px dashed #c2c2c2;
     }
     ion-progress-bar{
+      --buffer-background: var(--ion-color-success-contrast);
       --background: none;
       --progress-background: var(--ion-color-success);
     }
@@ -104,6 +105,20 @@ ion-content{
 }
 .notFav{
   color: gray;
+}
+.favouriteCount{
+  display: flex;
+    justify-content: space-between;
+    margin: 0px 16px 0px 16px;
+    h3{
+      font-size: 16px;
+    }
+}
+.noRecord{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
 }
 ion-fab{
   display: flex;

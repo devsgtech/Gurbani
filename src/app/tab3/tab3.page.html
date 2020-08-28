@@ -18,7 +18,7 @@
 <ion-content>
   <ng-container *ngIf="!listShow">
     <ion-card *ngFor="let item of tilesArray">
-      <ion-item detail="true" (click)="readBook(item)">
+      <ion-item detail="true" (click)="readBook(item)" lines="none">
         <label>
           <p class="pnb-word">{{item.punjabiWord}}</p>
           <p class="eng-word">{{item.englishWord}}</p>
