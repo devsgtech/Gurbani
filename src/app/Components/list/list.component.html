@@ -30,7 +30,6 @@
           <p *ngIf="sf.english_ssk && changeui.phonetic" [ngClass]="changeui.phoneticFont" >{{sf?sf.english_ssk: ''}}</p>
         </ion-label>
         <ion-button fill="clear" class="no-background" slot="end" (click)="saveLocalFav(sf,i)" *ngIf="!isfav">
-          <!-- <ion-icon name="heart" [color]="sf?.isFavourite?'danger':'white'"></ion-icon> -->
         <ion-icon name="heart" [ngClass]="sf?.isFavourite?'isFav':'notFav'" ></ion-icon>
         </ion-button>
         <ion-button fill="clear" slot="end" class="no-background" (click)="removaFavourite(i)" *ngIf="isfav">
@@ -40,9 +39,6 @@
       <div padding-horizontal class="bottomItem">
         <ion-progress-bar [value]="getProgressVal(sf.position, sf.duration,sf)" ></ion-progress-bar>
       </div>
-      <!--<p>{{ sf.position*1000-1800000 | date:'mm:ss' }}</p>
-      <p *ngIf="sf.duration == -1" >&#45;&#45;:&#45;&#45;</p>
-      <p *ngIf="sf.duration != -1">{{ sf.duration*1000-1800000 | date:'mm:ss' }}</p>-->
     </ng-container>
     <ion-infinite-scroll threshold="100px" (ionInfinite)="checkFilterOrNot($event)" *ngIf="!isfav && serverFileArray?.length > 0">
       <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
