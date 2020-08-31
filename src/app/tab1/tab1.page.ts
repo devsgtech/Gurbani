@@ -102,7 +102,6 @@ export class Tab1Page implements OnInit {
   closeMenu() {
     this.menu.close();
   }
-
   nextplaynn() {
     console.log('next play click')
     this.stopAll();
@@ -254,6 +253,7 @@ export class Tab1Page implements OnInit {
         this.igdb.fetchSongs().subscribe(item => {
           this.listItemFromDb = item;
           this.listItemFromDbCopy = this.listItemFromDb;
+          console.log('sggs_darpan', this.listItemFromDb);
           this.newHelper.dismissLoading();
         })
       }

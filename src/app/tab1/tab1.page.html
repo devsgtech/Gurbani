@@ -23,10 +23,8 @@
   <ion-list >
     <ng-container *ngFor="let sf of listItemFromDb; let i=index">
       <ion-item class="ion-no-margin" [id]="'currentPlayItemId'+i">
-        <ion-label><h2>{{sf?sf.sggs_darpan: ''}}</h2></ion-label>
-        
+        <ion-label><h2>{{sf.sggs_darpan}}</h2></ion-label>
           <ion-button fill="clear" slot="end" (click)="!sf.isPlaying?plyAll1(sf, i, true): stopPlaying(sf)">
-     
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
@@ -34,8 +32,8 @@
       </ion-item>
       <ion-item class="bottomItem ion-no-margin">
         <ion-label>
-          <p *ngIf="sf.transliteration"  [ngClass]="changeui.fontSize">{{sf?sf.transliteration: ''}}</p>
-          <p *ngIf="sf.english_ssk"  [ngClass]="changeui.fontSize">{{sf?sf.english_ssk: ''}}</p>
+          <p [ngClass]="changeui.fontSize">{{sf?.transliteration}}</p>
+          <p [ngClass]="changeui.fontSize">{{sf?.english_ssk}}</p>
         </ion-label>
         <ion-button fill="clear" slot="end" (click)="saveLocalFav(sf)">
           <ion-icon name="heart" [color]="sf?.isFavourite?'danger':'white'"></ion-icon>

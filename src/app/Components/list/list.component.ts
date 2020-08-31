@@ -297,10 +297,10 @@ newallStop(){
   this.stopPlayRecording()
 }
   stopPlayRecording() {
-    this.isPlayingAll = false;
     if(this.isPlayingAll) {
       this.testnextFileIndex = 0;
     }
+    this.isPlayingAll = false;
     if(this.currPlayingFile){
       this.currPlayingFile.stop();
       this.currPlayingFile.release();
