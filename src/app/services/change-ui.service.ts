@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { ThemeDetection } from '@ionic-native/theme-detection/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,9 @@ export class ChangeUIService {
   fontSize = 'font-16';
   phoneticFont = 'font-16'
   darkMode : boolean = false;
+  themeToggleValue = 1;
   constructor(
+    private td: ThemeDetection,
     private platform: Platform,
   ) { 
     this.platform.ready().then(()=>{
@@ -35,5 +38,33 @@ export class ChangeUIService {
       document.body.classList.remove("dark")
     }
    
+  }
+
+
+  themeDetection(){
+    console.log('-<Theme Detection Function call dfrom Search tab');
+    this.td.isAvailable()
+    .then((res) => {
+       if(res.value) {
+         this.td.isDarkModeEnabled().then((res) => {
+           console.log(res, '-<Theme Detection');
+           if(res.value == true){
+             this.themeToggleValue = 0;
+           }else {
+            this.themeToggleValue = 1;
+          }
+          this.changeUIdarkMode();
+         })
+         .catch((error: any) => console.error(error));
+       }
+    })
+    .catch((error: any) => console.error(error));
+    
+  }
+
+
+  changeUIdarkMode(){
+    let data_ = this.themeToggleValue==1 ? false : true; 
+    this.setAppTheme(data_);
   }
 }

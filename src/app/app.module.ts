@@ -18,6 +18,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import {IonicStorageModule} from '@ionic/storage';
 import {Network} from '@ionic-native/network/ngx';
 import { FilterModalComponentComponent } from './Modal/filter-modal-component/filter-modal-component.component';
+import { ThemeDetection } from "@ionic-native/theme-detection/ngx";
 
 @NgModule({
   declarations: [AppComponent,FilterModalComponentComponent],
@@ -28,7 +29,7 @@ import { FilterModalComponentComponent } from './Modal/filter-modal-component/fi
     IonicStorageModule.forRoot({name: '_SgtechSchoolOfGurbani'}),
   ],
   providers: [
-    StatusBar,
+    StatusBar,ThemeDetection,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Media,
@@ -37,6 +38,7 @@ import { FilterModalComponentComponent } from './Modal/filter-modal-component/fi
     SQLitePorter,AndroidPermissions,
     FileTransferObject, 
     Network,
+    
   ],
   bootstrap: [AppComponent]
 })

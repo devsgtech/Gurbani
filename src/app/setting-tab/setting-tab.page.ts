@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ChangeUIService } from '../services/change-ui.service';
 import { Platform,  } from '@ionic/angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ThemeDetection } from "@ionic-native/theme-detection/ngx";
 
 @Component({
   selector: 'app-setting-tab',
@@ -10,7 +11,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class SettingTabPage implements OnInit {
   font: any = 16;
-  dd:any = 1;
+  dd:any = this.changeui.themeToggleValue;
   true = true;
   false = false;
   englishTranslation: any;
@@ -18,7 +19,7 @@ export class SettingTabPage implements OnInit {
   @Input() name: string;
   mainForm: FormGroup;
   Data= [];
-  constructor(
+  constructor(private themeDetection: ThemeDetection,
     public changeui:ChangeUIService,
     private platform: Platform,
     public formBuilder: FormBuilder,
@@ -27,6 +28,11 @@ export class SettingTabPage implements OnInit {
 
   ngOnInit() {
     this.changeFont();
+ 
+  }
+
+  ionViewWillEnter(){
+   
   }
 
   changeFont(){

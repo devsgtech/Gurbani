@@ -5,12 +5,14 @@ import { raagDB } from 'src/app/services/raagDb';
 import { newhelper } from 'src/app/services/newhelper';
 import { ListComponent } from 'src/app/Components/list/list.component';
 import { raags } from '../../services/constantString'
+import { ChangeUIService } from 'src/app/services/change-ui.service';
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPage  implements OnInit {
+  
   @ViewChild(ListComponent) listComp:ListComponent;
   raagData = raags.raagArray;
   backdrop : boolean = false;
@@ -28,6 +30,7 @@ export class SearchPage  implements OnInit {
   sqlScript = '';
   checkDidFilter : boolean = false;
   constructor(
+    public changeui: ChangeUIService,
     public modalController: ModalController,
     private raagDb  : raagDB,
     private helper : newhelper,
@@ -43,6 +46,8 @@ export class SearchPage  implements OnInit {
     //     })
     //   }
     // });
+
+    this.changeui.themeDetection();
   }
 
    ionViewWillLeave() {
