@@ -48,6 +48,12 @@ export class FilterModalComponentComponent implements OnInit {
   setRaag(ev){
     this.filterData.raag = ev.detail.value;
   }
+  setScripture(ev){
+    this.filterData.scriptures = ev.detail.value;
+  }
+  setWriter(ev){
+    this.filterData.writer = ev.detail.value;
+  }
   applyFilter(){
     console.log('Apply Function call',this.filterData,)
     this.modalController.dismiss(this.filterData);
@@ -65,8 +71,8 @@ export class FilterModalComponentComponent implements OnInit {
   closeModal(){
     let data ={
       searchMode  : this.filterData.searchMode,
-      scriptures  : '1',
-      writer      : '0',
+      scriptures  : this.filterData.scriptures,
+      writer      :  this.filterData.writer,
       raag        : this.filterData.raag,
     }
     this.modalController.dismiss(data);

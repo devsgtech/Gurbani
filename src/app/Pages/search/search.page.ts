@@ -63,7 +63,8 @@ export class SearchPage  implements OnInit {
           console.log('Error e')
         }
 
-        this.listComp.stopPlayRecording()
+        this.listComp.stopPlayRecording();
+        this.listComp.setIndexZero();
     }
     ionViewWillEnter(){
       this.listComp.setFavourite()

@@ -32,7 +32,7 @@ export class ListComponent implements OnInit {
   serverFileArray:  any = [];
   isPlayingAll = false;
   serverFileArrayCopy: any = [];
-  testnextFileIndex: any;
+  testnextFileIndex= 0;
   offset = 0;
   // searchString = '';
   indexx: any;
@@ -46,6 +46,7 @@ export class ListComponent implements OnInit {
   cancelAll:boolean = true;
   totalFavourite = 0;
   noRecords :boolean = false;
+
   constructor(public platform: Platform,
     private file: File,
     private transfer: FileTransfer,
@@ -93,10 +94,13 @@ export class ListComponent implements OnInit {
     this.prepareAudioFile();
   }
   ionViewWillLeave() {
-    this.stopPlayRecording();
+    this.testnextFileIndex = 0;
+    this.newallStop();
   }
 
-  
+  setIndexZero(){
+    this.testnextFileIndex = 0;
+  }
   ionViewWillEnter() {
     if(this.isfav == true){
       this.getDataFromLocalStorage()
@@ -264,9 +268,9 @@ newplayAll : boolean = false;
 playAll(){
   this.newplayAll = true;
   this.cancelAll = false;
-  this.testnextFileIndex = 0;
+  // this.testnextFileIndex = 0;
   // this.playRecording();
-  this.download( null, 0,false)
+  this.download( null, this.testnextFileIndex,false)
 }
 newallStop(){
   this.newplayAll =  false;
@@ -274,7 +278,7 @@ newallStop(){
 }
   stopPlayRecording() {
     if(this.isPlayingAll) {
-      this.testnextFileIndex = 0;
+      // this.testnextFileIndex = 0;
     }
     this.isPlayingAll = false;
     if(this.currPlayingFile){
@@ -323,7 +327,7 @@ searchWord(ev = null) {
 /////////////////DB Search End///////////////////
 /////////////////LOAD DATA From DB///////////////////////////
 fetchSql() {
-  this.newHelper.presentLoadingWithOptions('Hold on, preparing your data. This may take some time!');
+  // this.newHelper.presentLoadingWithOptions('Hold on, preparing your data. This may take some time!');
   this.igdb.dbState().subscribe((res) => {
     if (res) {
         this.igdb.fetchSongs().subscribe(item => {
@@ -344,10 +348,13 @@ fetchSql() {
       console.log('this.igdb.rowCount0 else', this.igdb.rowCount)
         this.igdb.createTable().then((res) => {
           console.log('Response after Get Data From DB', res)
-          this.serverFileArray= res;
-          // res.map(item => {
-          //   this.serverFileArray.push(item)
-          // })
+          res.map(item=>{
+            item.duration= -1;
+            item.position=0,
+            item.isFileDownloaded= false,
+            item.isDownloading= false,
+            this.serverFileArray.push(item);
+          })
           this.serverFileArrayCopy = this.serverFileArray;
           this.newHelper.dismissLoading();
           this.setFavourite();
@@ -441,8 +448,12 @@ searchShabadAnyWhereLoadMoreandOffset(event) {
     if (res && res.length == 0) {
       event.target.disabled = true;
     }
-    res.map(item => {
-      this.serverFileArray.push(item)
+    res.map(item=>{
+      item.duration= -1;
+      item.position=0,
+      item.isFileDownloaded= false,
+      item.isDownloading= false,
+      this.serverFileArray.push(item);
     })
     this.serverFileArrayCopy = this.serverFileArray;
     event.target.complete();
@@ -462,8 +473,12 @@ searchShabadFirstWordLoadMoreandOffset(event) {
     if (res && res.length == 0) {
       event.target.disabled = true;
     }
-    res.map(item => {
-      this.serverFileArray.push(item)
+    res.map(item=>{
+      item.duration= -1;
+      item.position=0,
+      item.isFileDownloaded= false,
+      item.isDownloading= false,
+      this.serverFileArray.push(item);
     })
     this.serverFileArrayCopy = this.serverFileArray;
     event.target.complete();
@@ -472,6 +487,8 @@ searchShabadFirstWordLoadMoreandOffset(event) {
 }
 ////////////////LOAD DATA FROM DB END//////////////////////
 cancelAllAndPlayOne(sf, i, dd){
+  this.cancelDownload();
+  this.testnextFileIndex = 0;
   this.cancelAll = true;
   this.newplayAll = false;
   if(this.currPlayingFile){
@@ -750,5 +767,10 @@ searchFilterDataNotReset(sqlText,arrayText,){
   this.prepareAudioFile();
 }
 
+
+cancelDownload(){
+  const fileTransfer: FileTransferObject = this.transfer.create();
+  fileTransfer.abort();
+}
 
 }

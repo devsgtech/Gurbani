@@ -22,13 +22,13 @@
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Scriptures</ion-label>
-      <ion-select [value]='filterData.scriptures' [(ngModel)]="filterData.scriptures">
+      <ion-select [value]='filterData.scriptures' [(ngModel)]="filterData.scriptures" (ionChange)="setScripture($event)">
         <ion-select-option value="0">All Scriptures</ion-select-option>
         <ion-select-option value="1">Shri Guru Granth Sahib Ji</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">Writer</ion-label>
+      <ion-label position="stacked"  (ionChange)="setWriter($event)">Writer</ion-label>
       <ion-select [value]='filterData.writer'>
         <ion-select-option value="0">Shri Guru Nanak Dev Ji</ion-select-option>
       </ion-select>
