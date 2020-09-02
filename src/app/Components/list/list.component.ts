@@ -255,7 +255,7 @@ export class ListComponent implements OnInit {
       this.currPlayingFile = res;
       setTimeout(() => {
         this.currPlayingFile.play();
-      }, 0)
+      }, 100)
       this.setDuration(currentPlayFile);
       this.setStatus(currentPlayFile).then((status) => {
         this.getAndSetCurrentAudioPosition(currentPlayFile, index, isSingle);
