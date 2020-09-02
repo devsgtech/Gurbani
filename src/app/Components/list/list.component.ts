@@ -249,6 +249,9 @@ export class ListComponent implements OnInit {
     }
     this.createAudioFile(newUrl).then((res: any) => {
       this.currPlayingFile = res;
+      try {
+        this.currPlayingFile.stop();
+      } catch (e) {}
       this.currPlayingFile.play();
       this.setDuration(currentPlayFile);
       this.setStatus(currentPlayFile).then((status) => {
