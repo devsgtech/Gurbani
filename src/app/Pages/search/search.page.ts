@@ -65,6 +65,7 @@ export class SearchPage  implements OnInit {
 
         this.listComp.stopPlayRecording();
         this.listComp.setIndexZero();
+        this.listComp.cancelDownload()
     }
     ionViewWillEnter(){
       this.listComp.setFavourite()
