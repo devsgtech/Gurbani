@@ -18,7 +18,7 @@
           <h2>{{sf?sf.punjabiVersion: ''}}</h2>
         </ion-label>
         <ion-button color="myWhite" fill="clear" slot="end"
-          (click)="!sf.isPlaying?cancelAllAndPlayOne(sf, i, true): stopPlayRecording()">
+          (click)="onPlay(sf, i)">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>

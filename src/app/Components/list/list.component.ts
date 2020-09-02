@@ -235,7 +235,7 @@ export class ListComponent implements OnInit {
   playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
     ListComponent.scrollTo(index);
     if (sFile && !sFile.isFileDownloaded) {
-      console.log('sFile', sFile.isDownloading, sFile);
+      console.log('sFile', sFile.isDownloading, sFile, newUrl);
     }
     
     let currentPlayFile: any;
@@ -247,12 +247,15 @@ export class ListComponent implements OnInit {
     if (!isSingle) {
       this.isPlayingAll = true;
     }
+    try {
+      this.currPlayingFile.stop();
+    } catch (e) {}
     this.createAudioFile(newUrl).then((res: any) => {
+      console.log('rere', res);
       this.currPlayingFile = res;
-      try {
-        this.currPlayingFile.stop();
-      } catch (e) {}
-      this.currPlayingFile.play();
+      setTimeout(() => {
+        this.currPlayingFile.play();
+      }, 0)
       this.setDuration(currentPlayFile);
       this.setStatus(currentPlayFile).then((status) => {
         this.getAndSetCurrentAudioPosition(currentPlayFile, index, isSingle);
@@ -506,10 +509,10 @@ cancelAllAndPlayOne(sf, i, dd){
   this.testnextFileIndex = 0;
   this.cancelAll = true;
   this.newplayAll = false;
-  if(this.currPlayingFile){
+  try {
     this.currPlayingFile.stop();
     this.currPlayingFile.release();
-  }
+  } catch (e) {}
   this.download(sf, i, dd)
 }
 
@@ -766,9 +769,9 @@ searchFilterDataNotReset(sqlText,arrayText,){
     console.log('Response From Common Filter', res);
     res.map(item=>{
       item.duration= -1;
-      item.position=0,
-      item.isFileDownloaded= false,
-      item.isDownloading= false,
+      item.position=0;
+      item.isFileDownloaded= false;
+      item.isDownloading= false;
       this.serverFileArray.push(item);
     })
     this.serverFileArrayCopy = this.serverFileArray;
@@ -782,10 +785,17 @@ searchFilterDataNotReset(sqlText,arrayText,){
   this.prepareAudioFile();
 }
 
-
 cancelDownload(){
-  const fileTransfer: FileTransferObject = this.transfer.create();
-  fileTransfer.abort();
+  try {
+    const fileTransfer: FileTransferObject = this.transfer.create();
+    fileTransfer.abort();
+  } catch (e) {}
 }
-
+onPlay(sf, i) {
+  if (!sf.isPlaying) {
+    this.cancelAllAndPlayOne(sf, i, true)
+  } else {
+    this.stopPlayRecording();
+  }
+}
 }
