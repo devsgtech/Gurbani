@@ -151,12 +151,17 @@ export class ListComponent implements OnInit {
       }).catch(e => console.log('e', e));
     }).catch(e => console.log('e0', e));
   }
-  createAudioFile(url): MediaObject {
-    if (this.platform.is('ios')) {
-      return this.media.create((url).replace(/^file:\/\//, ''));
-    } else {
-      return this.media.create(url);
-    }
+  createAudioFile(url) {
+    return new Promise(resolve => {
+      this.currPlayingFile = null;
+      if (this.platform.is('ios')) {
+        const ss = this.media.create((url).replace(/^file:\/\//, ''));
+        return resolve(ss);
+      } else {
+        const ss = this.media.create(url);
+        return resolve(ss);
+      }
+    });
   }
 
   setPlayingDefault() {
@@ -178,26 +183,30 @@ export class ListComponent implements OnInit {
     }, 100);
   }
   setStatus(sFile) {
-    this.setPlayingDefault();
-    this.currPlayingFile.onStatusUpdate.subscribe(status => {
-      switch (status) {
-        case 1:
-          sFile.isInPlay = false;
-          break;
-        case 2:   // 2: playing
-          sFile.isInPlay = true;
-          sFile.isPlaying = true;
-          break;
-        case 3:   // 3: pause
-          sFile.isInPlay = true;
-          sFile.isPlaying = false;
-          break;
-        case 4:   // 4: stop
-        default:
-          sFile.isInPlay = false;
-          sFile.isPlaying = false;
-          break;
-      }
+    return new Promise(resolve => {
+      this.setPlayingDefault();
+      this.currPlayingFile.onStatusUpdate.subscribe(status => {
+        switch (status) {
+          case 1:
+            sFile.isInPlay = false;
+            break;
+          case 2:   // 2: playing
+            sFile.isInPlay = true;
+            sFile.isPlaying = true;
+            break;
+          case 3:   // 3: pause
+            sFile.isInPlay = true;
+            sFile.isPlaying = false;
+            break;
+          case 4:   // 4: stop
+            break;
+          default:
+            sFile.isInPlay = false;
+            sFile.isPlaying = false;
+            break;
+        }
+        return resolve(status);
+      });
     });
   }
   getAndSetCurrentAudioPosition(sFile, index, isSingle) {
@@ -238,11 +247,14 @@ export class ListComponent implements OnInit {
     if (!isSingle) {
       this.isPlayingAll = true;
     }
-    this.currPlayingFile = this.createAudioFile(newUrl)
-    this.currPlayingFile.play();
-    this.setDuration(currentPlayFile);
-    this.setStatus(currentPlayFile);
-    this.getAndSetCurrentAudioPosition(currentPlayFile, index, isSingle);
+    this.createAudioFile(newUrl).then((res: any) => {
+      this.currPlayingFile = res;
+      this.currPlayingFile.play();
+      this.setDuration(currentPlayFile);
+      this.setStatus(currentPlayFile).then((status) => {
+        this.getAndSetCurrentAudioPosition(currentPlayFile, index, isSingle);
+      }).catch(() => {});
+    }).catch(() => {});
   }
 
 
@@ -281,10 +293,10 @@ newallStop(){
       // this.testnextFileIndex = 0;
     }
     this.isPlayingAll = false;
-    if(this.currPlayingFile){
+    try {
       this.currPlayingFile.stop();
       this.currPlayingFile.release();
-    }
+    } catch (e) {}
     clearInterval(this.getDurationInterval);
     clearInterval(this.getPositionInterval);
     this.setPlayingDefault();
@@ -499,9 +511,9 @@ cancelAllAndPlayOne(sf, i, dd){
 }
 
 async download(sf, i, dd) {
-  if (this.currPlayingFile) {
+  try {
     this.stopPlayRecording();
-  }
+  } catch (e) {}
   sf = this.serverFileArray[i];
   console.log('SfFull Data', sf)
   await this.platform.ready();

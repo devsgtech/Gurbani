@@ -29,7 +29,7 @@
           <p *ngIf="sf.transliteration && changeui.english" [ngClass]="changeui.fontSize">{{sf?sf.transliteration: ''}}</p>
           <p *ngIf="sf.english_ssk && changeui.phonetic" [ngClass]="changeui.phoneticFont" >{{sf?sf.english_ssk: ''}}</p>
         </ion-label>
-        <ion-button fill="clear" class="no-background" slot="end" (click)="saveLocalFav(sf,i)" *ngIf="!isfav">
+        <ion-button fill="clear" class="no-background" slot="end" (click)="saveLocalFav(sf)" *ngIf="!isfav">
         <ion-icon name="heart" [ngClass]="sf?.isFavourite?'isFav':'notFav'" ></ion-icon>
         </ion-button>
         <ion-button fill="clear" slot="end" class="no-background" (click)="removaFavourite(i)" *ngIf="isfav">
@@ -49,7 +49,7 @@
 </ion-content>
 <ion-fab vertical="bottom" horizontal="center" slot="fixed" *ngIf="!isfav">
   <ion-fab-button color="myWhite" class="back-prev" (click)="prevplay()"
-    [disabled]="isPlayingAll && testnextFileIndex > 0 ?false:true">
+    [disabled]="!(isPlayingAll && testnextFileIndex > 0)">
     <ion-icon name="arrow-back"></ion-icon>
   </ion-fab-button>
   <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?playAll(): newallStop()">
@@ -57,7 +57,7 @@
     <span *ngIf="!newplayAll">Play all</span>
   </ion-fab-button>
   <ion-fab-button color="myWhite" class="back-prev" (click)="nextplay()"
-    [disabled]="isPlayingAll && serverFileArray.length -1  != testnextFileIndex ?false:true">
+    [disabled]="!(isPlayingAll && serverFileArray.length -1  != testnextFileIndex)">
     <ion-icon name="arrow-forward"></ion-icon>
   </ion-fab-button>
 </ion-fab>
