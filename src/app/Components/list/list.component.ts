@@ -72,6 +72,11 @@ export class ListComponent implements OnInit {
     });
     this.platform.pause.subscribe(e => {
       this.newallStop();
+      this.isPlayingAll = false;
+    });
+    this.platform.resume.subscribe(e => {
+      this.newallStop();
+      this.isPlayingAll = false;
     });
 
   }
@@ -291,22 +296,18 @@ export class ListComponent implements OnInit {
 
     // this.playRecording(nextFile, nextFileIndex, isSingle);
   }
-newplayAll : boolean = false;
 playAll(){
-  this.newplayAll = true;
+  this.isPlayingAll = true;
   this.cancelAll = false;
   // this.testnextFileIndex = 0;
   // this.playRecording();
   this.download( null, this.testnextFileIndex,false)
 }
 newallStop(){
-  this.newplayAll =  false;
+  this.isPlayingAll =  false;
   this.stopPlayRecording()
 }
   stopPlayRecording() {
-    if(this.isPlayingAll) {
-      // this.testnextFileIndex = 0;
-    }
     this.isPlayingAll = false;
     try {
       this.currPlayingFile.stop();
@@ -525,7 +526,7 @@ cancelAllAndPlayOne(sf, i, dd){
   this.cancelDownload();
   this.testnextFileIndex = 0;
   this.cancelAll = true;
-  this.newplayAll = false;
+  this.isPlayingAll = false;
   try {
     this.currPlayingFile.stop();
     this.currPlayingFile.release();
@@ -630,7 +631,7 @@ downloadAudioFile(sf, i, dd) {
           if (err.http_status == 404) {
             sf.isDownloading = false;
            
-            if(this.newplayAll){
+            if(this.isPlayingAll){
              
               this.presentAlertConfirm()
             } else {
