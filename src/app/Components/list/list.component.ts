@@ -70,13 +70,13 @@ export class ListComponent implements OnInit {
       this.newallStop();
       setTimeout(() => {
         this.isPlayingAll = false;
-      }, 0);
+      }, 200);
     });
     this.platform.resume.subscribe(e => {
       this.newallStop();
       setTimeout(() => {
         this.isPlayingAll = false;
-      }, 0);
+      }, 200);
     });
 
   }

@@ -40,7 +40,6 @@
     "@ionic-native/toast": "^5.27.0",
     "@ionic/angular": "^5.0.0",
     "@ionic/storage": "^2.3.0",
-    "cordova-android": "^8.1.0",
     "cordova-ios": "6.1.0",
     "cordova-plugin-android-permissions": "^1.0.2",
     "cordova-plugin-app-version": "^0.1.9",
@@ -73,6 +72,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
+    "cordova-android": "^9.0.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.2.1",
@@ -111,8 +111,8 @@
       "cordova-plugin-theme-detection": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }
