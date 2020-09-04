@@ -10,10 +10,8 @@ import { ChangeUIService } from 'src/app/services/change-ui.service';
 import { VARS } from 'src/app/services/constantString';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Network } from '@ionic-native/network/ngx';
-import { downloadData } from '../../services/downloadData';
 import { FilterModalComponentComponent } from 'src/app/Modal/filter-modal-component/filter-modal-component.component';
 import { raagDB } from 'src/app/services/raagDb';
-// import { HelperService } from 'src/app/services/helper.service';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -24,45 +22,43 @@ import { AlertController } from '@ionic/angular';
 export class ListComponent implements OnInit {
   @Input()  isfav: any;
   @Input()  filterData: any;
-  @Input()  searchString:any;
+  @Input()  searchString: any;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   searchOpt = '';
   storageDirectory: any; currPlayingFile: MediaObject;
   getDurationInterval: any;
   getPositionInterval: any;
-  serverFileArray:  any = [];
+  serverFileArray: any = [];
   isPlayingAll = false;
   serverFileArrayCopy: any = [];
-  testnextFileIndex= 0;
+  testnextFileIndex = 0;
   offset = 0;
   // searchString = '';
   indexx: any;
   searchOffset = 0;
-  online :boolean = true;
-  backdrop : boolean = false;
-  raagData  : any = [];
-  checkDidFilter : boolean = false;
-  sqlText:any;
+  online = true;
+  backdrop = false;
+  raagData: any = [];
+  checkDidFilter = false;
+  sqlText: any;
   arrayText = [];
-  cancelAll:boolean = true;
+  cancelAll = true;
   totalFavourite = 0;
-  noRecords :boolean = false;
-
+  noRecords = false;
   constructor(public platform: Platform,
-    private file: File,
-    private transfer: FileTransfer,
-    private igdb: shabadDB,
-    public changeui: ChangeUIService,
-    private newHelper: newhelper,
-    private androidPermissions: AndroidPermissions,
-    private storage: Storage,
-    private network: Network,
-    private downloadData : downloadData,
-    private raagDb  : raagDB,
-    public alertController: AlertController,
-    public modalController: ModalController,
+              private file: File,
+              private transfer: FileTransfer,
+              private igdb: shabadDB,
+              public changeui: ChangeUIService,
+              private newHelper: newhelper,
+              private androidPermissions: AndroidPermissions,
+              private storage: Storage,
+              private network: Network,
+              private raagDb: raagDB,
+              public alertController: AlertController,
+              public modalController: ModalController,
     // private helper : HelperService,
-    private media: Media) {
+              private media: Media) {
     this.platform.ready().then(() => {
       if (this.platform.is('ios')) {
         this.storageDirectory = this.file.dataDirectory;
@@ -72,31 +68,35 @@ export class ListComponent implements OnInit {
     });
     this.platform.pause.subscribe(e => {
       this.newallStop();
-      this.isPlayingAll = false;
+      setTimeout(() => {
+        this.isPlayingAll = false;
+      }, 0);
     });
     this.platform.resume.subscribe(e => {
       this.newallStop();
-      this.isPlayingAll = false;
+      setTimeout(() => {
+        this.isPlayingAll = false;
+      }, 0);
     });
 
-  }
-  ionViewDidLeave(){
-    this.newallStop();
   }
   static scrollTo(index) {
     const currentId = document.getElementById('currentPlayItemId' + index);
     currentId.scrollIntoView({ behavior: 'smooth' });
   }
+  ionViewDidLeave(){
+    this.newallStop();
+  }
   ngOnInit() {
     this.raagDb.dbState().subscribe((res) => {
-      if(res){
+      if (res){
         this.raagDb.fetchSongs().subscribe(item => {
           this.raagData = item;
-        })
+        });
       }
     });
-    if(this.isfav == true){
-      
+    if (this.isfav == true){
+
     }else{
       console.log('Fetch data From DB Search tab');
       this.fetchSql();
@@ -113,12 +113,12 @@ export class ListComponent implements OnInit {
   }
   ionViewWillEnter() {
     this.newallStop();
-    if(this.isfav == true){
-      this.getDataFromLocalStorage()
+    if (this.isfav == true){
+      this.getDataFromLocalStorage();
     }
     this.testnextFileIndex = 0;
     // this.getData();
-   this.setFavourite();
+    this.setFavourite();
     this.online = (this.network.type !== this.network.Connection.NONE);
     this.network.onChange().subscribe((ev) => {
       this.online = (ev.type === 'online');
@@ -233,14 +233,14 @@ export class ListComponent implements OnInit {
           }
         } else { // if (position >= sFile.duration)
           this.stopPlayRecording();
-          this.testnextFileIndex = index + 1
+          this.testnextFileIndex = index + 1;
           const nextFileIndex = this.testnextFileIndex;
           if (this.serverFileArray.length > nextFileIndex && !isSingle) {
             const nextFile = this.serverFileArray[nextFileIndex];
-            this.download( nextFile, nextFileIndex, isSingle)
-          }else if(this.serverFileArray.length == nextFileIndex){
+            this.download( nextFile, nextFileIndex, isSingle);
+          }else if (this.serverFileArray.length == nextFileIndex){
             this.testnextFileIndex = 0;
-            this.newallStop()
+            this.newallStop();
           }
         }
       });
@@ -251,16 +251,14 @@ export class ListComponent implements OnInit {
     if (sFile && !sFile.isFileDownloaded) {
       console.log('sFile', sFile.isDownloading, sFile, newUrl);
     }
-    
+
     let currentPlayFile: any;
     if (sFile) {
       currentPlayFile = sFile;
     } else {
       currentPlayFile = this.serverFileArray[0];
     }
-    if (!isSingle) {
-      this.isPlayingAll = true;
-    }
+    this.isPlayingAll = !isSingle;
     try {
       this.currPlayingFile.stop();
     } catch (e) {}
@@ -269,7 +267,7 @@ export class ListComponent implements OnInit {
       this.currPlayingFile = res;
       setTimeout(() => {
         this.currPlayingFile.play();
-      }, 100)
+      }, 100);
       this.setDuration(currentPlayFile);
       this.setStatus(currentPlayFile).then((status) => {
         this.getAndSetCurrentAudioPosition(currentPlayFile, index, isSingle);
@@ -282,8 +280,8 @@ export class ListComponent implements OnInit {
     this.testnextFileIndex = this.testnextFileIndex + 1;
     const nextFileIndex = this.testnextFileIndex;
     const nextFile = this.serverFileArray[nextFileIndex];
-    let isSingle = false;
-  this.download( nextFile, nextFileIndex, isSingle)
+    const isSingle = false;
+    this.download( nextFile, nextFileIndex, isSingle);
     // this.playRecording(nextFile, nextFileIndex, isSingle);
   }
 
@@ -291,8 +289,8 @@ export class ListComponent implements OnInit {
     this.testnextFileIndex = this.testnextFileIndex - 1;
     const nextFileIndex = this.testnextFileIndex;
     const nextFile = this.serverFileArray[nextFileIndex];
-    let isSingle = false;
-  this.download( nextFile, nextFileIndex, isSingle)
+    const isSingle = false;
+    this.download( nextFile, nextFileIndex, isSingle);
 
     // this.playRecording(nextFile, nextFileIndex, isSingle);
   }
@@ -301,11 +299,11 @@ playAll(){
   this.cancelAll = false;
   // this.testnextFileIndex = 0;
   // this.playRecording();
-  this.download( null, this.testnextFileIndex,false)
+  this.download( null, this.testnextFileIndex, false);
 }
 newallStop(){
   this.isPlayingAll =  false;
-  this.stopPlayRecording()
+  this.stopPlayRecording();
 }
   stopPlayRecording() {
     try {
@@ -323,10 +321,10 @@ newallStop(){
     this.currPlayingFile.getDuration();
   }
 
-  getProgressVal(e, f ,sf) {
+  getProgressVal(e, f , sf) {
     return parseFloat((e / f).toFixed(3));
   }
-/////////////////DB Search///////////////////////
+///////////////// DB Search///////////////////////
 
 searchWord(ev = null) {
   console.log(this.searchOpt, 'this.searchOpt');
@@ -351,13 +349,13 @@ searchWord(ev = null) {
   }
 
 }
-/////////////////DB Search End///////////////////
-/////////////////LOAD DATA From DB///////////////////////////
+///////////////// DB Search End///////////////////
+///////////////// LOAD DATA From DB///////////////////////////
 fetchSql() {
   this.storage.get('_Loaded_Db_INTO_DEVICE').then((loaded: any) => {
-    console.log( 'Storage Data',loaded)
-    if(loaded){
-      this.getData()
+    console.log( 'Storage Data', loaded);
+    if (loaded){
+      this.getData();
     } else{
       this.newHelper.presentLoadingWithOptions('Hold on, preparing your data. This may take some time!');
       this.igdb.dbState().subscribe((res) => {
@@ -366,55 +364,55 @@ fetchSql() {
             this.serverFileArray = item;
             this.serverFileArrayCopy = this.serverFileArray;
             this.newHelper.dismissLoading();
-          })
+          });
         }
       });
-    
-        setTimeout(() => {
-          console.log('this.igdb.rowCount0', this.igdb.rowCount)
-          if(this.igdb.rowCount > 60000){
-          console.log('this.igdb.rowCount0 if', this.igdb.rowCount)
-    
-            this.getData()
+
+      setTimeout(() => {
+          console.log('this.igdb.rowCount0', this.igdb.rowCount);
+          if (this.igdb.rowCount > 60000){
+          console.log('this.igdb.rowCount0 if', this.igdb.rowCount);
+
+          this.getData();
           } else{
-          console.log('this.igdb.rowCount0 else', this.igdb.rowCount)
-            this.igdb.createTable().then((res) => {
-              console.log('Response after Get Data From DB', res)
-              res.map(item=>{
-                item.duration= -1;
-                item.position=0,
-                item.isFileDownloaded= false,
-                item.isDownloading= false,
+          console.log('this.igdb.rowCount0 else', this.igdb.rowCount);
+          this.igdb.createTable().then((res) => {
+              console.log('Response after Get Data From DB', res);
+              res.map(item => {
+                item.duration = -1;
+                item.position = 0,
+                item.isFileDownloaded = false,
+                item.isDownloading = false,
                 this.serverFileArray.push(item);
-              })
+              });
               this.serverFileArrayCopy = this.serverFileArray;
-              this.storage.set('_Loaded_Db_INTO_DEVICE',true)
+              this.storage.set('_Loaded_Db_INTO_DEVICE', true);
               this.newHelper.dismissLoading();
               this.setFavourite();
-            })
+            });
           }
         }, 8000);
     }
-  }).catch(e => console.log("Error =>" ,e));
-    
+  }).catch(e => console.log('Error =>' , e));
+
 }
 
 getData() {
-  console.log('Call Get Function')
+  console.log('Call Get Function');
   this.serverFileArray = [];
   this.offset = 0;
   this.igdb.getDataOffset(this.offset).then((res) => {
-    console.log('Response after Get Data From DB', res)
+    console.log('Response after Get Data From DB', res);
     res.map(item => {
-      item.duration= -1;
-      item.position=0,
-      item.isFileDownloaded= false,
-      item.isDownloading= false,
-      this.serverFileArray.push(item)
-    })
+      item.duration = -1;
+      item.position = 0,
+      item.isFileDownloaded = false,
+      item.isDownloading = false,
+      this.serverFileArray.push(item);
+    });
     this.serverFileArrayCopy = this.serverFileArray;
     this.newHelper.dismissLoading();
-  })
+  });
   this.prepareAudioFile();
   this.setFavourite();
 }
@@ -428,7 +426,7 @@ searchAnywhere(ev) {
     console.log('Resopnse GetData0', res);
     this.serverFileArray = res;
     this.serverFileArrayCopy = this.serverFileArray;
-  })
+  });
   this.setFavourite();
 
 }
@@ -442,7 +440,7 @@ firstWordSearch(ev) {
     console.log('Resopnse GetData0', res);
     this.serverFileArray = res;
     this.serverFileArrayCopy = this.serverFileArray;
-  })
+  });
   this.setFavourite();
 
 }
@@ -450,9 +448,9 @@ firstWordSearch(ev) {
 
 loadData(event) {
   if (this.searchString !== '' || this.searchOpt !== '1') {
-    this.searchShabadAnyWhereLoadMoreandOffset(event)
+    this.searchShabadAnyWhereLoadMoreandOffset(event);
   } else if (this.searchOpt == '1') {
-    this.searchShabadFirstWordLoadMoreandOffset(event)
+    this.searchShabadFirstWordLoadMoreandOffset(event);
   } else {
     this.offset = this.offset + 10;
     console.log('Done');
@@ -462,65 +460,65 @@ loadData(event) {
         event.target.disabled = true;
       }
       res.map(item => {
-        this.serverFileArray.push(item)
-      })
+        this.serverFileArray.push(item);
+      });
       this.serverFileArrayCopy = this.serverFileArray;
       event.target.complete();
-    })
+    });
   }
   this.setFavourite();
 }
 
 searchShabadAnyWhereLoadMoreandOffset(event) {
   this.searchOffset = this.searchOffset + 10;
-  let data = {
+  const data = {
     offset: this.searchOffset,
     searchString: this.searchString,
-  }
+  };
   console.log('data', data, this.searchOffset);
   this.igdb.searchShabadAnyWhereLoadMoreandOffset(data).then((res) => {
     console.log('Resopnse GetData0', res);
     if (res && res.length == 0) {
       event.target.disabled = true;
     }
-    res.map(item=>{
-      item.duration= -1;
-      item.position=0,
-      item.isFileDownloaded= false,
-      item.isDownloading= false,
+    res.map(item => {
+      item.duration = -1;
+      item.position = 0,
+      item.isFileDownloaded = false,
+      item.isDownloading = false,
       this.serverFileArray.push(item);
-    })
+    });
     this.serverFileArrayCopy = this.serverFileArray;
     event.target.complete();
-  })
+  });
   this.setFavourite();
 
 }
 
 searchShabadFirstWordLoadMoreandOffset(event) {
   this.searchOffset = this.searchOffset + 10;
-  let data = {
+  const data = {
     offset: this.searchOffset,
     searchString: this.searchString,
-  }
+  };
   this.igdb.searchShabadFirstWordLoadMoreandOffset(data).then((res) => {
     console.log('Resopnse GetData0', res);
     if (res && res.length == 0) {
       event.target.disabled = true;
     }
-    res.map(item=>{
-      item.duration= -1;
-      item.position=0,
-      item.isFileDownloaded= false,
-      item.isDownloading= false,
+    res.map(item => {
+      item.duration = -1;
+      item.position = 0,
+      item.isFileDownloaded = false,
+      item.isDownloading = false,
       this.serverFileArray.push(item);
-    })
+    });
     this.serverFileArrayCopy = this.serverFileArray;
     event.target.complete();
-  })
+  });
   this.setFavourite();
 }
-////////////////LOAD DATA FROM DB END//////////////////////
+//////////////// LOAD DATA FROM DB END//////////////////////
 cancelAllAndPlayOne(sf, i, dd){
   this.cancelDownload();
   this.testnextFileIndex = 0;
@@ -530,7 +528,7 @@ cancelAllAndPlayOne(sf, i, dd){
     this.currPlayingFile.stop();
     this.currPlayingFile.release();
   } catch (e) {}
-  this.download(sf, i, dd)
+  this.download(sf, i, dd);
 }
 
 async download(sf, i, dd) {
@@ -538,7 +536,7 @@ async download(sf, i, dd) {
     this.stopPlayRecording();
   } catch (e) {}
   sf = this.serverFileArray[i];
-  console.log('SfFull Data', sf)
+  console.log('SfFull Data', sf);
   await this.platform.ready();
   if (this.platform.is('android')) {
     this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
@@ -564,83 +562,83 @@ async download(sf, i, dd) {
     this.createAngDir(sf, i, dd);
   }).catch(err => {
     if (err.message == 'PATH_EXISTS_ERR') {
-      this.createAngDir(sf, i, dd)
+      this.createAngDir(sf, i, dd);
     }
   });
 }
 
 createAngDir(sf, i, dd) {
   this.file.createDir(this.storageDirectory + VARS.shabadDirectory, VARS.angDir + sf.ang_id, false).then(response => {
-    this.downloadAudioFile(sf, i, dd)
+    this.downloadAudioFile(sf, i, dd);
   }).catch(err => {
     if (err.message == 'PATH_EXISTS_ERR') {
-      this.downloadAudioFile(sf, i, dd)
+      this.downloadAudioFile(sf, i, dd);
     }
   });
 }
 
 
 downloadAudioFile(sf, i, dd) {
-  console.log('check', this.cancelAll,'this.cancelAll  ',sf,'sf'  ,dd,' dd')
-  let checkFileUrl = this.storageDirectory + '/'+ VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/';
-  let FileName = 'shabad_' + sf._id + '.mp3';
+  console.log('check', this.cancelAll, 'this.cancelAll  ', sf, 'sf'  , dd, ' dd');
+  const checkFileUrl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/';
+  const FileName = 'shabad_' + sf._id + '.mp3';
   this.file.checkFile(checkFileUrl, FileName).then((entry) => {
-    let nurl = this.storageDirectory + '/' + VARS.shabadDirectory+ '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
+    const nurl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
     sf.isDownloading = false;
-   
-    if(this.cancelAll == false && dd == false){
-      console.log('onecancelAll', this.cancelAll,'this.cancelAll  ',sf,'sf' )
+
+    if (this.cancelAll == false && dd == false){
+      console.log('onecancelAll', this.cancelAll, 'this.cancelAll  ', sf, 'sf' );
       setTimeout(() => {
-        this.playRecording(sf, i, dd,nurl)
+        this.playRecording(sf, i, dd, nurl);
       }, 500);
-    } 
-   if(this.cancelAll && dd == true){
+    }
+    if (this.cancelAll && dd == true){
     setTimeout(() => {
-      this.playRecording(sf, i, dd,nurl)
+      this.playRecording(sf, i, dd, nurl);
     }, 500);
    }
 
   })
     .catch((err) => {
      const url = this.newHelper.returnDownloadUrl(sf.ang_id, sf._id);
-      const fileTransfer: FileTransferObject = this.transfer.create();
-      if(!this.online){
+     const fileTransfer: FileTransferObject = this.transfer.create();
+     if (!this.online){
         this.checkNetwork();
       } else{
         sf.isDownloading = true;
         ListComponent.scrollTo(i);
-      fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
-        let nurl = this.storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
+        fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
+        const nurl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
         sf.isDownloading = false;
-        
-        console.log('Inside Download For Play', this.cancelAll,'this.cancelAll  ',sf,'sf' )
-        if(this.cancelAll == false && dd == false){
-          console.log('TwocancelAll', this.cancelAll,'this.cancelAll  ',sf,'sf' )
+
+        console.log('Inside Download For Play', this.cancelAll, 'this.cancelAll  ', sf, 'sf' );
+        if (this.cancelAll == false && dd == false){
+          console.log('TwocancelAll', this.cancelAll, 'this.cancelAll  ', sf, 'sf' );
           setTimeout(() => {
-            this.playRecording(sf, i, dd,nurl)
+            this.playRecording(sf, i, dd, nurl);
           }, 500);
-        } 
-       if(this.cancelAll && dd == true){
+        }
+        if (this.cancelAll && dd == true){
         setTimeout(() => {
-          this.playRecording(sf, i, dd,nurl)
+          this.playRecording(sf, i, dd, nurl);
         }, 500);
        }
       })
         .catch((err) => {
           if (err.http_status == 404) {
             sf.isDownloading = false;
-           
-            if(this.isPlayingAll){
-             
-              this.presentAlertConfirm()
+
+            if (this.isPlayingAll){
+
+              this.presentAlertConfirm();
             } else {
-              this.newHelper.presentToastWithOptions('File Not Found on Server')
+              this.newHelper.presentToastWithOptions('File Not Found on Server');
             }
           }
         });
       }
     });
-  
+
 }
 
 async presentAlertConfirm() {
@@ -658,7 +656,7 @@ async presentAlertConfirm() {
         text: 'Play Next',
         cssClass: 'playAlert',
         handler: () => {
-          this.nextplay()
+          this.nextplay();
         }
       }
     ]
@@ -666,173 +664,173 @@ async presentAlertConfirm() {
   await alert.present();
 }
 
-///////////////Set Favourite section Start///////////////////
+/////////////// Set Favourite section Start///////////////////
 setFavourite(){
-  this.serverFileArray.map(sa=>{
+  this.serverFileArray.map(sa => {
     sa.isFavourite = false;
-  })
-  console.log('Set Favourite function call')
+  });
+  console.log('Set Favourite function call');
   this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
-    if(sdata){
-      sdata.map(i=>{
-       this.serverFileArray.map(li=>{
-         if(li._id == i._id){
+    if (sdata){
+      sdata.map(i => {
+       this.serverFileArray.map(li => {
+         if (li._id == i._id){
            li.isFavourite = true;
-           console.log(li, 'Li inside Set fav')
-         } 
-       })
-      })
+           console.log(li, 'Li inside Set fav');
+         }
+       });
+      });
 
-     
-    } 
-    if(!sdata || sdata.length == 0 ){
-      this.serverFileArray.map(li=>{
+
+    }
+    if (!sdata || sdata.length == 0 ){
+      this.serverFileArray.map(li => {
           li.isFavourite = false;
-      })
+      });
     }
    }).catch(e => console.log(e));
 }
   saveLocalFav(sf) {
     sf.isFavourite = !(sf?.isFavourite);
 
-    if(sf.isFavourite){
+    if (sf.isFavourite){
       this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
         if (!sdata){
           sdata = [];
-        } 
-        let availableBefore : any = false;
-        sdata.map(i=>{
-          if(i._id == sf._id){
+        }
+        let availableBefore: any = false;
+        sdata.map(i => {
+          if (i._id == sf._id){
             availableBefore = true;
           }
-          console.log(i,'Storage')
+          console.log(i, 'Storage');
         });
-  
-        console.log(availableBefore,'availableBefore')
-  
-        if(!availableBefore || availableBefore != true){
-        console.log('Push Into SDATAfore')
-  
-          sdata.push(sf);
+
+        console.log(availableBefore, 'availableBefore');
+
+        if (!availableBefore || availableBefore != true){
+        console.log('Push Into SDATAfore');
+
+        sdata.push(sf);
         }
         this.storage.set('_SGTECH_GURBANI_FAV', sdata);
       }).catch(e => console.log(e));
-      if(sf.isFavourite){
-        this.newHelper.presentToastWithOptions('Saved Successfully')
+      if (sf.isFavourite){
+        this.newHelper.presentToastWithOptions('Saved Successfully');
       }
     } else {
       this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
-        sdata.map((item,index)=>{
-          if(item._id == sf._id){
+        sdata.map((item, index) => {
+          if (item._id == sf._id){
             sdata.splice(index, 1);
           }
-        })
+        });
         this.storage.set('_SGTECH_GURBANI_FAV', sdata);
       }).catch(e => console.log(e));
-        this.newHelper.presentToastWithOptions('Removed Item Successfully')
+      this.newHelper.presentToastWithOptions('Removed Item Successfully');
     }
-    
+
   }
-///////////////Set Favourite Section End////////////////
+/////////////// Set Favourite Section End////////////////
 
 
-/////////////////Get Data From Local Sorage for Favourite Start//////////////////
+///////////////// Get Data From Local Sorage for Favourite Start//////////////////
 
 getDataFromLocalStorage() {
   this.serverFileArray = [];
-    this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
-      console.log( 'Storage Data',sdata)
-      if(sdata){
-        sdata.map(i=>{
-          i.duration= -1;
-          i.position=0;
-          i.isFileDownloaded= false;
-          i.isDownloading= false;
+  this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
+      console.log( 'Storage Data', sdata);
+      if (sdata){
+        sdata.map(i => {
+          i.duration = -1;
+          i.position = 0;
+          i.isFileDownloaded = false;
+          i.isDownloading = false;
           i.isPlaying = false;
-          this.serverFileArray.push(i)
-        })
-        console.log( 'serverFileArray',this.serverFileArray)
+          this.serverFileArray.push(i);
+        });
+        console.log( 'serverFileArray', this.serverFileArray);
         this.totalFavourite = sdata.length;
       }
-    }).catch(e => console.log("Error =>" ,e));
+    }).catch(e => console.log('Error =>' , e));
 }
 
 
 removaFavourite(i) {
-  console.log('i',i)
+  console.log('i', i);
   this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
-  console.log('sdata',sdata[i])
-   sdata.splice(i, 1);
-    this.serverFileArray = sdata;
-    this.storage.set('_SGTECH_GURBANI_FAV', sdata);
-    this.totalFavourite = sdata.length;
+  console.log('sdata', sdata[i]);
+  sdata.splice(i, 1);
+  this.serverFileArray = sdata;
+  this.storage.set('_SGTECH_GURBANI_FAV', sdata);
+  this.totalFavourite = sdata.length;
   }).catch(e => console.log(e));
-    this.newHelper.presentToastWithOptions('Removed Item Successfully')
+  this.newHelper.presentToastWithOptions('Removed Item Successfully');
 }
-/////////////////Get Data From Local Sorage for Favourite End//////////////////
+///////////////// Get Data From Local Sorage for Favourite End//////////////////
 
 // Filter Modal//////////
 async filterModal(){
   this.backdrop = true;
-    const modal = await this.modalController.create({
+  const modal = await this.modalController.create({
       showBackdrop: true,
       component: FilterModalComponentComponent,
       cssClass: 'filter-modal',
       componentProps: { raagData: this.raagData }
     });
-    modal.onDidDismiss()
+  modal.onDidDismiss()
     .then((data) => {
       this.backdrop = false;
       console.log('Close Modal Data', data.data);
       // this.searchFilterData(data.data)
   });
 
-    return await modal.present();
+  return await modal.present();
 }
 
 checkFilterOrNot(event){
-  if(this.checkDidFilter == true){
+  if (this.checkDidFilter == true){
     this.loadMorewhenFilter(event);
     event.target.complete();
   } else {
-    this.loadData(event)
+    this.loadData(event);
   }
 }
 loadMorewhenFilter(event){
-  let length  = this.arrayText.length;
+  const length  = this.arrayText.length;
   let offset  = this.arrayText[length - 1];
   offset      = offset + 10 ;
   this.arrayText[length - 1] = offset;
-  this.searchFilterDataNotReset(this.sqlText,this.arrayText);
+  this.searchFilterDataNotReset(this.sqlText, this.arrayText);
 }
 
-searchFilterData(sqlText,arrayText){
+searchFilterData(sqlText, arrayText){
   this.newallStop();
   this.testnextFileIndex = 0;
   this.serverFileArray = [];
-  this.searchFilterDataNotReset(sqlText,arrayText);
+  this.searchFilterDataNotReset(sqlText, arrayText);
 }
-searchFilterDataNotReset(sqlText,arrayText,){
+searchFilterDataNotReset(sqlText, arrayText, ){
   this.noRecords = false;
   this.sqlText = sqlText;
   this.arrayText = arrayText;
   this.checkDidFilter = true;
-  this.igdb.commonFilter(sqlText,arrayText).then((res) => {
+  this.igdb.commonFilter(sqlText, arrayText).then((res) => {
     console.log('Response From Common Filter', res);
-    res.map(item=>{
-      item.duration= -1;
-      item.position=0;
-      item.isFileDownloaded= false;
-      item.isDownloading= false;
+    res.map(item => {
+      item.duration = -1;
+      item.position = 0;
+      item.isFileDownloaded = false;
+      item.isDownloading = false;
       this.serverFileArray.push(item);
-    })
+    });
     this.serverFileArrayCopy = this.serverFileArray;
     if (res.length == 0){
       this.noRecords = true;
     }
     this.setFavourite();
     this.prepareAudioFile();
-  })
+  });
 
   this.prepareAudioFile();
 }
@@ -844,7 +842,7 @@ cancelDownload(){
   } catch (e) {}
 }
 onPlay(sf, i) {
-  this.cancelAllAndPlayOne(sf, i, true)
+  this.cancelAllAndPlayOne(sf, i, true);
   // if (!sf.isPlaying) {
   //   this.cancelAllAndPlayOne(sf, i, true)
   // } else {
