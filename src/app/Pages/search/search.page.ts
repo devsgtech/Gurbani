@@ -42,6 +42,9 @@ export class SearchPage  implements OnInit {
     this.platform.pause.subscribe(e => {
       this.listComp.newallStop();
     });
+    this.platform.resume.subscribe(e => {
+      this.listComp.newallStop();
+    });
   }
 
   ngOnInit(){

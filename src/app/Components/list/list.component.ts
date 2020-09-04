@@ -247,7 +247,7 @@ export class ListComponent implements OnInit {
     }, 100);
   }
   playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
-    // ListComponent.scrollTo(index);
+    ListComponent.scrollTo(index);
     if (sFile && !sFile.isFileDownloaded) {
       console.log('sFile', sFile.isDownloading, sFile, newUrl);
     }
@@ -308,7 +308,6 @@ newallStop(){
   this.stopPlayRecording()
 }
   stopPlayRecording() {
-    this.isPlayingAll = false;
     try {
       this.currPlayingFile.stop();
       this.currPlayingFile.release();
