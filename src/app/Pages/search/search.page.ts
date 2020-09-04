@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FilterModalComponentComponent } from 'src/app/Modal/filter-modal-component/filter-modal-component.component';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { raagDB } from 'src/app/services/raagDb';
 import { newhelper } from 'src/app/services/newhelper';
 import { ListComponent } from 'src/app/Components/list/list.component';
@@ -34,8 +34,15 @@ export class SearchPage  implements OnInit {
     public modalController: ModalController,
     private raagDb  : raagDB,
     private helper : newhelper,
-    
-  ){}
+    public platform: Platform,
+  ){
+    this.platform.ready().then(() => {
+     
+    });
+    this.platform.pause.subscribe(e => {
+      this.listComp.newallStop();
+    });
+  }
 
   ngOnInit(){
     // this.raagDb.dbState().subscribe((res) => {
@@ -51,12 +58,7 @@ export class SearchPage  implements OnInit {
   }
 
    ionViewWillLeave() {
-    this.filterData ={
-      searchMode  : null,
-      scriptures  : '1',
-      writer      : '0',
-      raag        : null,
-    }
+    
         try{
           this.modalController.dismiss(this.filterData)
         } catch (e){
@@ -68,7 +70,12 @@ export class SearchPage  implements OnInit {
         this.listComp.cancelDownload()
     }
     ionViewWillEnter(){
+      this.listComp.newallStop();
       this.listComp.setFavourite()
+    }
+
+    ionViewDidLeave(){
+      this.listComp.newallStop();
     }
   searchWord(ev = null) {
     if(this.checkDidFilter == true){

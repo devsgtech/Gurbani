@@ -5,20 +5,22 @@
     <h3 >[ {{totalFavourite}} ]</h3>
   </div>
 
-  <div class="noRecord" *ngIf="noRecords && serverFileArray?.length == 0">
-    <h1>
-      No Record Found
-    </h1>
-  </div>
+  
   <ion-list>
-    
+    <ng-container *ngIf="noRecords  && serverFileArray?.length == 0">
+      <div class="noRecord" >
+        <h1>
+          No Record Found
+        </h1>
+      </div>
+    </ng-container>
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
       <ion-item no-margin [id]="'currentPlayItemId'+i" lines="none">
         <ion-label>
           <h2>{{sf?sf.punjabiVersion: ''}}</h2>
         </ion-label>
         <ion-button color="myWhite" fill="clear" slot="end"
-          (click)="onPlay(sf, i)">
+        (click)="!sf.isPlaying?onPlay(sf, i): stopPlayRecording()">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
@@ -26,8 +28,8 @@
       </ion-item>
       <ion-item no-margin  lines="none">
         <ion-label *ngIf="changeui.phonetic || changeui.english">
-          <p *ngIf="sf.transliteration && changeui.english" [ngClass]="changeui.fontSize">{{sf?sf.transliteration: ''}}</p>
-          <p *ngIf="sf.english_ssk && changeui.phonetic" [ngClass]="changeui.phoneticFont" >{{sf?sf.english_ssk: ''}}</p>
+          <p *ngIf="sf.transliteration && changeui.phonetic" [ngClass]="changeui.phoneticFont">{{sf?sf.transliteration: ''}}</p>
+          <p *ngIf="sf.english_ssk && changeui.english" [ngClass]="changeui.fontSize" >{{sf?sf.english_ssk: ''}}</p>
         </ion-label>
         <ion-button fill="clear" class="no-background" slot="end" (click)="saveLocalFav(sf)" *ngIf="!isfav">
         <ion-icon name="heart" [ngClass]="sf?.isFavourite?'isFav':'notFav'" ></ion-icon>
@@ -47,7 +49,9 @@
   </ion-list>
 
 </ion-content>
-<ion-fab vertical="bottom" horizontal="center" slot="fixed" *ngIf="!isfav">
+
+<ion-fab vertical="bottom" horizontal="center" slot="fixed" *ngIf="!isfav && !noRecords  && serverFileArray?.length > 0">
+  <ion-backdrop *ngIf="backdrop"></ion-backdrop>
   <ion-fab-button color="myWhite" class="back-prev" (click)="prevplay()"
     [disabled]="!(isPlayingAll && testnextFileIndex > 0)">
     <ion-icon name="arrow-back"></ion-icon>

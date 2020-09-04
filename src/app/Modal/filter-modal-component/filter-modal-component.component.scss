@@ -35,6 +35,7 @@ ion-toolbar{
   flex-direction: revert;
   margin-top: 5%;
   height: 57px !important;
+  flex-direction: row;
   ion-button{
     --background: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
     color: var(--ion-color-success-contrast);

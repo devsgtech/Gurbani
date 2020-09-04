@@ -188,3 +188,10 @@ ion-menu{
 ion-backdrop {
   opacity: 0.3;
 }
+
+.cancelAlert{
+  color: var(--ion-color-medium);
+}
+.playAlert{
+  color: var(--ion-color-success);
+}

@@ -45,7 +45,7 @@
             <h2>{{sf?sf.punjabiVersion: ''}}</h2>
           </ion-label>
           <ion-button color="myWhite" fill="clear" slot="end"
-          (click)="!sf.isPlaying?download(sf, i, true): stopPlayRecording()">
+          (click)="!sf.isPlaying?onPlay(sf, i): stopPlayRecording()">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
@@ -53,11 +53,9 @@
         </ion-item>
         
         <ion-item no-margin class="bottomItem" lines="none">
-          <ion-label>
-            <p *ngIf="sf.transliteration && changeui.english" [ngClass]="changeui.fontSize">
-              {{sf?sf.transliteration: ''}}</p>
-            <p *ngIf="sf.english_ssk && changeui.phonetic" [ngClass]="changeui.phoneticFont">{{sf?sf.english_ssk: ''}}
-            </p>
+          <ion-label *ngIf="changeui.phonetic || changeui.english">
+            <p *ngIf="sf.transliteration && changeui.phonetic" [ngClass]="changeui.phoneticFont">{{sf?sf.transliteration: ''}}</p>
+            <p *ngIf="sf.english_ssk && changeui.english" [ngClass]="changeui.fontSize" >{{sf?sf.english_ssk: ''}}</p>
           </ion-label>
         </ion-item>
         <div padding-horizontal>

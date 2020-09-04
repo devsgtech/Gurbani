@@ -50,6 +50,7 @@ export class Tab2Page implements OnInit {
       }
     });
     this.platform.pause.subscribe(e => {
+      this.listComp.stopPlayRecording();
     });
   }
   static scrollTo(index) {
@@ -61,6 +62,7 @@ export class Tab2Page implements OnInit {
   }
   ionViewWillLeave() {
     this.stopPlaying(null);
+    this.listComp.stopPlayRecording();
   }
 
   ionViewWillEnter() {

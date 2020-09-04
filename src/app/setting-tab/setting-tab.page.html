@@ -27,7 +27,22 @@
       </ion-segment>
     </div>
     </ion-item>
-
+    <div class="toggle-switch">
+      <label>Phonetic Translation By</label>
+      <ion-item lines="none">
+        <ion-label slot="start">Dr. Sant Singh Khalsa</ion-label>
+        <ion-toggle  mode="ios" slot="end" [(ngModel)]="changeui.phonetic"></ion-toggle>
+      </ion-item>
+    </div>
+    <ion-item *ngIf="changeui.phonetic">
+      <div>
+        <label>Font Size</label>
+      <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="phoneticFont" (ngModelChange)="phoneticchangeFont()" snaps color="dark">
+        <ion-label slot="start" class="small-font">A</ion-label>
+        <ion-label slot="end" class="big-font">A</ion-label>
+      </ion-range>
+      </div>
+    </ion-item>
     <div class="toggle-switch">
       <label >English Translation By</label>
       <ion-item lines="none">
@@ -45,22 +60,7 @@
       </div>
     </ion-item>
 
-    <div class="toggle-switch">
-      <label>Phonetic Translation By</label>
-      <ion-item lines="none">
-        <ion-label slot="start">Dr. Sant Singh Khalsa</ion-label>
-        <ion-toggle  mode="ios" slot="end" [(ngModel)]="changeui.phonetic"></ion-toggle>
-      </ion-item>
-    </div>
-    <ion-item *ngIf="changeui.phonetic">
-      <div>
-        <label>Font Size</label>
-      <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="phoneticFont" (ngModelChange)="phoneticchangeFont()" snaps color="dark">
-        <ion-label slot="start" class="small-font">A</ion-label>
-        <ion-label slot="end" class="big-font">A</ion-label>
-      </ion-range>
-      </div>
-    </ion-item>
+   
 
 </ion-content>
 

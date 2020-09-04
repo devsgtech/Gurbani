@@ -14,6 +14,7 @@ import { downloadData } from '../../services/downloadData';
 import { FilterModalComponentComponent } from 'src/app/Modal/filter-modal-component/filter-modal-component.component';
 import { raagDB } from 'src/app/services/raagDb';
 // import { HelperService } from 'src/app/services/helper.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-list',
@@ -58,6 +59,7 @@ export class ListComponent implements OnInit {
     private network: Network,
     private downloadData : downloadData,
     private raagDb  : raagDB,
+    public alertController: AlertController,
     public modalController: ModalController,
     // private helper : HelperService,
     private media: Media) {
@@ -69,9 +71,12 @@ export class ListComponent implements OnInit {
       }
     });
     this.platform.pause.subscribe(e => {
-      this.stopPlayRecording();
+      this.newallStop();
     });
 
+  }
+  ionViewDidLeave(){
+    this.newallStop();
   }
   static scrollTo(index) {
     const currentId = document.getElementById('currentPlayItemId' + index);
@@ -102,6 +107,7 @@ export class ListComponent implements OnInit {
     this.testnextFileIndex = 0;
   }
   ionViewWillEnter() {
+    this.newallStop();
     if(this.isfav == true){
       this.getDataFromLocalStorage()
     }
@@ -227,13 +233,16 @@ export class ListComponent implements OnInit {
           if (this.serverFileArray.length > nextFileIndex && !isSingle) {
             const nextFile = this.serverFileArray[nextFileIndex];
             this.download( nextFile, nextFileIndex, isSingle)
+          }else if(this.serverFileArray.length == nextFileIndex){
+            this.testnextFileIndex = 0;
+            this.newallStop()
           }
         }
       });
     }, 100);
   }
   playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
-    ListComponent.scrollTo(index);
+    // ListComponent.scrollTo(index);
     if (sFile && !sFile.isFileDownloaded) {
       console.log('sFile', sFile.isDownloading, sFile, newUrl);
     }
@@ -599,6 +608,7 @@ downloadAudioFile(sf, i, dd) {
         this.checkNetwork();
       } else{
         sf.isDownloading = true;
+        ListComponent.scrollTo(i);
       fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
         let nurl = this.storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
         sf.isDownloading = false;
@@ -615,18 +625,45 @@ downloadAudioFile(sf, i, dd) {
           this.playRecording(sf, i, dd,nurl)
         }, 500);
        }
-       
-
       })
         .catch((err) => {
           if (err.http_status == 404) {
             sf.isDownloading = false;
-            this.newHelper.presentToastWithOptions('File Not Found on Server')
+           
+            if(this.newplayAll){
+             
+              this.presentAlertConfirm()
+            } else {
+              this.newHelper.presentToastWithOptions('File Not Found on Server')
+            }
           }
         });
       }
     });
   
+}
+
+async presentAlertConfirm() {
+  const alert = await this.alertController.create({
+    header: 'File Not Found on Server!',
+    buttons: [
+      {
+        text: 'Stop',
+        role: 'cancel',
+        cssClass: 'cancelAlert',
+        handler: (blah) => {
+          this.newallStop();
+        }
+      }, {
+        text: 'Play Next',
+        cssClass: 'playAlert',
+        handler: () => {
+          this.nextplay()
+        }
+      }
+    ]
+  });
+  await alert.present();
 }
 
 ///////////////Set Favourite section Start///////////////////
@@ -707,6 +744,11 @@ getDataFromLocalStorage() {
       console.log( 'Storage Data',sdata)
       if(sdata){
         sdata.map(i=>{
+          i.duration= -1;
+          i.position=0;
+          i.isFileDownloaded= false;
+          i.isDownloading= false;
+          i.isPlaying = false;
           this.serverFileArray.push(i)
         })
         console.log( 'serverFileArray',this.serverFileArray)
@@ -765,11 +807,12 @@ loadMorewhenFilter(event){
 }
 
 searchFilterData(sqlText,arrayText){
+  this.newallStop();
+  this.testnextFileIndex = 0;
   this.serverFileArray = [];
   this.searchFilterDataNotReset(sqlText,arrayText);
 }
 searchFilterDataNotReset(sqlText,arrayText,){
-  this.stopPlayRecording()
   this.noRecords = false;
   this.sqlText = sqlText;
   this.arrayText = arrayText;
@@ -784,7 +827,7 @@ searchFilterDataNotReset(sqlText,arrayText,){
       this.serverFileArray.push(item);
     })
     this.serverFileArrayCopy = this.serverFileArray;
-    if (this.serverFileArray.length == 0){
+    if (res.length == 0){
       this.noRecords = true;
     }
     this.setFavourite();
@@ -801,10 +844,11 @@ cancelDownload(){
   } catch (e) {}
 }
 onPlay(sf, i) {
-  if (!sf.isPlaying) {
-    this.cancelAllAndPlayOne(sf, i, true)
-  } else {
-    this.stopPlayRecording();
-  }
+  this.cancelAllAndPlayOne(sf, i, true)
+  // if (!sf.isPlaying) {
+  //   this.cancelAllAndPlayOne(sf, i, true)
+  // } else {
+  //   this.stopPlayRecording();
+  // }
 }
 }

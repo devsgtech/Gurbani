@@ -84,6 +84,7 @@ export class Tab3Page implements OnInit {
   }
   backToReadTile(){
     this.listShow = false;
+    this.stopPlayRecording() 
   }
   
   readBook(item) {
@@ -117,7 +118,9 @@ export class Tab3Page implements OnInit {
 
     }
   }
-
+  ionViewWillLeave() {
+    this.stopPlayRecording() 
+  }
 
   loadData(event) {
     let leng = this.serverFileArray.length + 10;
@@ -160,9 +163,9 @@ export class Tab3Page implements OnInit {
 
 
   async download(sf, i, dd) {
-    if (this.currPlayingFile) {
+    try {
       this.stopPlayRecording();
-    }
+    } catch (e) {}
     sf = this.serverFileArray[i];
     console.log('SfFull Data', sf)
     await this.platform.ready();
@@ -212,7 +215,13 @@ export class Tab3Page implements OnInit {
     this.file.checkFile(checkFileUrl, FileName).then((entry) => {
       let nurl = this.storageDirectory + '/' + VARS.shabadDirectory+ '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
       sf.isDownloading = false;
-      this.playRecording(sf, i, dd,nurl)
+     
+      
+     
+      setTimeout(() => {
+        this.playRecording(sf, i, dd,nurl)
+      }, 500);
+    
   
     })
       .catch((err) => {
@@ -225,7 +234,9 @@ export class Tab3Page implements OnInit {
         fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
           let nurl = this.storageDirectory + '/' + VARS.shabadDirectory +'/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
           sf.isDownloading = false;
-          this.playRecording(sf, i, dd,nurl);
+          setTimeout(() => {
+            this.playRecording(sf, i, dd,nurl)
+          }, 500);
         })
           .catch((err) => {
             if (err.http_status == 404) {
@@ -235,6 +246,7 @@ export class Tab3Page implements OnInit {
           });
         }
       });
+    
   }
   async checkNetwork() {
     await this.newHelper.presentToastWithOptions(this.online ? 'You are connected to internet, woohoo!' : 'You are not connected to internet!');
@@ -249,13 +261,10 @@ export class Tab3Page implements OnInit {
     this.setPlayingDefault();
    
   }
-
   playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
     Tab3Page.scrollTo(index);
     if (sFile && !sFile.isFileDownloaded) {
-      // sFile.isDownloading = true;
-      console.log('sFile', sFile.isDownloading, sFile);
-      // this.prepareAudioFile([sFile]);
+      console.log('sFile', sFile.isDownloading, sFile, newUrl);
     }
     
     let currentPlayFile: any;
@@ -265,21 +274,56 @@ export class Tab3Page implements OnInit {
       currentPlayFile = this.serverFileArray[0];
     }
    
-    this.currPlayingFile = this.createAudioFile(newUrl)
-    // this.currPlayingFile = this.createAudioFile(this.storageDirectory, currentPlayFile.fileName);
-
-    // this.currPlayingFile = this.createAudioFile(this.storageDirectory, currentPlayFile.fileName);
-    this.currPlayingFile.play();
-    this.setDuration(currentPlayFile);
-    this.setStatus(currentPlayFile);
-    this.getAndSetCurrentAudioPosition(currentPlayFile, index, isSingle);
+    try {
+      this.currPlayingFile.stop();
+    } catch (e) {}
+    this.createAudioFile(newUrl).then((res: any) => {
+      console.log('rere', res);
+      this.currPlayingFile = res;
+      setTimeout(() => {
+        this.currPlayingFile.play();
+      }, 100)
+      this.setDuration(currentPlayFile);
+      this.setStatus(currentPlayFile).then((status) => {
+        this.getAndSetCurrentAudioPosition(currentPlayFile, index, isSingle);
+      }).catch(() => {});
+    }).catch(() => {});
   }
-  createAudioFile(url): MediaObject {
-    if (this.platform.is('ios')) {
-      return this.media.create((url).replace(/^file:\/\//, ''));
-    } else {
-      return this.media.create(url);
-    }
+  // playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
+  //   Tab3Page.scrollTo(index);
+  //   if (sFile && !sFile.isFileDownloaded) {
+  //     // sFile.isDownloading = true;
+  //     console.log('sFile', sFile.isDownloading, sFile);
+  //     // this.prepareAudioFile([sFile]);
+  //   }
+    
+  //   let currentPlayFile: any;
+  //   if (sFile) {
+  //     currentPlayFile = sFile;
+  //   } else {
+  //     currentPlayFile = this.serverFileArray[0];
+  //   }
+   
+  //   this.currPlayingFile = this.createAudioFile(newUrl)
+  //   // this.currPlayingFile = this.createAudioFile(this.storageDirectory, currentPlayFile.fileName);
+
+  //   // this.currPlayingFile = this.createAudioFile(this.storageDirectory, currentPlayFile.fileName);
+  //   this.currPlayingFile.play();
+  //   this.setDuration(currentPlayFile);
+  //   this.setStatus(currentPlayFile);
+  //   this.getAndSetCurrentAudioPosition(currentPlayFile, index, isSingle);
+  // }
+  createAudioFile(url) {
+    return new Promise(resolve => {
+      this.currPlayingFile = null;
+      if (this.platform.is('ios')) {
+        const ss = this.media.create((url).replace(/^file:\/\//, ''));
+        return resolve(ss);
+      } else {
+        const ss = this.media.create(url);
+        return resolve(ss);
+      }
+    });
   }
   setDuration(sFile) {
     this.getDurationInterval = setInterval(() => {
@@ -296,26 +340,30 @@ export class Tab3Page implements OnInit {
   }
 
   setStatus(sFile) {
-    this.setPlayingDefault();
-    this.currPlayingFile.onStatusUpdate.subscribe(status => {
-      switch (status) {
-        case 1:
-          sFile.isInPlay = false;
-          break;
-        case 2:   // 2: playing
-          sFile.isInPlay = true;
-          sFile.isPlaying = true;
-          break;
-        case 3:   // 3: pause
-          sFile.isInPlay = true;
-          sFile.isPlaying = false;
-          break;
-        case 4:   // 4: stop
-        default:
-          sFile.isInPlay = false;
-          sFile.isPlaying = false;
-          break;
-      }
+    return new Promise(resolve => {
+      this.setPlayingDefault();
+      this.currPlayingFile.onStatusUpdate.subscribe(status => {
+        switch (status) {
+          case 1:
+            sFile.isInPlay = false;
+            break;
+          case 2:   // 2: playing
+            sFile.isInPlay = true;
+            sFile.isPlaying = true;
+            break;
+          case 3:   // 3: pause
+            sFile.isInPlay = true;
+            sFile.isPlaying = false;
+            break;
+          case 4:   // 4: stop
+            break;
+          default:
+            sFile.isInPlay = false;
+            sFile.isPlaying = false;
+            break;
+        }
+        return resolve(status);
+      });
     });
   }
   getProgressVal(e, f) {
@@ -384,5 +432,30 @@ export class Tab3Page implements OnInit {
         }
       }).catch(e => console.log('e', e));
     }).catch(e => console.log('e0', e));
+  }
+
+
+  cancelDownload(){
+    try {
+      const fileTransfer: FileTransferObject = this.transfer.create();
+      fileTransfer.abort();
+    } catch (e) {}
+  }
+  onPlay(sf, i) {
+    this.cancelAllAndPlayOne(sf, i, true)
+    // if (!sf.isPlaying) {
+    //   this.cancelAllAndPlayOne(sf, i, true)
+    // } else {
+    //   this.stopPlayRecording();
+    // }
+  }
+
+  cancelAllAndPlayOne(sf, i, dd){
+    this.cancelDownload();
+    try {
+      this.currPlayingFile.stop();
+      this.currPlayingFile.release();
+    } catch (e) {}
+    this.download(sf, i, dd)
   }
 }
