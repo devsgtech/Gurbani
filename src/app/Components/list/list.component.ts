@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import {Component, OnInit, Input, ViewChild, NgZone} from '@angular/core';
 import { Platform , IonInfiniteScroll, ModalController} from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
@@ -58,7 +58,8 @@ export class ListComponent implements OnInit {
               public alertController: AlertController,
               public modalController: ModalController,
     // private helper : HelperService,
-              private media: Media) {
+              private media: Media,
+              private ngZone: NgZone) {
     this.platform.ready().then(() => {
       if (this.platform.is('ios')) {
         this.storageDirectory = this.file.dataDirectory;
@@ -67,16 +68,14 @@ export class ListComponent implements OnInit {
       }
     });
     this.platform.pause.subscribe(e => {
-      this.newallStop();
-      setTimeout(() => {
-        this.isPlayingAll = false;
-      }, 200);
+      this.ngZone.run(() => {
+        this.newallStop();
+      });
     });
     this.platform.resume.subscribe(e => {
-      this.newallStop();
-      setTimeout(() => {
-        this.isPlayingAll = false;
-      }, 200);
+      this.ngZone.run(() => {
+        this.newallStop();
+      });
     });
 
   }
@@ -177,12 +176,18 @@ export class ListComponent implements OnInit {
 
   setPlayingDefault() {
     // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.serverFileArray.length; i++) {
+    this.serverFileArray.map(f => {
+      f.isPlaying = false;
+      f.isInPlay = false;
+      f.duration = -1;
+      f.position = 0;
+    })
+    /*for (let i = 0; i < this.serverFileArray.length; i++) {
       this.serverFileArray[i].isInPlay = false;
       this.serverFileArray[i].isPlaying = false;
       this.serverFileArray[i].duration = -1;
       this.serverFileArray[i].position = 0;
-    }
+    }*/
   }
   setDuration(sFile) {
     this.getDurationInterval = setInterval(() => {
