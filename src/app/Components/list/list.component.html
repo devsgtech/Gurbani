@@ -48,7 +48,7 @@
 
 </ion-content>
 
-<ion-fab vertical="bottom" horizontal="center" slot="fixed" *ngIf="!isfav && !noRecords  && serverFileArray?.length > 0">
+<ion-fab vertical="bottom" horizontal="center" slot="fixed" *ngIf="!isfav && serverFileArray?.length > 0">
   <ion-backdrop *ngIf="backdrop"></ion-backdrop>
   <ion-fab-button color="myWhite" class="back-prev" (click)="prevplay()"
     [disabled]="!(isPlayingAll && testnextFileIndex > 0)">

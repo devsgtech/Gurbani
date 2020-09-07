@@ -1,7 +1,6 @@
 
 import { Injectable } from '@angular/core';
 import {LoadingController, Platform} from '@ionic/angular';
-import { Song } from './song';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';

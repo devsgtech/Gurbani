@@ -69,6 +69,11 @@ export class Tab3Page implements OnInit {
     this.platform.pause.subscribe(e => {
       this.stopPlayRecording();
     });
+
+    this.online = (this.network.type !== this.network.Connection.NONE);
+    this.network.onChange().subscribe((ev) => {
+      this.online = (ev.type === 'online');
+    });
   }
   static scrollTo(index) {
     const currentId = document.getElementById('currentPlayItemId' + index);
@@ -77,10 +82,7 @@ export class Tab3Page implements OnInit {
   ngOnInit() {
   }
   ionViewWillEnter() {
-    this.online = (this.network.type !== this.network.Connection.NONE);
-    this.network.onChange().subscribe((ev) => {
-      this.online = (ev.type === 'online');
-    });
+   
   }
   backToReadTile(){
     this.listShow = false;
@@ -227,6 +229,10 @@ export class Tab3Page implements OnInit {
       .catch((err) => {
        const url = this.newHelper.returnDownloadUrl(sf.ang_id, sf._id);
         const fileTransfer: FileTransferObject = this.transfer.create();
+        let connectSubscription = this.network.onConnect().subscribe(() => {
+          console.log('network connected!');
+        });
+        console.log('Network Chekking Console', connectSubscription)
         if(!this.online){
           this.checkNetwork();
         } else{
@@ -391,12 +397,14 @@ export class Tab3Page implements OnInit {
 
   setPlayingDefault() {
     // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.serverFileArray.length; i++) {
-      this.serverFileArray[i].isInPlay = false;
-      this.serverFileArray[i].isPlaying = false;
-      this.serverFileArray[i].duration = -1;
-      this.serverFileArray[i].position = 0;
-    }
+    this.serverFileArray.map(f => {
+      f.isPlaying = false;
+      f.isInPlay = false;
+      f.duration = -1;
+      f.position = 0;
+      f.isDownloading = false;
+    })
+    
   }
 
   prepareAudioFile(singleFile = []) {

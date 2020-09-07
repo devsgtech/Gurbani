@@ -15,10 +15,6 @@ const routes: Routes = [
     loadChildren: () => import('./Pages/search/search.module').then( m => m.SearchPageModule)
   },
   {
-    path: 'filter-modal',
-    loadChildren: () => import('./Modal/filter-modal/filter-modal.module').then( m => m.FilterModalPageModule)
-  },
-  {
     path: 'about',
     loadChildren: () => import('./Pages/about/about.module').then( m => m.AboutPageModule)
   }

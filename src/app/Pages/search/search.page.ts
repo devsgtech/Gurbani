@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FilterModalComponentComponent } from 'src/app/Modal/filter-modal-component/filter-modal-component.component';
 import { ModalController, Platform } from '@ionic/angular';
-import { raagDB } from 'src/app/services/raagDb';
 import { newhelper } from 'src/app/services/newhelper';
 import { ListComponent } from 'src/app/Components/list/list.component';
 import { raags } from '../../services/constantString'
@@ -32,7 +31,6 @@ export class SearchPage  implements OnInit {
   constructor(
     public changeui: ChangeUIService,
     public modalController: ModalController,
-    private raagDb  : raagDB,
     private helper : newhelper,
     public platform: Platform,
   ){
@@ -52,15 +50,6 @@ export class SearchPage  implements OnInit {
   }
 
   ngOnInit(){
-    // this.raagDb.dbState().subscribe((res) => {
-    //   if(res){
-    //     this.raagDb.fetchSongs().subscribe(item => {
-    //       this.raagData = item;
-    //      console.log('Got Data From RAAG' , item)
-    //     })
-    //   }
-    // });
-
     this.changeui.themeDetection();
   }
 

@@ -1,7 +1,6 @@
 
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { Song } from './song';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
@@ -39,7 +38,7 @@ export class shabadDB {
     return this.isDbReady.asObservable();
   }
 
-  fetchSongs(): Observable<Song[]> {
+  fetchSongs(){
     return this.listItem.asObservable();
   }
 

@@ -6,7 +6,6 @@ import { Media, MediaObject } from '@ionic-native/media/ngx';
 import { MenuController } from '@ionic/angular';
 import { shabadDB } from '../services/shabadDB';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-import { downloadData } from '../services/downloadData';
 import { Storage } from '@ionic/storage';
 import { newhelper } from '../services/newhelper';
 import { Network } from '@ionic-native/network/ngx';
@@ -36,7 +35,6 @@ export class Tab2Page implements OnInit {
     private androidPermissions: AndroidPermissions,
     private igdb: shabadDB,
     private menu: MenuController,
-    private downloadData : downloadData,
     private storage: Storage,
     public changeui: ChangeUIService,
     private newHelper: newhelper,
@@ -73,102 +71,7 @@ export class Tab2Page implements OnInit {
     });
     this.getDataFromLocalStorage();
   }
-  
-  // download(sf, i, dd) {
-  //   console.log('usflr', sf,)
-  //   console.log('index', i,)
-  //   this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
-  //     .then(status => {
-  //       if (status.hasPermission) {
-  //         this.createShabad(sf, i, dd);
-  //       }
-  //       else {
-  //         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
-  //           .then(status => {
-  //             if (status.hasPermission) {
-  //               this.createShabad(sf, i, dd);
-  //             }
-  //           });
-  //       }
-  //     });
-  // }
-
-  // createShabad(sf, i, dd) {
-  //   this.file.createDir(this.file.externalRootDirectory, 'shabad', false).then(response => {
-  //     this.createAngDir(sf, i, dd);
-  //   }).catch(err => {
-  //     if (err.message == 'PATH_EXISTS_ERR') {
-  //       this.createAngDir(sf, i, dd)
-  //     }
-  //   });
-  // }
-
-  // createAngDir(sf, i, dd) {
-  //   let ang_id = 1;
-  //   console.log('CreateDirc Function',this.file.externalRootDirectory + 'shabad', 'ang_' + ang_id)
-  //   this.file.createDir(this.file.externalRootDirectory + 'shabad', 'ang_' + ang_id, false).then(response => {
-  //     console.log('Ang Directory created', response);
-  //     this.downloadAudioFile(sf, i, dd)
-  //   }).catch(err => {
-  //     console.log('Could not create directory "my_downloads" ', err);
-  //     if (err.message == 'PATH_EXISTS_ERR') {
-  //       this.downloadAudioFile(sf, i, dd)
-  //     }
-  //   });
-  // }
-
-
-  // downloadAudioFile(sf, i, dd) {
-  //   let ang_id = 1;
-  //   let shabad_id = i + 1;
-  //   let url = 'https://firebasestorage.googleapis.com/v0/b/testgurubani.appspot.com/o/ang_' + ang_id + '%2Fshabad_' + shabad_id + '.mp3?alt=media&token=fcfe83f3-f21c-4d77-a4b8-438f0e53281a'
-  //   let checkFileUrl = this.file.externalRootDirectory + '/shabad/' + 'ang_' + ang_id +'/'; 
-  //   let FileName = 'shabad_' + shabad_id + '.mp3';
-  //   console.log('ulr', url,)
-  //   console.log('index', i,)
-  //   console.log('ang_id', ang_id,)
-  //   console.log('shabad_id', shabad_id,)
-
-
-  //   this.file.checkFile(checkFileUrl, FileName).then((entry) => {
-  //     let nurl = this.file.externalRootDirectory + '/shabad/' + 'ang_' + ang_id + '/shabad_' + shabad_id + '.mp3';
-  //     sf.isDownloading = false;
-  //     this.ply1(sf, i, dd, nurl);
-  //   })
-  //     .catch((err) => {
-  //       sf.isDownloading = true;
-  //       let url = 'https://firebasestorage.googleapis.com/v0/b/testgurubani.appspot.com/o/ang_' + ang_id + '%2Fshabad_' + shabad_id + '.mp3?alt=media&token=fcfe83f3-f21c-4d77-a4b8-438f0e53281a'
-  //     const fileTransfer: FileTransferObject = this.transfer.create();
-  //        fileTransfer.download(url, this.file.externalRootDirectory + '/shabad/' + 'ang_' + ang_id + '/shabad_' + shabad_id + '.mp3').then((entry) => {
-  //           let nurl = this.file.externalRootDirectory + '/shabad/' + 'ang_' + ang_id + '/shabad_' + shabad_id + '.mp3';
-  //           this.ply1(sf, i, dd, nurl); 
-  //         })
-  //           .catch((err) => {
-  //               console.log('download Erro', err);
-  //           });
-  //       // this.downloadData.newDownLoadAudioFile(url,ang_id,shabad_id).then(response => {
-  //       //   this.ply1(sf, i, dd, response);
-  //       // }).catch(err => {
-  //       //   console.log('downLodaData Common Error', err)
-  //       // });
-  //     });
-  // }
-
-  // ply1(sf, i, dd, url) {
-  //   sf.isDownloading = false;
-  //   sf.isPlaying = true;
-  //   const file: MediaObject = this.media.create(url);
-  //   this.driveAudio = file;
-  //   this.driveAudio.play();
-  //   this.driveAudio.onSuccess.subscribe(() => {
-  //     sf.isPlaying = false;
-  //   })
-  // }
-  // stopPlaying(){
-  //   if(this.driveAudio){
-  //     this.driveAudio.stop();
-  //   }
-  // }
+ 
 
   getDataFromLocalStorage() {
     this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {

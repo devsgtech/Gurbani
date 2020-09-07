@@ -11,7 +11,6 @@ import { VARS } from 'src/app/services/constantString';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { FilterModalComponentComponent } from 'src/app/Modal/filter-modal-component/filter-modal-component.component';
-import { raagDB } from 'src/app/services/raagDb';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -54,7 +53,6 @@ export class ListComponent implements OnInit {
               private androidPermissions: AndroidPermissions,
               private storage: Storage,
               private network: Network,
-              private raagDb: raagDB,
               public alertController: AlertController,
               public modalController: ModalController,
     // private helper : HelperService,
@@ -77,6 +75,16 @@ export class ListComponent implements OnInit {
         this.newallStop();
       });
     });
+    this.ngZone.run(() => {
+      this.online = (this.network.type !== this.network.Connection.NONE);
+      this.network.onChange().subscribe((ev) => {
+        this.online = (ev.type === 'online');
+      });
+    });
+    this.online = (this.network.type !== this.network.Connection.NONE);
+    this.network.onChange().subscribe((ev) => {
+      this.online = (ev.type === 'online');
+    });
 
   }
   static scrollTo(index) {
@@ -87,13 +95,7 @@ export class ListComponent implements OnInit {
     this.newallStop();
   }
   ngOnInit() {
-    this.raagDb.dbState().subscribe((res) => {
-      if (res){
-        this.raagDb.fetchSongs().subscribe(item => {
-          this.raagData = item;
-        });
-      }
-    });
+   
     if (this.isfav == true){
 
     }else{
@@ -118,10 +120,6 @@ export class ListComponent implements OnInit {
     this.testnextFileIndex = 0;
     // this.getData();
     this.setFavourite();
-    this.online = (this.network.type !== this.network.Connection.NONE);
-    this.network.onChange().subscribe((ev) => {
-      this.online = (ev.type === 'online');
-    });
     this.testnextFileIndex = 0;
   }
   async checkNetwork() {
@@ -181,6 +179,7 @@ export class ListComponent implements OnInit {
       f.isInPlay = false;
       f.duration = -1;
       f.position = 0;
+      f.isDownloading = false;
     })
     /*for (let i = 0; i < this.serverFileArray.length; i++) {
       this.serverFileArray[i].isInPlay = false;
