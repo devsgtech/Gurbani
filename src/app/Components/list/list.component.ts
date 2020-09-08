@@ -636,7 +636,7 @@ downloadAudioFile(sf, i, dd) {
 
               this.presentAlertConfirm();
             } else {
-              this.newHelper.presentToastWithOptions('File Not Found on Server');
+              this.newHelper.presentToastWithOptions('Shabad Not Found on Server');
             }
           }
         });
@@ -647,7 +647,7 @@ downloadAudioFile(sf, i, dd) {
 
 async presentAlertConfirm() {
   const alert = await this.alertController.create({
-    header: 'File Not Found on Server!',
+    header: 'Shabad Not Found on Server!',
     buttons: [
       {
         text: 'Stop',
@@ -720,7 +720,7 @@ setFavourite(){
         this.storage.set('_SGTECH_GURBANI_FAV', sdata);
       }).catch(e => console.log(e));
       if (sf.isFavourite){
-        this.newHelper.presentToastWithOptions('Saved Successfully');
+        this.newHelper.presentToastWithOptions('Shabad Saved Successfully');
       }
     } else {
       this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
@@ -731,7 +731,7 @@ setFavourite(){
         });
         this.storage.set('_SGTECH_GURBANI_FAV', sdata);
       }).catch(e => console.log(e));
-      this.newHelper.presentToastWithOptions('Removed Item Successfully');
+      this.newHelper.presentToastWithOptions('Shabad Removed Successfully');
     }
 
   }
@@ -769,7 +769,7 @@ removaFavourite(i) {
   this.storage.set('_SGTECH_GURBANI_FAV', sdata);
   this.totalFavourite = sdata.length;
   }).catch(e => console.log(e));
-  this.newHelper.presentToastWithOptions('Removed Item Successfully');
+  this.newHelper.presentToastWithOptions('Shabad Removed Successfully');
 }
 ///////////////// Get Data From Local Sorage for Favourite End//////////////////
 

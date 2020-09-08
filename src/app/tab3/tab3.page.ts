@@ -247,7 +247,7 @@ export class Tab3Page implements OnInit {
           .catch((err) => {
             if (err.http_status == 404) {
               sf.isDownloading = false;
-              this.newHelper.presentToastWithOptions('File Not Found on Server')
+              this.newHelper.presentToastWithOptions('Shabad Not Found on Server')
             }
           });
         }
