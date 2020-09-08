@@ -11,7 +11,6 @@ import { ChangeUIService } from 'src/app/services/change-ui.service';
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPage  implements OnInit {
-  isfav = false;
   @ViewChild(ListComponent) listComp:ListComponent;
   raagData = raags.raagArray;
   backdrop : boolean = false;

@@ -23,15 +23,6 @@
       <ion-searchbar animated placeholder="Search" debounce="500" [(ngModel)]="searchString" (ngModelChange)="consoleData()"></ion-searchbar>
 
     </ion-toolbar>
-    <ion-toolbar *ngIf="isfav">
-      <ion-backdrop *ngIf="backdrop"></ion-backdrop>
-      <ion-title>
-        <label>
-          <p class="p0">School of</p>
-          <p class="p1">GURUBANI</p>
-        </label>
-      </ion-title>
-    </ion-toolbar>
   </ion-header>
 
 <ion-backdrop *ngIf="backdrop"></ion-backdrop>
