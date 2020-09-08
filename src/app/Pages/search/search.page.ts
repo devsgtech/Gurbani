@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, NgZone, OnInit, ViewChild} from '@angular/core';
 import { FilterModalComponentComponent } from 'src/app/Modal/filter-modal-component/filter-modal-component.component';
 import { ModalController, Platform } from '@ionic/angular';
 import { newhelper } from 'src/app/services/newhelper';
@@ -11,7 +11,7 @@ import { ChangeUIService } from 'src/app/services/change-ui.service';
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPage  implements OnInit {
-  
+  isfav = false;
   @ViewChild(ListComponent) listComp:ListComponent;
   raagData = raags.raagArray;
   backdrop : boolean = false;
@@ -33,19 +33,20 @@ export class SearchPage  implements OnInit {
     public modalController: ModalController,
     private helper : newhelper,
     public platform: Platform,
+    private ngZone: NgZone
   ){
     this.platform.ready().then(() => {
      
     });
     this.platform.pause.subscribe(e => {
-      this.listComp.newallStop();
-      setTimeout(() => {
-      }, 200);
+      this.ngZone.run(() => {
+        this.listComp.newallStop();
+      });
     });
     this.platform.resume.subscribe(e => {
-      this.listComp.newallStop();
-      setTimeout(() => {
-      }, 200);
+      this.ngZone.run(() => {
+        this.listComp.newallStop();
+      });
     });
   }
 

@@ -19,14 +19,15 @@ import {IonicStorageModule} from '@ionic/storage';
 import {Network} from '@ionic-native/network/ngx';
 import { FilterModalComponentComponent } from './Modal/filter-modal-component/filter-modal-component.component';
 import { ThemeDetection } from "@ionic-native/theme-detection/ngx";
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent,FilterModalComponentComponent],
   entryComponents: [FilterModalComponentComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), 
+  imports: [BrowserModule, IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    IonicStorageModule.forRoot({name: '_SgtechSchoolOfGurbani'}),
+    IonicStorageModule.forRoot({name: '_SgtechSchoolOfGurbani'}), FormsModule,
   ],
   providers: [
     StatusBar,ThemeDetection,
