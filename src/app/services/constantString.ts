@@ -4,98 +4,38 @@ export enum VARS {
     tokeWithExtention   =   '.mp3?alt=media&token=fcfe83f3-f21c-4d77-a4b8-438f0e53281a',
     shabadDirectory     =   '.shabad',
     angDir              =   'ang_',
+    OFFSET                    = 0,
+    LIMIT_LIST                = 20,
+    MSG_BACK_BUTTON           = 'Tap again to exit',
+    PROGRESS_TEXT             = 'Hold on, importing data into database. This may take some time!',
+    PROGRESS_IMPORT_DB_TEXT   = 'Getting database ready to use.',
+    PROGRESS_DATA_TO_DB_TEXT  = 'We are ready to listen and read Gurbani.',
+    FIREBASE_FOLDER           =   'https://firebasestorage.googleapis.com/v0/b/testgurubani.appspot.com/o/ang_',
+    AUDIO_NAME                =   '%2Fshabad_',
+    TOKEN_WITH_EXTENTION      =   '.mp3?alt=media&token=fcfe83f3-f21c-4d77-a4b8-438f0e53281a',
+    SHABAD_DIRECTORY          =   '.shabad',
+    ANG_DIR                   =   'ang_',
 }
-
-
 export const raags = {
-  raagArray : [ {
-        _id             :   1,
-        raag_english    :   'Jap'
-    },
-    {
-        _id : 2,
-        raag_english    :   'So Dar'
-        
-    },
-    {
-        _id : 3,
-        raag_english    :   'So Purakh'
-
-        
-    },
-    {
-        _id : 4,
-        raag_english    :   'Sohila'
-        
-    },
-    {
-        _id : 5,
-        raag_english    :   'Siree Raag'
-        
-    },
-    {
-        _id : 6,
-        raag_english    :   'Raag Maajh'
-        
-    },
-    {
-        _id : 7,
-        raag_english    :   'Raag Gauree'
-        
-    },
-    {
-        _id : 8,
-        raag_english    :   'Raag Aasaa'
-        
-    },
-    {
-        _id : 9,
-        raag_english    :   'Raag Gujri'
-        
-    },
-    {
-        _id : 10,
-        raag_english    :   'Raag Dayv Gandhaaree'
-
-    },
-    {
-        _id : 11,
-        raag_english    :   'Raag Bihaagraa'
-        
-    },
-    {
-        _id : 12,
-        raag_english    :   'Raag Vadhans'
-        
-    },
-    {
-        _id : 13,
-        raag_english    :   'Raag Sorath'
-        
-    },
-    {
-        _id : 14,
-        raag_english    :   'Raag Dhanaasree'
-        
-    },
-    {
-        _id : 15,
-        raag_english    :   'Raag Jaithsree'
-        
-    },
-    {
-        _id : 16,
-        raag_english    :   'Raag Todee'
-        
-    },
-    {
-        _id : 17,
-        raag_english    :   'Raag Bairaaree'
-        
-    },
-    {
-        _id : 18,
-        raag_english    :   'Raag Tilang'
+  raagArray : [
+    {_id : 1, raag_english : 'Jap'},
+    {_id : 2, raag_english    :   'So Dar'},
+    {_id : 3, raag_english    :   'So Purakh'},
+    {_id : 4, raag_english    :   'Sohila'},
+    {_id : 5, raag_english    :   'Siree Raag'},
+    {_id : 6, raag_english    :   'Raag Maajh'},
+    {_id : 7, raag_english    :   'Raag Gauree'},
+    {_id : 8, raag_english    :   'Raag Aasaa'},
+    {_id : 9, raag_english    :   'Raag Gujri'},
+    {_id : 10, raag_english    :   'Raag Dayv Gandhaaree'},
+    {_id : 11, raag_english    :   'Raag Bihaagraa'},
+    {_id : 12, raag_english    :   'Raag Vadhans'},
+    {_id : 13, raag_english    :   'Raag Sorath'},
+    {_id : 14, raag_english    :   'Raag Dhanaasree'},
+    {_id : 15, raag_english    :   'Raag Jaithsree'},
+    {_id : 16, raag_english    :   'Raag Todee'},
+    {_id : 17, raag_english    :   'Raag Bairaaree'},
+    {_id : 18, raag_english    :   'Raag Tilang'
         
     },
     {

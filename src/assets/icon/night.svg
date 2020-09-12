@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 15 15">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_13" data-name="Rectangle 13" width="15" height="15" transform="translate(216.5 11)" fill="#0f1425"/>
+    </clipPath>
+  </defs>
+  <g id="night" transform="translate(-216.5 -11)" clip-path="url(#clip-path)">
+    <path id="moon" d="M7.5,15a7.3,7.3,0,0,0,6.7-4.226,5.726,5.726,0,0,1-2.414.476A5.9,5.9,0,0,1,5.893,5.358,6.106,6.106,0,0,1,9.071.09,11.2,11.2,0,0,0,7.5,0a7.5,7.5,0,0,0,0,15Zm0,0" transform="translate(216.9 11)" fill="#0f1425"/>
+  </g>
+</svg>

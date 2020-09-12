@@ -20,6 +20,7 @@ import {Network} from '@ionic-native/network/ngx';
 import { FilterModalComponentComponent } from './Modal/filter-modal-component/filter-modal-component.component';
 import { ThemeDetection } from "@ionic-native/theme-detection/ngx";
 import {FormsModule} from '@angular/forms';
+import { SqliteDbCopy } from '@ionic-native/sqlite-db-copy/ngx';
 
 @NgModule({
   declarations: [AppComponent,FilterModalComponentComponent],
@@ -38,9 +39,17 @@ import {FormsModule} from '@angular/forms';
     SQLite,
     SQLitePorter,AndroidPermissions,
     FileTransferObject, 
-    Network,
+    Network, SqliteDbCopy
     
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dbCopy: SqliteDbCopy) {
+    this.dbCopy.copy('gurbani.db', 0).then((res) => {
+      console.log('ress', res);
+    }).catch((error) => {
+      console.log('error', error);
+    });
+  }
+}

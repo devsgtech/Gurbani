@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="23" height="23" viewBox="0 0 23 23">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_5" data-name="Rectangle 5" width="23" height="23" transform="translate(35.5)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="bar-icon-book" transform="translate(-35.5)" opacity="0.8" clip-path="url(#clip-path)">
+    <g id="book_2_" data-name="book(2)" transform="translate(35.5 0)">
+      <g id="Group_2" data-name="Group 2">
+        <path id="Path_7" data-name="Path 7" d="M22.233,3.839H12.906a2.163,2.163,0,0,0-1.406.518,2.162,2.162,0,0,0-1.406-.518H.767A.767.767,0,0,0,0,4.605V16.989a.767.767,0,0,0,.767.767h9.327a.64.64,0,0,1,.639.635v0a.767.767,0,0,0,.767.767h0a.767.767,0,0,0,.767-.767v0a.64.64,0,0,1,.639-.635h9.327A.767.767,0,0,0,23,16.989V4.605A.767.767,0,0,0,22.233,3.839ZM8.405,14.315H3.862a.511.511,0,1,1,0-1.022H8.405a.511.511,0,0,1,0,1.022Zm0-2.92H3.862a.511.511,0,0,1,0-1.022H8.405a.511.511,0,0,1,0,1.022Zm0-2.92H3.862a.511.511,0,0,1,0-1.022H8.405a.511.511,0,0,1,0,1.022Zm10.733,5.84H14.595a.511.511,0,1,1,0-1.022h4.544a.511.511,0,0,1,0,1.022Zm0-2.92H14.595a.511.511,0,0,1,0-1.022h4.544a.511.511,0,0,1,0,1.022Zm0-2.92H14.595a.511.511,0,0,1,0-1.022h4.544a.511.511,0,0,1,0,1.022Z" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

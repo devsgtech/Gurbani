@@ -34,9 +34,6 @@ export class SearchPage  implements OnInit {
     public platform: Platform,
     private ngZone: NgZone
   ){
-    this.platform.ready().then(() => {
-     
-    });
     this.platform.pause.subscribe(e => {
       this.ngZone.run(() => {
         this.listComp.newallStop();

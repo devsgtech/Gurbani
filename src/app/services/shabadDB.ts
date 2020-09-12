@@ -24,12 +24,13 @@ export class shabadDB {
   ) {
     this.platform.ready().then(() => {
       this.sqlite.create({
-        name: 'igurubani.db',
+        name: 'gurbani.db',
         location: 'default'
       })
         .then((db: SQLiteObject) => {
           this.storage = db;
-          this.getFakeData();
+          // this.getFakeData();
+          this.getDataOffset(0);
         });
     });
   }

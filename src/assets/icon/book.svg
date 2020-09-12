@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="33" height="33" viewBox="0 0 33 33">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_9" data-name="Rectangle 9" width="33" height="33" transform="translate(35.5)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="book" transform="translate(-35.5)" clip-path="url(#clip-path)">
+    <g id="book_2_" data-name="book(2)" transform="translate(35.5 5.507)">
+      <g id="Group_13" data-name="Group 13">
+        <path id="Path_10" data-name="Path 10" d="M31.9,3.839H18.517a3.1,3.1,0,0,0-2.017.743,3.1,3.1,0,0,0-2.017-.743H1.1A1.1,1.1,0,0,0,0,4.939V22.706a1.1,1.1,0,0,0,1.1,1.1H14.483a.918.918,0,0,1,.917.912v.006a1.1,1.1,0,0,0,1.1,1.1h0a1.1,1.1,0,0,0,1.1-1.1v-.006a.918.918,0,0,1,.917-.912H31.9a1.1,1.1,0,0,0,1.1-1.1V4.939A1.1,1.1,0,0,0,31.9,3.839ZM12.06,18.87H5.54a.733.733,0,1,1,0-1.467H12.06a.733.733,0,0,1,0,1.467Zm0-4.189H5.54a.733.733,0,0,1,0-1.467H12.06a.733.733,0,0,1,0,1.467Zm0-4.189H5.54a.733.733,0,0,1,0-1.467H12.06a.733.733,0,0,1,0,1.467Zm15.4,8.379H20.94a.733.733,0,1,1,0-1.467h6.519a.733.733,0,0,1,0,1.467Zm0-4.189H20.94a.733.733,0,0,1,0-1.467h6.519a.733.733,0,0,1,0,1.467Zm0-4.189H20.94a.733.733,0,0,1,0-1.467h6.519a.733.733,0,0,1,0,1.467Z" transform="translate(0 -3.839)" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

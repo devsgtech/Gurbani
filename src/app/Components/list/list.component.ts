@@ -75,17 +75,6 @@ export class ListComponent implements OnInit {
         this.newallStop();
       });
     });
-    this.ngZone.run(() => {
-      this.online = (this.network.type !== this.network.Connection.NONE);
-      this.network.onChange().subscribe((ev) => {
-        this.online = (ev.type === 'online');
-      });
-    });
-    this.online = (this.network.type !== this.network.Connection.NONE);
-    this.network.onChange().subscribe((ev) => {
-      this.online = (ev.type === 'online');
-    });
-
   }
   static scrollTo(index) {
     const currentId = document.getElementById('currentPlayItemId' + index);
@@ -113,6 +102,17 @@ export class ListComponent implements OnInit {
     this.testnextFileIndex = 0;
   }
   ionViewWillEnter() {
+    this.ngZone.run(() => {
+      this.online = (this.network.type !== this.network.Connection.NONE);
+      this.network.onChange().subscribe((ev) => {
+        this.online = (ev.type === 'online');
+      });
+    });
+    this.online = (this.network.type !== this.network.Connection.NONE);
+    this.network.onChange().subscribe((ev) => {
+      this.online = (ev.type === 'online');
+    });
+
     this.newallStop();
     if (this.isfav == true){
       this.getDataFromLocalStorage();
@@ -271,7 +271,7 @@ export class ListComponent implements OnInit {
       this.currPlayingFile = res;
       setTimeout(() => {
         this.currPlayingFile.play();
-      }, 100);
+      }, 0);
       this.setDuration(currentPlayFile);
       this.setStatus(currentPlayFile).then((status) => {
         this.getAndSetCurrentAudioPosition(currentPlayFile, index, isSingle);

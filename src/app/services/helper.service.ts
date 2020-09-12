@@ -42,7 +42,6 @@ export class HelperService {
               // private nativeToast: Toast,
               // private keyboard: Keyboard,
               private statusBar: StatusBar,
-              private datePipe: DatePipe,
               private navCtrl: NavController,
               // private appVersion: AppVersion,
               private activatedRoute: ActivatedRoute,
@@ -51,9 +50,6 @@ export class HelperService {
       this.DH = this.platform.height();
       this.DW = this.platform.width();
     }).catch(() => {});
-  }
-  getDatePipe(val, format = null) {
-    return format ? this.datePipe.transform(val, format) : this.datePipe.transform(val);
   }
   async presentTruckAlert(msg, cancelText = 'Different User', confirmText = 'Try Again', confirmText2 = null, cancelBtnClass = 'cancelBtn ion-text-capitalize', confirmBtnClass = 'confirmBtn ion-text-capitalize', confirmBtn2Class = 'confirmBtn ion-text-capitalize') {
     this.dismissLoading();
