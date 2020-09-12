@@ -2,36 +2,45 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
+import { BehaviorSubject } from 'rxjs';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import {Storage} from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class shabadDB {
-  private storage: SQLiteObject;
+  public storage: SQLiteObject;
   listItem = new BehaviorSubject([]);
   rowCount = 0;
+  data_:any;
   private isDbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public dbCopiedReady: BehaviorSubject<any> = new BehaviorSubject(false);
 
   constructor(
     private platform: Platform,
     private sqlite: SQLite,
     private httpClient: HttpClient,
-    private sqlPorter: SQLitePorter,
+    private localStorage: Storage,
   ) {
     this.platform.ready().then(() => {
-      this.sqlite.create({
-        name: 'gurbani.db',
-        location: 'default'
-      })
-        .then((db: SQLiteObject) => {
-          this.storage = db;
-          // this.getFakeData();
-          this.getDataOffset(0);
-        });
+      this.dbCopiedReady.subscribe(async (isDb) => {
+        console.log('dbCopiedReady', isDb)
+        if (isDb) {
+          this.sqlite.create({
+            name: 'gurbani.db',
+            location: 'default'
+          }).then(async (db: SQLiteObject) => {
+            this.storage = db;
+            await this.localStorage.set('_Loaded_Db_INTO_DEVICE', true);
+            setTimeout(() => {
+              this.getDataOffset(0);
+              this.isDbReady.next(true);
+            }, 100);
+          }).catch(() => {});
+        }
+      });
     });
   }
 
@@ -42,65 +51,12 @@ export class shabadDB {
   fetchSongs(){
     return this.listItem.asObservable();
   }
-
-  // Render fake data
-  getFakeData() {
-    this.createTable();
-    
-  }
-
   dropTable(){
     let sqli = 'DROP TABLE IF EXISTS `shabad`';
     this.storage.executeSql(sqli, []).then(res => {
       console.log('Table Dropped', res);
     });
   }
-  data_:any;
-  createTable(){
-    this.data_ = '';
-   let sqli =  'CREATE TABLE IF NOT EXISTS shabad( _id INTEGER PRIMARY KEY AUTOINCREMENT,shabad_no TEXT, source_id TEXT, ng_id TEXT,       line_id TEXT,       writer_id TEXT,     raag_id TEXT,      vishraam TEXT,       green_vishraam TEXT,       first_ltr_start TEXT,      first_ltr_any TEXT  ,      gurmukhi TEXT ,      english_ssk TEXT  ,      english_bms TEXT  ,      punjabi_bms TEXT,      transliteration TEXT ,      sggs_darpan TEXT ,      faridkot_teeka TEXT  ,punjabiVersion TEXT)'  
-    return this.storage.executeSql(sqli, []).then(res => {
-      this.data_ = res;
-      console.log(' Table Created res.rows.length ', res.rows.length);
-
-      if(res.rows.length == 0){
-        return this.getCount();
-      } else {
-        return this.newFakedata()
-      }
-    });
-    
-  }
-newFakedata(){
-   return this.httpClient.get(
-      'assets/gurubaniSQL/shabad.sql',
-      { responseType: 'text' }
-    ).subscribe(data => {
-      this.sqlPorter.importSqlToDb(this.storage, data)
-        .then(_ => {
-          this.isDbReady.next(true);
-          return  this.getDataOffset(0);
-        })
-        .catch(error => console.error(error));
-    });
-}
-  getCount(){
-    let sqli = 'SELECT COUNT(*) FROM shabad';
-    return this.storage.executeSql(sqli, []).then(res => {
-      console.log('Count Rows Of shabad Created', res);
-      this.rowCount = res.rows.item(0)['COUNT(*)'];
-      if(this.rowCount > 60000){
-        return this.getDataOffset(0);
-      } else {
-        this.newFakedata();
-      }
-      console.log(res.rows.item(0)['COUNT(*)'],'-<--- No of Counts')
-    });
-  }
-
- 
-
-
   searchShabadAnyWhere(text) {
     text = '%' + text + '%'
     console.log('text in search Db', text)
@@ -137,6 +93,7 @@ newFakedata(){
         items = []
         items = this.setData(res);
       }
+      this.listItem.next(items);
       return items;
     });
   }
@@ -198,7 +155,7 @@ newFakedata(){
 
 
   searchShabadAngVaar(text) {
-    text = '%' + text + '%',
+    text = '%' + text + '%';
     console.log('Click Search Ang id', 'SELECT * FROM shabad WHERE ang_id LIKE ? LIMIT 10', text)
     return this.storage.executeSql('SELECT * FROM shabad WHERE ang_id LIKE ? LIMIT 10', [text]).then(res => {
       let items = [];

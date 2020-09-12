@@ -2,13 +2,10 @@
 import { Injectable } from '@angular/core';
 import {LoadingController, Platform} from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { BehaviorSubject} from 'rxjs';
 import { ToastController } from '@ionic/angular';
 import { VARS } from './constantString';
 import { File } from '@ionic-native/file/ngx';
-import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +16,8 @@ export class newhelper {
 
   loading;
     constructor(
-        private platform: Platform, 
-        private sqlite: SQLite, 
+        private platform: Platform,
         private httpClient: HttpClient,
-        private sqlPorter: SQLitePorter,
         public toastController: ToastController,
         private file: File,
         private loadingCtrl: LoadingController ){}

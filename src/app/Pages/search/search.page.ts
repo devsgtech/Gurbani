@@ -51,12 +51,9 @@ export class SearchPage  implements OnInit {
   }
 
    ionViewWillLeave() {
-    
         try{
-          this.modalController.dismiss(this.filterData)
-        } catch (e){
-          console.log('Error e')
-        }
+          this.modalController.dismiss(this.filterData).catch(() => {});
+        } catch (e){}
 
         this.listComp.stopPlayRecording();
         this.listComp.setIndexZero();

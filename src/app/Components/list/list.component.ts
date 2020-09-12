@@ -103,6 +103,7 @@ export class ListComponent implements OnInit {
   }
   ionViewWillEnter() {
     this.ngZone.run(() => {
+      console.log('this.network.type', this.network.type)
       this.online = (this.network.type !== this.network.Connection.NONE);
       this.network.onChange().subscribe((ev) => {
         this.online = (ev.type === 'online');
@@ -356,46 +357,21 @@ searchWord(ev = null) {
 ///////////////// DB Search End///////////////////
 ///////////////// LOAD DATA From DB///////////////////////////
 fetchSql() {
+  this.newHelper.presentLoadingWithOptions('Hold on, preparing your data. This may take some time!');
   this.storage.get('_Loaded_Db_INTO_DEVICE').then((loaded: any) => {
     console.log( 'Storage Data', loaded);
     if (loaded){
       this.getData();
     } else{
-      this.newHelper.presentLoadingWithOptions('Hold on, preparing your data. This may take some time!');
       this.igdb.dbState().subscribe((res) => {
         if (res) {
-            this.igdb.fetchSongs().subscribe(item => {
+          this.igdb.fetchSongs().subscribe(item => {
             this.serverFileArray = item;
             this.serverFileArrayCopy = this.serverFileArray;
             this.newHelper.dismissLoading();
           });
         }
       });
-
-      setTimeout(() => {
-          console.log('this.igdb.rowCount0', this.igdb.rowCount);
-          if (this.igdb.rowCount > 60000){
-          console.log('this.igdb.rowCount0 if', this.igdb.rowCount);
-
-          this.getData();
-          } else{
-          console.log('this.igdb.rowCount0 else', this.igdb.rowCount);
-          this.igdb.createTable().then((res) => {
-              console.log('Response after Get Data From DB', res);
-              res.map(item => {
-                item.duration = -1;
-                item.position = 0,
-                item.isFileDownloaded = false,
-                item.isDownloading = false,
-                this.serverFileArray.push(item);
-              });
-              this.serverFileArrayCopy = this.serverFileArray;
-              this.storage.set('_Loaded_Db_INTO_DEVICE', true);
-              this.newHelper.dismissLoading();
-              this.setFavourite();
-            });
-          }
-        }, 8000);
     }
   }).catch(e => console.log('Error =>' , e));
 
@@ -409,9 +385,9 @@ getData() {
     console.log('Response after Get Data From DB', res);
     res.map(item => {
       item.duration = -1;
-      item.position = 0,
-      item.isFileDownloaded = false,
-      item.isDownloading = false,
+      item.position = 0;
+      item.isFileDownloaded = false;
+      item.isDownloading = false;
       this.serverFileArray.push(item);
     });
     this.serverFileArrayCopy = this.serverFileArray;

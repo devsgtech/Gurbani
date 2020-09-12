@@ -11,9 +11,8 @@ import { AppComponent } from './app.component';
 import {Media} from '@ionic-native/media/ngx';
 import {File} from '@ionic-native/file/ngx';
 import {FileTransfer, FileTransferObject,  } from '@ionic-native/file-transfer/ngx';
-import { SQLite } from '@ionic-native/sqlite/ngx';
+import {SQLite} from '@ionic-native/sqlite/ngx';
 import { HttpClientModule } from '@angular/common/http';
-import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import {IonicStorageModule} from '@ionic/storage';
 import {Network} from '@ionic-native/network/ngx';
@@ -37,19 +36,11 @@ import { SqliteDbCopy } from '@ionic-native/sqlite-db-copy/ngx';
     Media,
     File, FileTransfer,
     SQLite,
-    SQLitePorter,AndroidPermissions,
+    AndroidPermissions,
     FileTransferObject, 
     Network, SqliteDbCopy
     
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(private dbCopy: SqliteDbCopy) {
-    this.dbCopy.copy('gurbani.db', 0).then((res) => {
-      console.log('ress', res);
-    }).catch((error) => {
-      console.log('error', error);
-    });
-  }
-}
+export class AppModule {}

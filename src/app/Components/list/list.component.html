@@ -37,7 +37,7 @@
         </ion-button>
       </ion-item>
       <div padding-horizontal class="bottomItem">
-        <ion-progress-bar [value]="getProgressVal(sf.position, sf.duration,sf)" ></ion-progress-bar>
+        <ion-progress-bar *ngIf="sf.isPlaying" [value]="getProgressVal(sf.position, sf.duration,sf)" ></ion-progress-bar>
       </div>
     </ng-container>
     <ion-infinite-scroll threshold="100px" (ionInfinite)="checkFilterOrNot($event)" *ngIf="!isfav && serverFileArray?.length > 0">
