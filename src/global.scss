@@ -214,11 +214,32 @@ body.dark {
   align-items: center;
   justify-content: center;
   border-radius: 15px;
-  height: 50%;
-    width: 90%;
-    margin-left: 5%;
-    margin-top: 50%;
-    ion-backdrop{
-      display: none;
+  height: 280px;
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 50%;
+  ion-backdrop{
+    display: none;
+  }
+}
+ion-action-sheet{
+  --color: var(--ion-color-primary-tint) !important;
+  .action-sheet-title, .action-sheet-group-title {
+    --color: var(--ion-color-secondary) !important;
+    color: var(--ion-color-secondary) !important;
+    .action-sheet-sub-title {
+      padding: 0;
+      font-size: x-small;
+      --color: var(--ion-color-secondary-shade) !important;
+      color: var(--ion-color-secondary-shade) !important;
     }
+  }
+  .action-sheet-selected, .action-sheet-selected ion-icon, .action-sheet-selected .action-sheet-button-inner{
+    --color: var(--ion-color-primary-tint) !important;
+    color: var(--ion-color-primary-tint) !important;
+  }
+  .action-sheet-cancel, .action-sheet-group-cancel, .action-sheet-cancel ion-icon, .action-sheet-cancel .action-sheet-button-inner{
+    --color: var(--ion-color-danger) !important;
+    color: var(--ion-color-danger) !important;
+  }
 }

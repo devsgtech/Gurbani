@@ -8,15 +8,19 @@ import { ModalController } from '@ionic/angular';
 })
 export class FilterModalComponentComponent implements OnInit {
   filterData ={
-    searchMode  : null,
-    scriptures  : '1',
-    writer      : '0',
-    raag        : null,
+    searchMode  : 0,
+    scriptures  : 1,
+    writer      : 0,
+    raag        : 0,
   }
   searchmode = [
     {
-      val :'First Letter (Start)',
+      val :'Default',
       id  : 0,
+    },
+    {
+      val :'First Letter (Start)',
+      id  : 5,
     },
     {
       val :'First Letter (Anywhere)',
@@ -35,7 +39,11 @@ export class FilterModalComponentComponent implements OnInit {
       id  : 4,
     }
   ]
-  raagData :any ;
+  raagData :any;
+  writersArray = [
+    {val: 0, title: 'All'},
+    {val: 1, title: 'Shri Guru Nanak Dev Ji'},
+  ]
   constructor(
     private modalController: ModalController,
   ) { }
@@ -60,10 +68,10 @@ export class FilterModalComponentComponent implements OnInit {
   }
   clearFilter(){
     this.filterData ={
-      searchMode  : null,
-      scriptures  : '1',
-      writer      : '0',
-      raag        : null,
+      searchMode  : 0,
+      scriptures  : 1, // 'Shri Guru Granth Sahib Ji
+      writer      : 0,
+      raag        : 0,
     }
     console.log('Clear Filter Data',this.filterData,)
     this.modalController.dismiss({isCancel: false, data: this.filterData});

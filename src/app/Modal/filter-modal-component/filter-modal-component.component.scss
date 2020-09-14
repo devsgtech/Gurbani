@@ -45,3 +45,18 @@ ion-toolbar{
   }
 
 }
+ion-footer{
+  ion-toolbar{
+    --background: transparent !important;
+    ion-button{
+      --background: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
+      color: var(--ion-color-success-contrast);
+      --border-radius: 5px !important;
+      width: calc(50% - 8px);
+      margin: 4px !important;
+    }
+  }
+}
+ion-footer::before{
+  background-image: none !important;
+}

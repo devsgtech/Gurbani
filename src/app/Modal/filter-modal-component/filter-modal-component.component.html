@@ -19,17 +19,17 @@
         <ion-select-option [value]="search.id" *ngFor="let search of searchmode">{{search.val}}</ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-item>
+    <!--<ion-item>
       <ion-label position="stacked">Scriptures</ion-label>
       <ion-select [value]='filterData.scriptures' [(ngModel)]="filterData.scriptures" (ionChange)="setScripture($event)" interface="action-sheet">
         <ion-select-option value="0">All Scriptures</ion-select-option>
         <ion-select-option value="1">Shri Guru Granth Sahib Ji</ion-select-option>
       </ion-select>
-    </ion-item>
+    </ion-item>-->
     <ion-item>
       <ion-label position="stacked">Writer</ion-label>
       <ion-select [value]='filterData.writer' (ionChange)="setWriter($event)" interface="action-sheet">
-        <ion-select-option value="0">Shri Guru Nanak Dev Ji</ion-select-option>
+        <ion-select-option [value]="wr.val" *ngFor="let wr of writersArray">{{wr.title}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
@@ -38,10 +38,13 @@
         <ion-select-option [value]="raag._id" *ngFor="let raag of raagData">{{raag.raag_english}}</ion-select-option>
       </ion-select>
     </ion-item>
-    <div class="button-div">
-      <ion-button (click)="clearFilter()">Clear Filter</ion-button>
-      <ion-button (click)="applyFilter()">Apply</ion-button>
-    </div>
-
   </div>
 </ion-content>
+<ion-footer>
+  <ion-toolbar class="ion-no-padding ion-no-margin">
+    <ion-row class="btnBottom">
+      <ion-button class="ion-no-margin ion-no-padding" expand="full" (click)="clearFilter()">Clear Filter</ion-button>
+      <ion-button class="ion-no-margin ion-no-padding" expand="full" (click) = "applyFilter()">Apply</ion-button>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

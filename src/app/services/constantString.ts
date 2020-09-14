@@ -18,6 +18,7 @@ export enum VARS {
 }
 export const raags = {
   raagArray : [
+    {_id : 0, raag_english : 'All'},
     {_id : 1, raag_english : 'Jap'},
     {_id : 2, raag_english    :   'So Dar'},
     {_id : 3, raag_english    :   'So Purakh'},
