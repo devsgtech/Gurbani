@@ -29,7 +29,7 @@
     <ion-item>
       <ion-label position="stacked">Writer</ion-label>
       <ion-select [value]='filterData.writer' (ionChange)="setWriter($event)" interface="action-sheet">
-        <ion-select-option [value]="wr.val" *ngFor="let wr of writersArray">{{wr.title}}</ion-select-option>
+        <ion-select-option [value]="wr._id" *ngFor="let wr of writerNames">{{wr.writer_name}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>

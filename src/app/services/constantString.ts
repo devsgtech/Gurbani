@@ -195,6 +195,7 @@ export const raags = {
 
 export const writes = {
     writerArray : [
+        {_id : 0, writer_name : 'All'},
         {_id : 1, writer_name : 'Guru Nanak Dev Ji'},
         {_id : 2, writer_name : 'Guru Angad Dev Ji'},
         {_id : 3, writer_name : 'Guru Amar Das Ji'},

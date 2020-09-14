@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { writes } from 'src/app/services/constantString';
 
 @Component({
   selector: 'app-filter-modal-component',
@@ -43,7 +44,10 @@ export class FilterModalComponentComponent implements OnInit {
   writersArray = [
     {val: 0, title: 'All'},
     {val: 1, title: 'Shri Guru Nanak Dev Ji'},
-  ]
+  ];
+
+  writerNames = writes.writerArray;
+
   constructor(
     private modalController: ModalController,
   ) { }
