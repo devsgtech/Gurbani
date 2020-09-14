@@ -380,6 +380,13 @@ export class Tab3Page implements OnInit {
 
     // this.playRecording(nextFile, nextFileIndex, isSingle);
   }
+
+  downloadNext() {
+    const nextFileIndex = this.testnextFileIndex + 1;
+    if (this.serverFileArray.length > nextFileIndex && !this.serverFileArray[nextFileIndex].isFileDownloaded) {
+      this.download(this.serverFileArray[nextFileIndex], nextFileIndex, false, false);
+    }
+  }
 playAll(){
   this.isPlayingAll = true;
   this.cancelAll = false;
@@ -446,7 +453,7 @@ cancelAllAndPlayOne(sf, i, dd){
   this.download(sf, i, dd);
 }
 
-async download(sf, i, dd) {
+async download(sf, i, dd, playAudio = true) {
   try {
     this.stopPlayRecording();
   } catch (e) {}
@@ -457,100 +464,96 @@ async download(sf, i, dd) {
     this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
       .then(status => {
         if (status.hasPermission) {
-          this.createShabad(sf, i, dd);
+          this.createShabad(sf, i, dd, playAudio);
         } else {
           this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
             .then(status => {
               if (status.hasPermission) {
-                this.createShabad(sf, i, dd);
+                this.createShabad(sf, i, dd, playAudio);
               }
             });
         }
       });
   } else if (this.platform.is('ios')) {
-    this.createShabad(sf, i, dd);
+    this.createShabad(sf, i, dd, playAudio);
   }
 }
 
- createShabad(sf, i, dd) {
+createShabad(sf, i, dd, playAudio) {
   this.file.createDir(this.storageDirectory, VARS.shabadDirectory, false).then(response => {
-    this.createAngDir(sf, i, dd);
+    this.createAngDir(sf, i, dd, playAudio);
   }).catch(err => {
     if (err.message == 'PATH_EXISTS_ERR') {
-      this.createAngDir(sf, i, dd);
+      this.createAngDir(sf, i, dd, playAudio);
     }
   });
 }
 
-createAngDir(sf, i, dd) {
+
+createAngDir(sf, i, dd, playAudio) {
   this.file.createDir(this.storageDirectory + VARS.shabadDirectory, VARS.angDir + sf.ang_id, false).then(response => {
-    this.downloadAudioFile(sf, i, dd);
+    this.downloadAudioFile(sf, i, dd, playAudio);
   }).catch(err => {
     if (err.message == 'PATH_EXISTS_ERR') {
-      this.downloadAudioFile(sf, i, dd);
-    }
+      this.downloadAudioFile(sf, i, dd, playAudio);
+    } 
   });
 }
 
 
-downloadAudioFile(sf, i, dd) {
+
+downloadAudioFile(sf, i, dd, playAudio = true) {
   console.log('check', this.cancelAll, 'this.cancelAll  ', sf, 'sf'  , dd, ' dd');
   const checkFileUrl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/';
   const FileName = 'shabad_' + sf._id + '.mp3';
   this.file.checkFile(checkFileUrl, FileName).then((entry) => {
     const nurl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
     sf.isDownloading = false;
-
-    if (this.cancelAll == false && dd == false){
-      console.log('onecancelAll', this.cancelAll, 'this.cancelAll  ', sf, 'sf' );
+    sf.isFileDownloaded = true;
+    if ((this.cancelAll && dd && playAudio) || (!this.cancelAll && !dd && playAudio)){
       setTimeout(() => {
         this.playRecording(sf, i, dd, nurl);
       }, 500);
+      try {
+        this.downloadNext();
+      } catch (e) {}
     }
-    if (this.cancelAll && dd == true){
-    setTimeout(() => {
-      this.playRecording(sf, i, dd, nurl);
-    }, 500);
-   }
-
-  })
-    .catch((err) => {
-     const url = this.newHelper.returnDownloadUrl(sf.ang_id, sf._id);
-     const fileTransfer: FileTransferObject = this.transfer.create();
-     if (!this.online){
+  }).catch((err) => {
+      const url = this.newHelper.returnDownloadUrl(sf.ang_id, sf._id);
+      const fileTransfer: FileTransferObject = this.transfer.create();
+      if (!this.online){
         this.checkNetwork();
       } else{
-        sf.isDownloading = true;
-        Tab3Page.scrollTo(i);
-        fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
-        const nurl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
-        sf.isDownloading = false;
-
-        console.log('Inside Download For Play', this.cancelAll, 'this.cancelAll  ', sf, 'sf' );
-        if (this.cancelAll == false && dd == false){
-          console.log('TwocancelAll', this.cancelAll, 'this.cancelAll  ', sf, 'sf' );
-          setTimeout(() => {
-            this.playRecording(sf, i, dd, nurl);
-          }, 500);
+        if (playAudio) {
+          sf.isDownloading = true;
+          Tab3Page.scrollTo(i);
         }
-        if (this.cancelAll && dd == true){
-        setTimeout(() => {
-          this.playRecording(sf, i, dd, nurl);
-        }, 500);
-       }
-      })
-        .catch((err) => {
-          if (err.http_status == 404) {
-            sf.isDownloading = false;
-
-            if (this.isPlayingAll){
-
-              this.presentAlertConfirm();
-            } else {
-              this.newHelper.presentToastWithOptions('Shabad Not Found on Server');
-            }
+        fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
+          const nurl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
+          sf.isDownloading = false;
+          sf.isFileDownloaded = true;
+          console.log('Inside Download For Play', this.cancelAll, 'this.cancelAll  ', sf, 'sf' );
+          if ((this.cancelAll && dd && playAudio) || (!this.cancelAll && !dd && playAudio)){
+            setTimeout(() => {
+              this.playRecording(sf, i, dd, nurl);
+            }, 500);
           }
-        });
+          try {
+            this.downloadNext();
+          } catch (e) {}
+        }).catch((err) => {
+            if (err.http_status == 404) {
+              sf.isDownloading = false;
+              sf.isFileDownloaded = false;
+              if (playAudio) {
+                if (this.isPlayingAll){
+                  this.presentAlertConfirm();
+                } else {
+                  this.newHelper.presentToastWithOptions('Shabad Not Found on Server');
+                }
+              }
+            }
+          });
       }
     });
 
