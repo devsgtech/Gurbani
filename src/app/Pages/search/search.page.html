@@ -3,7 +3,8 @@
     <ion-toolbar >
       <ion-backdrop *ngIf="backdrop"></ion-backdrop>
       <ion-button slot="start" fill="clear" color="dark" (click)="filterModal()">
-        <img src="assets/icon/filter-icon.svg" alt="filter">
+        <ion-icon src="assets/icon/filter-icon.svg"></ion-icon>
+        <span class="red-dot" *ngIf="getIfDot()">•</span>
       </ion-button>
       <ion-select mode="ios" interface="popover" [interfaceOptions]="{header: 'Select Ang'}" slot="start"
         placeholder="Select by" [(ngModel)]="searchOpt" style="display:none">

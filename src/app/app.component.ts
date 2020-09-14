@@ -1,9 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { SettingTabPage } from './setting-tab/setting-tab.page';
 import {SqliteDbCopy} from '@ionic-native/sqlite-db-copy/ngx';
 import {shabadDB} from './services/shabadDB';
 

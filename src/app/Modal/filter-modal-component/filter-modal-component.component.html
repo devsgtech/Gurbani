@@ -5,37 +5,36 @@
         <p class="p0">Filter</p>
       </label>
     </ion-title>
-    <ion-button (click)="closeModal()" slot='end' fill="clear">
+    <ion-button (click)="closeModal(true)" slot='end' fill="clear">
       <ion-icon name="close-outline" (click)="closeModal()" role="img" class="md ion-color ion-color-danger hydrated"
         aria-label="trash outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
   <div>
     <ion-item>
       <ion-label position="stacked">Search Mode</ion-label>
-      <ion-select [(ngModel)]="filterData.searchMode" (ionChange)="setmode($event)" [value]='filterData.searchMode' placeholder="Select Mode">
+      <ion-select [(ngModel)]="filterData.searchMode" (ionChange)="setmode($event)" [value]='filterData.searchMode' placeholder="Select Mode" interface="action-sheet">
         <ion-select-option [value]="search.id" *ngFor="let search of searchmode">{{search.val}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Scriptures</ion-label>
-      <ion-select [value]='filterData.scriptures' [(ngModel)]="filterData.scriptures" (ionChange)="setScripture($event)">
+      <ion-select [value]='filterData.scriptures' [(ngModel)]="filterData.scriptures" (ionChange)="setScripture($event)" interface="action-sheet">
         <ion-select-option value="0">All Scriptures</ion-select-option>
         <ion-select-option value="1">Shri Guru Granth Sahib Ji</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked"  (ionChange)="setWriter($event)">Writer</ion-label>
-      <ion-select [value]='filterData.writer'>
+      <ion-label position="stacked">Writer</ion-label>
+      <ion-select [value]='filterData.writer' (ionChange)="setWriter($event)" interface="action-sheet">
         <ion-select-option value="0">Shri Guru Nanak Dev Ji</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Raag</ion-label>
-      <ion-select (ionChange)="setRaag($event)" [value]='filterData.raag' placeholder="Select Raag">
+      <ion-select (ionChange)="setRaag($event)" [value]='filterData.raag' placeholder="Select Raag" interface="action-sheet">
         <ion-select-option [value]="raag._id" *ngFor="let raag of raagData">{{raag.raag_english}}</ion-select-option>
       </ion-select>
     </ion-item>

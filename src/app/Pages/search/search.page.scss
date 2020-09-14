@@ -38,10 +38,16 @@ ion-header{
           margin: 2px 0;
         }
       }
+      .red-dot {
+        color: var(--ion-color-danger);
+        font-size: 44px;
+        position: absolute;
+        bottom: -10px;
+        right: -10px;
+      }
     }
   }
   ion-backdrop{
     opacity: 0.5;
   }
-  
   

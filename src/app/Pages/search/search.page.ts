@@ -22,7 +22,7 @@ export class SearchPage  implements OnInit {
   filterData ={
     searchMode  : null,
     scriptures  : '1',
-      writer    : '0',
+    writer    : '0',
     raag        : null,
   }
   sqlScript = '';
@@ -85,12 +85,15 @@ export class SearchPage  implements OnInit {
         componentProps: { raagData: this.raagData , filterData : this.filterData}
       });
       modal.onDidDismiss()
-      .then((data) => {
+      .then((data: any) => {
         this.backdrop = false;
-        this.filterData = data.data;
-        this.consoleData();
+        console.log('data', data);
+        if (data && data.data && !data.data.isCancel && data.data.data) {
+          this.filterData = data.data.data;
+          this.consoleData();
+        }
     });
-      return await modal.present();
+    return await modal.present();
   }
 
   consoleData(){
@@ -139,7 +142,7 @@ export class SearchPage  implements OnInit {
           // this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  punjabiVersion LIKE ? OR transliteration LIKE ? OR english_ssk LIKE ? AND raag_id LIKE ?  LIMIT 10 OFFSET ?' 
           break;
         case 2:   
-          text = '%' + text + '%',
+          text = '%' + text + '%';
           raagText = '%' + raagText + '%'
         arrayText = [text,raagText,0];
         this.sqlScript =  'SELECT * FROM shabad WHERE source_id="G" AND  ang_id LIKE ? AND raag_id LIKE ? LIMIT 10 OFFSET ?'
@@ -199,5 +202,12 @@ export class SearchPage  implements OnInit {
   nextplay(){
     this.listComp.nextplay();
   }
+  getIfDot() {
+    return true;/*
+    if (this.filterData) {
 
+    } else {
+      return
+    }*/
+  }
 }

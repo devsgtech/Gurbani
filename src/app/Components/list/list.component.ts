@@ -361,6 +361,7 @@ fetchSql() {
   this.storage.get('_Loaded_Db_INTO_DEVICE').then((loaded: any) => {
     console.log( 'Storage Data', loaded);
     if (loaded){
+      this.newHelper.dismissLoading();
       this.getData();
     } else{
       this.igdb.dbState().subscribe((res) => {
@@ -369,11 +370,18 @@ fetchSql() {
             this.serverFileArray = item;
             this.serverFileArrayCopy = this.serverFileArray;
             this.newHelper.dismissLoading();
+          }, error => {
+            this.newHelper.dismissLoading();
           });
         }
+      }, err => {
+        this.newHelper.dismissLoading();
       });
     }
-  }).catch(e => console.log('Error =>' , e));
+  }).catch(e => {
+    this.newHelper.dismissLoading();
+    console.log('Error =>' , e)
+  });
 
 }
 

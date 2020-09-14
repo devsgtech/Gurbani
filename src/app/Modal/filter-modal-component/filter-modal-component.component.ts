@@ -56,7 +56,7 @@ export class FilterModalComponentComponent implements OnInit {
   }
   applyFilter(){
     console.log('Apply Function call',this.filterData,)
-    this.modalController.dismiss(this.filterData);
+    this.modalController.dismiss({isCancel: false, data: this.filterData});
   }
   clearFilter(){
     this.filterData ={
@@ -66,15 +66,15 @@ export class FilterModalComponentComponent implements OnInit {
       raag        : null,
     }
     console.log('Clear Filter Data',this.filterData,)
-    this.modalController.dismiss(this.filterData);
+    this.modalController.dismiss({isCancel: false, data: this.filterData});
   }
-  closeModal(){
+  closeModal(isCancel = false){
     let data ={
       searchMode  : this.filterData.searchMode,
       scriptures  : this.filterData.scriptures,
       writer      :  this.filterData.writer,
       raag        : this.filterData.raag,
     }
-    this.modalController.dismiss(data);
+    this.modalController.dismiss({isCancel, data});
   }
 }

@@ -58,7 +58,9 @@ ion-range{
     padding: 0;
 }
 .toggle-switch{
-    margin: 16px 16px 0px 16px;
+    ion-label, ion-toggle{
+        padding: 16px 16px 0 16px;
+    };
     ion-toggle {
         --background-checked: linear-gradient(135deg, #27a501 0%, #cff12b 100%);;
     }
