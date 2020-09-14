@@ -117,40 +117,6 @@ export class ListComponent implements OnInit {
   async checkNetwork() {
     await this.newHelper.presentToastWithOptions(this.online ? 'You are connected to internet, woohoo!' : 'You are not connected to internet!');
   }
-  prepareAudioFile(singleFile = []) {
-    this.platform.ready().then(() => {
-      this.file.resolveDirectoryUrl(this.storageDirectory).then((resolvedDirectory) => {
-        let filesArray = this.serverFileArray;
-        if (singleFile.length) {
-          filesArray = singleFile;
-        }
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < filesArray.length; i++) {
-          const sFile = filesArray[i];
-          this.file.checkFile(resolvedDirectory.nativeURL, sFile.fileName).then((data) => {
-            if (data === true) {
-              sFile.isFileDownloaded = true;
-              sFile.isDownloading = false;
-            } else {  // not sure if File plugin will return false. go to download
-              console.log('not found--------', i);
-            }
-          }).catch(async err => {
-            console.log('Error occurred while checking local files:', i, err);
-            if (err.code === 1) {
-              const fileTransfer: FileTransferObject = this.transfer.create();
-              fileTransfer.download(sFile.url, this.storageDirectory + sFile.fileName).then((entry) => {
-                console.log('download complete', i, sFile.fileName, entry.toURL());
-                sFile.isFileDownloaded = true;
-                sFile.isDownloading = false;
-              }).catch(err2 => {
-                console.log('Download error!', i, err2);
-              });
-            }
-          });
-        }
-      }).catch(e => console.log('e', e));
-    }).catch(e => console.log('e0', e));
-  }
   createAudioFile(url) {
     return new Promise(resolve => {
       this.currPlayingFile = null;
@@ -252,7 +218,6 @@ export class ListComponent implements OnInit {
       this.currPlayingFile.stop();
     } catch (e) {}
     this.createAudioFile(newUrl).then((res: any) => {
-      console.log('rere', res);
       this.currPlayingFile = res;
       setTimeout(() => {
         this.currPlayingFile.play();
@@ -598,10 +563,13 @@ export class ListComponent implements OnInit {
           }).catch((err) => {
               if (err.http_status == 404) {
                 sf.isDownloading = false;
-                if (this.isPlayingAll){
-                  this.presentAlertConfirm();
-                } else {
-                  this.newHelper.presentToastWithOptions('Shabad Not Found on Server');
+                sf.isFileDownloaded = false;
+                if (playAudio) {
+                  if (this.isPlayingAll){
+                    this.presentAlertConfirm();
+                  } else {
+                    this.newHelper.presentToastWithOptions('Shabad Not Found on Server');
+                  }
                 }
               }
             });
