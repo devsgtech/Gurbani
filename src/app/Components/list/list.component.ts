@@ -275,8 +275,9 @@ export class ListComponent implements OnInit {
   }
   downloadNext() {
     const nextFileIndex = this.testnextFileIndex + 1;
-    const nextFile = this.serverFileArray[nextFileIndex];
-    this.download( nextFile, nextFileIndex, false, false);
+    if (this.serverFileArray.length > nextFileIndex && !this.serverFileArray[nextFileIndex].isFileDownloaded) {
+      this.download(this.serverFileArray[nextFileIndex], nextFileIndex, false, false);
+    }
   }
 
   prevplay() {
@@ -562,6 +563,7 @@ export class ListComponent implements OnInit {
     this.file.checkFile(checkFileUrl, FileName).then((entry) => {
       const nurl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
       sf.isDownloading = false;
+      sf.isFileDownloaded = true;
       if ((this.cancelAll && dd && playAudio) || (!this.cancelAll && !dd && playAudio)){
         setTimeout(() => {
           this.playRecording(sf, i, dd, nurl);
@@ -576,21 +578,23 @@ export class ListComponent implements OnInit {
         if (!this.online){
           this.checkNetwork();
         } else{
-          sf.isDownloading = true;
-          ListComponent.scrollTo(i);
+          if (playAudio) {
+            sf.isDownloading = true;
+            ListComponent.scrollTo(i);
+          }
           fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
             const nurl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
             sf.isDownloading = false;
-
+            sf.isFileDownloaded = true;
             console.log('Inside Download For Play', this.cancelAll, 'this.cancelAll  ', sf, 'sf' );
             if ((this.cancelAll && dd && playAudio) || (!this.cancelAll && !dd && playAudio)){
               setTimeout(() => {
                 this.playRecording(sf, i, dd, nurl);
               }, 500);
-              try {
-                this.downloadNext();
-              } catch (e) {}
             }
+            try {
+              this.downloadNext();
+            } catch (e) {}
           }).catch((err) => {
               if (err.http_status == 404) {
                 sf.isDownloading = false;
