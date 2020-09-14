@@ -64,6 +64,20 @@ ion-card{
     }
 }
 
+.ion-fab-button{
+  background: #27a501;
+  background: -moz-linear-gradient(-45deg, #27a501 0%, #cff12b 100%);
+  background: -webkit-linear-gradient(-45deg, #27a501 0%,#cff12b 100%);
+  background: linear-gradient(135deg, #27a501 0%,#cff12b 100%);
+  color: #ffffff;
+  border-radius: 100px;
+  margin-left: 10px;
+  margin-right: 10px;
+  ion-icon{
+    background: var(--ion-color-success-contrast) !important;
+  }
+}
+
 
 // @media (prefers-color-scheme: light) {
 //     ion-toolbar {
