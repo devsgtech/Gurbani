@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, NgZone, OnInit, ViewChild} from '@angular/core';
 import { ChangeUIService } from '../services/change-ui.service';
 import { shabadDB } from '../services/shabadDB';
 import { AlertController, IonInfiniteScroll, Platform } from '@ionic/angular';
@@ -9,6 +9,7 @@ import { raags, VARS, writes } from '../services/constantString';
 import { newhelper } from '../services/newhelper';
 import { FileTransferObject,FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { Network } from '@ionic-native/network/ngx';
+import {ListComponent} from '../Components/list/list.component';
 
 @Component({
   selector: 'app-tab3',
@@ -80,7 +81,7 @@ export class Tab3Page implements OnInit {
     private network: Network,
     private media: Media,
     public alertController: AlertController,
-  ) {
+    private ngZone: NgZone) {
     this.platform.ready().then(() => {
       if (this.platform.is('ios')) {
         this.storageDirectory = this.file.dataDirectory;
@@ -89,9 +90,15 @@ export class Tab3Page implements OnInit {
       }
     });
     this.platform.pause.subscribe(e => {
-      this.stopPlayRecording();
+      this.ngZone.run(() => {
+        this.newallStop();
+      });
     });
-
+    this.platform.resume.subscribe(e => {
+      this.ngZone.run(() => {
+        this.newallStop();
+      });
+    });
     this.online = (this.network.type !== this.network.Connection.NONE);
     this.network.onChange().subscribe((ev) => {
       this.online = (ev.type === 'online');
@@ -186,11 +193,6 @@ export class Tab3Page implements OnInit {
     for (let i = 0; i < 10; i++) {
       this.serverFileArray.push(this.serverFileArrayCopy[i])
     }
-  }
-
- static scrollTo(index) {
-    const currentId = document.getElementById('currentPlayItemId' + index);
-    currentId.scrollIntoView({ behavior: 'smooth' });
   }
   ionViewDidLeave(){
     this.testnextFileIndex = 0;
@@ -333,7 +335,7 @@ export class Tab3Page implements OnInit {
     }, 100);
   }
   playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
-    Tab3Page.scrollTo(index);
+    ListComponent.scrollTo(index);
     if (sFile && !sFile.isFileDownloaded) {
       console.log('sFile', sFile.isDownloading, sFile, newUrl);
     }
@@ -383,7 +385,7 @@ export class Tab3Page implements OnInit {
 
   downloadNext() {
     const nextFileIndex = this.testnextFileIndex + 1;
-    if (this.serverFileArray.length > nextFileIndex && !this.serverFileArray[nextFileIndex].isFileDownloaded) {
+    if (this.serverFileArray.length > nextFileIndex && !this.serverFileArray[nextFileIndex].isFileDownloaded && this.isPlayingAll) {
       this.download(this.serverFileArray[nextFileIndex], nextFileIndex, false, false);
     }
   }
@@ -416,7 +418,7 @@ newallStop(){
     this.currPlayingFile.getDuration();
   }
 
-  getProgressVal(e, f , sf) {
+  getProgressVal(e, f) {
     return parseFloat((e / f).toFixed(3));
   }
 ///////////////// DB Search///////////////////////
@@ -513,7 +515,7 @@ downloadAudioFile(sf, i, dd, playAudio = true) {
     if ((this.cancelAll && dd && playAudio) || (!this.cancelAll && !dd && playAudio)){
       setTimeout(() => {
         this.playRecording(sf, i, dd, nurl);
-      }, 500);
+      }, 300);
       try {
         this.downloadNext();
       } catch (e) {}
@@ -526,7 +528,7 @@ downloadAudioFile(sf, i, dd, playAudio = true) {
       } else{
         if (playAudio) {
           sf.isDownloading = true;
-          Tab3Page.scrollTo(i);
+          ListComponent.scrollTo(i);
         }
         fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
           const nurl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';
@@ -536,7 +538,7 @@ downloadAudioFile(sf, i, dd, playAudio = true) {
           if ((this.cancelAll && dd && playAudio) || (!this.cancelAll && !dd && playAudio)){
             setTimeout(() => {
               this.playRecording(sf, i, dd, nurl);
-            }, 500);
+            }, 300);
           }
           try {
             this.downloadNext();

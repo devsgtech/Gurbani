@@ -240,7 +240,7 @@ export class ListComponent implements OnInit {
   }
   downloadNext() {
     const nextFileIndex = this.testnextFileIndex + 1;
-    if (this.serverFileArray.length > nextFileIndex && !this.serverFileArray[nextFileIndex].isFileDownloaded) {
+    if (this.serverFileArray.length > nextFileIndex && !this.serverFileArray[nextFileIndex].isFileDownloaded && this.isPlayingAll) {
       this.download(this.serverFileArray[nextFileIndex], nextFileIndex, false, false);
     }
   }
@@ -532,7 +532,7 @@ export class ListComponent implements OnInit {
       if ((this.cancelAll && dd && playAudio) || (!this.cancelAll && !dd && playAudio)){
         setTimeout(() => {
           this.playRecording(sf, i, dd, nurl);
-        }, 500);
+        }, 300);
         try {
           this.downloadNext();
         } catch (e) {}
@@ -555,7 +555,7 @@ export class ListComponent implements OnInit {
             if ((this.cancelAll && dd && playAudio) || (!this.cancelAll && !dd && playAudio)){
               setTimeout(() => {
                 this.playRecording(sf, i, dd, nurl);
-              }, 500);
+              }, 300);
             }
             try {
               this.downloadNext();

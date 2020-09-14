@@ -98,23 +98,14 @@ ion-card{
 .boldText{
   font-weight: bold !important;
 }
-
-// @media (prefers-color-scheme: light) {
-//     ion-toolbar {
-//       --background: white;
-//       color: black;
-//     }
-//     .verticalScrollContainer {
-//       background: white;
-//     }
-//   }
-  
-//   @media (prefers-color-scheme: dark) {
-//     ion-toolbar {
-//       --background: black;
-//       color: white;
-//     }
-//     .verticalScrollContainer {
-//       background: black;
-//     }
-//   }
+.playBtn, .favBtn{
+  margin-inline-start: 6px !important;
+}
+.favBtn{
+  ion-icon{
+    font-size: 2.5em !important;
+  }
+}
+.noMarginTop{
+  margin-top: 0 !important;
+}

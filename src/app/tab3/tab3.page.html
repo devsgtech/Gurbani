@@ -44,7 +44,7 @@
           <ion-label>
             <h2>{{sf?sf.punjabiVersion: ''}}</h2>
           </ion-label>
-          <ion-button color="myWhite" fill="clear" slot="end"
+          <ion-button color="myWhite" fill="clear" slot="end" class="playBtn"
           (click)="!sf.isPlaying?onPlay(sf, i): stopPlayRecording()">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
@@ -52,7 +52,7 @@
         </ion-button>
         </ion-item>
         
-        <ion-item no-margin class="bottomItem" lines="none">
+        <ion-item no-margin lines="none">
           <ion-label *ngIf="changeui.phonetic || changeui.english">
             <p *ngIf="sf.transliteration && changeui.phonetic" [ngClass]="changeui.phoneticFont">{{sf?sf.transliteration: ''}}</p>
             <p *ngIf="sf.english_ssk && changeui.english" [ngClass]="changeui.fontSize" >{{sf?sf.english_ssk: ''}}</p>
@@ -60,7 +60,7 @@
 
           </ion-label>
         </ion-item>
-        <div padding-horizontal>
+        <div padding-horizontal class="bottomItem">
           <ion-progress-bar [value]="getProgressVal(sf.position, sf.duration)"></ion-progress-bar>
         </div>
       </ng-container>
