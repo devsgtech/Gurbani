@@ -95,7 +95,7 @@ export class shabadDB {
       }
       this.listItem.next(items);
       return items;
-    });
+    }).catch(() => {});
   }
 
   searchShabadAnyWhereLoadMoreandOffset(data) {
@@ -128,7 +128,7 @@ export class shabadDB {
   setData(res) {
     let itt = [];
     for (var i = 0; i < res.rows.length; i++) {
-      itt.push({
+      /*itt.push({
         _id: res.rows.item(i)._id,
         shabad_no: res.rows.item(i).shabad_no,
         source_id: res.rows.item(i).source_id,
@@ -148,7 +148,8 @@ export class shabadDB {
         sggs_darpan: res.rows.item(i).sggs_darpan,
         faridkot_teeka: res.rows.item(i).faridkot_teeka,
          punjabiVersion: res.rows.item(i).punjabiVersion,
-      });
+      });*/
+      itt.push(res.rows.item(i));
     }
     return itt;
   }
