@@ -77,7 +77,27 @@ ion-card{
     background: var(--ion-color-success-contrast) !important;
   }
 }
-
+.cancelAlert{
+  color: var(--ion-color-medium);
+}
+.playAlert{
+  color: var(--ion-color-success);
+}
+.smallFontsp{
+  font-size: small !important;
+}
+.italicText {
+  font-style: italic !important;
+}
+.orange{
+  color: orange;
+}
+.yellow{
+  color: var(--ion-color-warning);
+}
+.boldText{
+  font-weight: bold !important;
+}
 
 // @media (prefers-color-scheme: light) {
 //     ion-toolbar {

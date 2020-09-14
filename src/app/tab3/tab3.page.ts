@@ -5,7 +5,7 @@ import { AlertController, IonInfiniteScroll, Platform } from '@ionic/angular';
 import { MediaObject , Media} from '@ionic-native/media/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { File } from '@ionic-native/file/ngx';
-import { VARS } from '../services/constantString';
+import { raags, VARS, writes } from '../services/constantString';
 import { newhelper } from '../services/newhelper';
 import { FileTransferObject,FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { Network } from '@ionic-native/network/ngx';
@@ -52,13 +52,10 @@ export class Tab3Page implements OnInit {
   listShow : boolean = false;
   online :boolean = true;
   getDurationInterval: any;
-
   sahibName= '';
-
-
-
+  writerNames = writes.writerArray;
+  raagJsonArray = raags.raagArray;
   searchOpt = '';
- 
   isPlayingAll = false;
   testnextFileIndex = 0;
   offset = 0;
@@ -591,6 +588,24 @@ cancelDownload(){
 onPlay(sf, i) {
   this.cancelAllAndPlayOne(sf, i, true);
 }
+checkWriter(writerId){
+  let name = '';
+  this.writerNames.map(wr=>{
+    if(wr._id === writerId){
+        name = wr.writer_name;
+    }
+  })
+  return name;
+}
 
+checkRaag(raagId){
+  let raag = '';
+  this.raagJsonArray.map(rg=>{
+    if(rg._id === raagId){
+      raag = rg.raag_english;
+    }
+  })
+  return raag;
+}
 
 }

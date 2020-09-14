@@ -7,7 +7,7 @@ import { shabadDB } from 'src/app/services/shabadDB';
 import { newhelper } from 'src/app/services/newhelper';
 import {Storage} from '@ionic/storage';
 import { ChangeUIService } from 'src/app/services/change-ui.service';
-import { VARS } from 'src/app/services/constantString';
+import { raags, VARS, writes } from 'src/app/services/constantString';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { FilterModalComponentComponent } from 'src/app/Modal/filter-modal-component/filter-modal-component.component';
@@ -38,12 +38,14 @@ export class ListComponent implements OnInit {
   online = true;
   backdrop = false;
   raagData: any = [];
+  raagJsonArray = raags.raagArray;
   checkDidFilter = false;
   sqlText: any;
   arrayText = [];
   cancelAll = true;
   totalFavourite = 0;
   noRecords = false;
+  writerNames = writes.writerArray;
   constructor(public platform: Platform,
               private file: File,
               private transfer: FileTransfer,
@@ -836,5 +838,24 @@ onPlay(sf, i) {
   // } else {
   //   this.stopPlayRecording();
   // }
+}
+checkWriter(writerId){
+  let name = '';
+  this.writerNames.map(wr=>{
+    if(wr._id === writerId){
+        name = wr.writer_name;
+    }
+  })
+  return name;
+}
+
+checkRaag(raagId){
+  let raag = '';
+  this.raagJsonArray.map(rg=>{
+    if(rg._id === raagId){
+      raag = rg.raag_english;
+    }
+  })
+  return raag;
 }
 }

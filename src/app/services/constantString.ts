@@ -191,3 +191,48 @@ export const raags = {
     }
   ]
 }
+
+export const writes = {
+    writerArray : [
+        {_id : 1, writer_name : 'Guru Nanak Dev Ji'},
+        {_id : 2, writer_name : 'Guru Angad Dev Ji'},
+        {_id : 3, writer_name : 'Guru Amar Das Ji'},
+        {_id : 4, writer_name : 'Guru Raam Das Ji'},
+        {_id : 5, writer_name : 'Guru Arjan Dev Ji'},
+        {_id : 6, writer_name : 'Guru Tegh Bahadur Ji'},
+        {_id : 7, writer_name : 'Guru Gobind Singh Ji'},
+        {_id : 8, writer_name : 'Bhagat Beni Ji'},
+        {_id : 9, writer_name : 'Bhagat Bheekhan Ji'},
+        {_id : 10, writer_name : 'Bhagat Dhanna Ji'},
+        {_id : 11, writer_name : 'Bhagat Sheikh Fareed Ji'},
+        {_id : 12, writer_name : 'Bhagat Jaidev Ji'},
+        {_id : 13, writer_name : 'Bhagat Kabir Ji'},
+        {_id : 14, writer_name : 'Bhagat Naamdev Ji'},
+        {_id : 15, writer_name : 'Bhagat Parmaanand Ji'},
+        {_id : 16, writer_name : 'Bhagat Pipa Ji'},
+        {_id : 17, writer_name : 'Bhagat Raamaanand Ji'},
+        {_id : 18, writer_name : 'Bhagat Ravidaas Ji'},
+        {_id : 19, writer_name : 'Bhagat Sadhna Ji'},
+        {_id : 20, writer_name : 'Bhagat Sain Ji'},
+        {_id : 21, writer_name : 'Bhagat Surdaas Ji'},
+        {_id : 22, writer_name : 'Bhagat Trilochan Ji'},
+        {_id : 23, writer_name : 'Bhai Mardana Ji'},
+        {_id : 24, writer_name : 'Bhatt Sundar'},
+        {_id : 25, writer_name : 'Bhatt Balh'},
+        {_id : 26, writer_name : 'Bhatt Bhalh'},
+        {_id : 27, writer_name : 'Bhatt Bhikha'},
+        {_id : 28, writer_name : 'Bhatt Gayand'},
+        {_id : 29, writer_name : 'Bhatt Harbans'},
+        {_id : 30, writer_name : 'Bhatt Jal Jaalap'},
+        {_id : 31, writer_name : 'Bhatt Kalh'},
+        {_id : 32, writer_name : 'Bhatt Kirat'},
+        {_id : 33, writer_name : 'Bhatt Mathura'},
+        {_id : 34, writer_name : 'Bhatt Nalh'},
+        {_id : 35, writer_name : 'Bhatt Salh'},
+        {_id : 36, writer_name : 'Bhatt Talh'},
+        {_id : 37, writer_name : 'Bhatt Satta & Balwand'},
+        {_id : 38, writer_name : 'Bhai Nand Laal Ji'},
+        {_id : 39, writer_name : 'Bhai Gurdaas Ji'},
+        {_id : 50, writer_name : 'Unknown'},
+    ]
+}
