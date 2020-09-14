@@ -210,3 +210,14 @@ ion-backdrop {
 .boldText{
   font-weight: bold !important;
 }
+.playBtn, .favBtn{
+  margin-inline-start: 6px !important;
+}
+.favBtn{
+  ion-icon{
+    font-size: 2.5em !important;
+  }
+}
+.noMarginTop{
+  margin-top: 0 !important;
+}

@@ -45,6 +45,7 @@ export class newhelper {
   }
   dismissLoading() {
     try { this.loading.dismiss().catch(() => {}); } catch (e) {}
+    try { this.loadingCtrl.dismiss().catch(() => {}); } catch (e) {}
   }
 
       async presentToastWithOptions(data) {
@@ -54,7 +55,7 @@ export class newhelper {
           duration: 2000,
           buttons: [
             {
-              text: 'Done',
+              text: 'Ok',
               role: 'cancel',
               handler: () => {
                 console.log('Toast Cancel clicked');
