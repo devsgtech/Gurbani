@@ -1,89 +1,20 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button (click)="backToReadTile()" *ngIf="listShow" slot="start" fill="clear">
-      <ion-icon name="arrow-back-outline"></ion-icon>
-    </ion-button>
     <ion-title>
-      <label *ngIf="!listShow" >
+      <label>
         <p class="p0">School of</p>
         <p class="p1">GURUBANI</p>
-      </label>
-      <label *ngIf="listShow" >
-        <p class="p1">{{sahibName}}</p>
       </label>
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-  <ng-container *ngIf="!listShow">
-    <ion-card *ngFor="let item of tilesArray">
-      <ion-item detail="true" (click)="readBook(item)" lines="none">
-        <label>
-          <p class="pnb-word">{{item.punjabiWord}}</p>
-          <p class="eng-word">{{item.englishWord}}</p>
-        </label>
-      </ion-item>
-    </ion-card>
-  </ng-container>
-
-  <ng-container *ngIf="listShow">
-
-    <ion-list *ngIf="!serverFileArray?.length">
-      <ion-item no-margin lines="none" *ngFor="let item of [0,1,2,3,4,5,6,7,8,9]">
-        <ion-label>
-        <ion-skeleton-text animated style="width: 95%"></ion-skeleton-text>
-        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-
-    <ion-list *ngIf="serverFileArray?.length">
-      <ng-container *ngFor="let sf of serverFileArray; let i=index">
-        <ion-item no-margin [id]="'currentPlayItemId'+i" lines="none">
-          <ion-label>
-            <h2>{{sf?sf.punjabiVersion: ''}}</h2>
-          </ion-label>
-          <ion-button color="myWhite" fill="clear" slot="end" class="playBtn"
-          (click)="!sf.isPlaying?onPlay(sf, i): stopPlayRecording()">
-          <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
-          <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
-          <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
-        </ion-button>
-        </ion-item>
-        
-        <ion-item no-margin lines="none">
-          <ion-label *ngIf="changeui.phonetic || changeui.english">
-            <p *ngIf="sf.transliteration && changeui.phonetic" [ngClass]="changeui.phoneticFont">{{sf?sf.transliteration: ''}}</p>
-            <p *ngIf="sf.english_ssk && changeui.english" [ngClass]="changeui.fontSize" >{{sf?sf.english_ssk: ''}}</p>
-            <p class="smallFontsp ion-text-wrap italicText">By <span class="orange boldText ion-text-capitalize">{{checkWriter(sf.writer_id)}}</span> in <span class="yellow boldText ion-text-capitalize">{{checkRaag(sf.raag_id)}}</span> on <span class="boldText">Ang {{sf.ang_id}}</span></p>
-
-          </ion-label>
-        </ion-item>
-        <div padding-horizontal class="bottomItem">
-          <ion-progress-bar [value]="getProgressVal(sf.position, sf.duration)"></ion-progress-bar>
-        </div>
-      </ng-container>
-      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
-    </ion-list>
-
-  </ng-container>
-
+  <ion-card *ngFor="let item of tilesArray">
+    <ion-item detail="true" (click)="readBook(item)" lines="none">
+      <label>
+        <p class="pnb-word">{{item.punjabiWord}}</p>
+        <p class="eng-word">{{item.englishWord}}</p>
+      </label>
+    </ion-item>
+  </ion-card>
 </ion-content>
-<ion-fab vertical="bottom" horizontal="center" slot="fixed" *ngIf="listShow && serverFileArray?.length > 0">
-  <ion-backdrop *ngIf="backdrop"></ion-backdrop>
-  <!--<ion-fab-button color="myWhite" class="back-prev" (click)="prevplay()"
-    [disabled]="!(isPlayingAll && testnextFileIndex > 0)">
-    <ion-icon name="arrow-back"></ion-icon>
-  </ion-fab-button>-->
-  <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?playAll(): newallStop()">
-    {{isPlayingAll? 'Stop' : 'Play all'}}
-  </ion-fab-button>
-  <!--<ion-fab-button color="myWhite" class="back-prev" (click)="nextplay()"
-    [disabled]="!(isPlayingAll && serverFileArray.length -1  != testnextFileIndex)">
-    <ion-icon name="arrow-forward"></ion-icon>
-  </ion-fab-button>-->
-</ion-fab>

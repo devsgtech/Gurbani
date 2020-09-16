@@ -22,7 +22,7 @@ import {FormsModule} from '@angular/forms';
 import { SqliteDbCopy } from '@ionic-native/sqlite-db-copy/ngx';
 
 @NgModule({
-  declarations: [AppComponent,FilterModalComponentComponent],
+  declarations: [AppComponent, FilterModalComponentComponent],
   entryComponents: [FilterModalComponentComponent],
   imports: [BrowserModule, IonicModule.forRoot(),
     AppRoutingModule,
@@ -30,16 +30,18 @@ import { SqliteDbCopy } from '@ionic-native/sqlite-db-copy/ngx';
     IonicStorageModule.forRoot({name: '_SgtechSchoolOfGurbani'}), FormsModule,
   ],
   providers: [
-    StatusBar,ThemeDetection,
+    StatusBar, ThemeDetection,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     Media,
     File, FileTransfer,
     SQLite,
     AndroidPermissions,
-    FileTransferObject, 
+    FileTransferObject,
     Network, SqliteDbCopy
-    
+
+  ],
+  exports: [
   ],
   bootstrap: [AppComponent]
 })

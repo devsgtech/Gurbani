@@ -16,6 +16,16 @@ export enum VARS {
     SHABAD_DIRECTORY          =   '.shabad',
     ANG_DIR                   =   'ang_',
 }
+export enum APP_URLS {
+  ABOUT         = '/about',
+  SEARCH        = '/search',
+  TABS_TAB1     = '/tabs/tab1',
+  TABS_TAB2     = '/tabs/tab2',
+  TABS_TAB3     = '/tabs/tab3',
+  TABS_SETTING  = '/tabs/setting',
+  SETTING_TAB   = '/setting-tab',
+  READ_DETAIL   = '/read-detail',
+}
 export const raags = {
   raagArray : [
     {_id : 0, raag_english : 'All'},
@@ -192,7 +202,6 @@ export const raags = {
     }
   ]
 }
-
 export const writes = {
     writerArray : [
         {_id : 0, writer_name : 'All'},

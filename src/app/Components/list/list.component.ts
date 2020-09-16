@@ -85,8 +85,8 @@ export class ListComponent implements OnInit {
     });
   }
   static scrollTo(index) {
-    const currentId = document.getElementById('currentPlayItemId' + index);
-    currentId.scrollIntoView({ behavior: 'smooth' });
+    console.log('index-----', index);
+    document.getElementById('currentPlayItemId' + index.toString()).scrollIntoView({ behavior: 'smooth' });
   }
   ionViewDidLeave(){
     this.newallStop();
@@ -95,7 +95,6 @@ export class ListComponent implements OnInit {
     if (!this.isfav){
       this.fetchSql();
     }
-    // this.prepareAudioFile();
   }
   ionViewWillLeave() {
     this.testnextFileIndex = 0;
@@ -203,16 +202,7 @@ export class ListComponent implements OnInit {
   }
   playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
     ListComponent.scrollTo(index);
-    if (sFile && !sFile.isFileDownloaded) {
-      console.log('sFile', sFile.isDownloading, sFile, newUrl);
-    }
-
-    let currentPlayFile: any;
-    if (sFile) {
-      currentPlayFile = sFile;
-    } else {
-      currentPlayFile = this.serverFileArray[0];
-    }
+    const currentPlayFile = (sFile) ? sFile : this.serverFileArray[0];
     this.isPlayingAll = !isSingle;
     try {
       this.currPlayingFile.stop();
@@ -230,17 +220,20 @@ export class ListComponent implements OnInit {
   }
 
 
-  nextplay() {
+  nextplay(nextIndex = 1) {
     this.testnextFileIndex = this.testnextFileIndex + 1;
     const nextFileIndex = this.testnextFileIndex;
-    const nextFile = this.serverFileArray[nextFileIndex];
+    const nextFile = this.serverFileArray[nextIndex];
     const isSingle = false;
-    this.download( nextFile, nextFileIndex, isSingle);
+    console.log('nextplay-----', nextFileIndex);
+    this.download( nextFile, nextIndex, isSingle);
     // this.playRecording(nextFile, nextFileIndex, isSingle);
   }
-  downloadNext() {
-    const nextFileIndex = this.testnextFileIndex + 1;
-    if (this.serverFileArray.length > nextFileIndex && !this.serverFileArray[nextFileIndex].isFileDownloaded && this.isPlayingAll) {
+  downloadNext(tempIsPlayingAll, cFileIndex) {
+    const nextFileIndex = cFileIndex + 1;
+    console.log('beforeDownloadNext-----', cFileIndex, nextFileIndex);
+    if (this.serverFileArray.length > nextFileIndex && !this.serverFileArray[nextFileIndex].isFileDownloaded && tempIsPlayingAll) {
+      console.log('downloadNext-----', cFileIndex, nextFileIndex);
       this.download(this.serverFileArray[nextFileIndex], nextFileIndex, false, false);
     }
   }
@@ -257,15 +250,14 @@ export class ListComponent implements OnInit {
   playAll(){
     this.isPlayingAll = true;
     this.cancelAll = false;
-    // this.testnextFileIndex = 0;
-    // this.playRecording();
     this.download( null, this.testnextFileIndex, false);
   }
   newallStop(){
-    this.isPlayingAll =  false;
     this.stopPlayRecording();
+    this.isPlayingAll =  false;
   }
   stopPlayRecording() {
+    this.testnextFileIndex = 0;
     try {
       this.currPlayingFile.stop();
       this.currPlayingFile.release();
@@ -471,6 +463,7 @@ export class ListComponent implements OnInit {
       this.currPlayingFile.stop();
       this.currPlayingFile.release();
     } catch (e) {}
+    this.setPlayingDefault();
     this.download(sf, i, dd);
   }
 
@@ -479,8 +472,6 @@ export class ListComponent implements OnInit {
       this.stopPlayRecording();
     } catch (e) {}
     sf = this.serverFileArray[i];
-    console.log('SfFull Data', sf);
-    await this.platform.ready();
     if (this.platform.is('android')) {
       this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
         .then(status => {
@@ -519,10 +510,7 @@ export class ListComponent implements OnInit {
       }
     });
   }
-
-
   downloadAudioFile(sf, i, dd, playAudio = true) {
-    console.log('check', this.cancelAll, 'this.cancelAll  ', sf, 'sf'  , dd, ' dd');
     const checkFileUrl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/';
     const FileName = 'shabad_' + sf._id + '.mp3';
     this.file.checkFile(checkFileUrl, FileName).then((entry) => {
@@ -534,7 +522,7 @@ export class ListComponent implements OnInit {
           this.playRecording(sf, i, dd, nurl);
         }, 300);
         try {
-          this.downloadNext();
+          this.downloadNext(!dd, i);
         } catch (e) {}
       }
     }).catch((err) => {
@@ -542,6 +530,7 @@ export class ListComponent implements OnInit {
         const fileTransfer: FileTransferObject = this.transfer.create();
         if (!this.online){
           this.checkNetwork();
+          this.newallStop();
         } else{
           if (playAudio) {
             sf.isDownloading = true;
@@ -556,19 +545,19 @@ export class ListComponent implements OnInit {
               setTimeout(() => {
                 this.playRecording(sf, i, dd, nurl);
               }, 300);
+              try {
+                this.downloadNext(!dd, i);
+              } catch (e) {}
             }
-            try {
-              this.downloadNext();
-            } catch (e) {}
           }).catch((err) => {
               if (err.http_status == 404) {
                 sf.isDownloading = false;
                 sf.isFileDownloaded = false;
                 if (playAudio) {
-                  if (this.isPlayingAll){
-                    this.presentAlertConfirm();
+                  if (!dd){
+                    this.presentAlertConfirm((i+1));
                   } else {
-                    this.newHelper.presentToastWithOptions('Shabad Not Found on Server');
+                    this.newHelper.presentToastWithOptions('Shabad Not Found on Server', 'middle');
                   }
                 }
               }
@@ -578,7 +567,7 @@ export class ListComponent implements OnInit {
 
   }
 
-  async presentAlertConfirm() {
+  async presentAlertConfirm(nextIndex) {
     const alert = await this.alertController.create({
       header: 'Shabad Not Found on Server!',
       buttons: [
@@ -593,7 +582,7 @@ export class ListComponent implements OnInit {
           text: 'Play Next',
           cssClass: 'playAlert',
           handler: () => {
-            this.nextplay();
+            this.nextplay(nextIndex);
           }
         }
       ]
@@ -803,5 +792,12 @@ export class ListComponent implements OnInit {
       });
     } catch (e) {}
     return raag;
+  }
+  playAllBtn() {
+    if (this.isPlayingAll) {
+      this.newallStop()
+    } else {
+      this.playAll()
+    }
   }
 }

@@ -15,7 +15,7 @@
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
       <ion-item no-margin [id]="'currentPlayItemId'+i" lines="none">
         <ion-label>
-          <h2>{{sf?sf.punjabiVersion: ''}}</h2>
+          <h2 [innerHTML]="sf?.punjabiVersion | highlight: searchString"></h2>
         </ion-label>
         <ion-button color="myWhite" fill="clear" slot="end" class="playBtn"
         (click)="!sf.isPlaying?onPlay(sf, i): stopPlayRecording()">
@@ -26,9 +26,9 @@
       </ion-item>
       <ion-item no-margin  lines="none">
         <ion-label class="noMarginTop">
-          <p class="italicText" *ngIf="sf.transliteration && changeui.phonetic" [ngClass]="changeui.phoneticFont">{{sf?sf.transliteration: ''}}</p>
-          <p *ngIf="sf.english_ssk && changeui.english" [ngClass]="changeui.fontSize" >{{sf?sf.english_ssk: ''}}</p>
-          <p class="smallFontsp ion-text-wrap italicText">By <span class="orange boldText ion-text-capitalize">{{checkWriter(sf.writer_id)}}</span> in <span class="yellow boldText ion-text-capitalize">{{checkRaag(sf.raag_id)}}</span> on <span class="boldText">Ang {{sf.ang_id}}</span></p>
+          <p class="italicText" *ngIf="sf.transliteration && changeui.phonetic" [ngClass]="changeui.phoneticFont" [innerHTML]="sf?.transliteration | highlight: searchString"></p>
+          <p *ngIf="sf.english_ssk && changeui.english" [ngClass]="changeui.fontSize" [innerHTML]="sf?.english_ssk | highlight: searchString"></p>
+          <p class="smallFontsp ion-text-wrap italicText">By <span class="orange boldText ion-text-capitalize" [innerHTML]="checkWriter(sf.writer_id) | highlight: searchString"></span> in <span class="yellow boldText ion-text-capitalize" [innerHTML]="checkRaag(sf.raag_id) |  highlight: searchString"></span> on <span class="boldText">Ang {{sf.ang_id}}</span></p>
         </ion-label>
         <ion-button fill="clear" class="no-background favBtn" slot="end" (click)="saveLocalFav(sf)" *ngIf="!isfav">
         <ion-icon name="heart" [ngClass]="sf?.isFavourite?'isFav':'notFav'" ></ion-icon>
@@ -55,7 +55,7 @@
     [disabled]="!(isPlayingAll && testnextFileIndex > 0)">
     <ion-icon name="arrow-back"></ion-icon>
   </ion-fab-button>-->
-  <ion-fab-button color="myWhite" class="ion-fab-button" (click)="!isPlayingAll?playAll(): newallStop()">
+  <ion-fab-button color="myWhite" class="ion-fab-button" (click)="playAllBtn()">
     {{isPlayingAll? 'Stop' : 'Play all'}}
   </ion-fab-button>
   <!--<ion-fab-button color="myWhite" class="back-prev" (click)="nextplay()"

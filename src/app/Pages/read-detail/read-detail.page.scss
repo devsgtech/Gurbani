@@ -1,0 +1,111 @@
+ion-toolbar{
+  ion-button{
+    ion-icon{
+      color: var(--ion-color-dark) !important;
+    }
+  }
+  ion-title{
+    label{
+      .p0{
+        margin: 0;
+        font-weight: 600;
+        font-size: small;
+      }
+      .p1{
+        margin: 0;
+        color: #27a501;
+      }
+    }
+  }
+}
+
+ion-list{
+  ion-item{
+    width: 100%;
+    --ion-item-border-color: #ffffff;
+    h2, p{
+      white-space: normal;
+    }
+    p:first-child{
+      font-family:  Montserrat, sans-serifrrat !important;
+    }
+    p:last-child{
+      font-family: MontserratItalic, sans-seriftalic;
+    }
+    ion-button {
+      background: #27a501;
+      background: -moz-linear-gradient(-45deg, #27a501 0%, #cff12b 100%);
+      background: -webkit-linear-gradient(-45deg, #27a501 0%,#cff12b 100%);
+      background: linear-gradient(135deg, #27a501 0%,#cff12b 100%);
+      color: #ffffff;
+      border-radius: 100px;
+      height: 40px;
+      width: 40px;
+    }
+    .no-background{
+      background:transparent !important;
+    }
+  }
+  .bottomItem{
+    border-bottom: 1px dashed #c2c2c2;
+  }
+  ion-progress-bar{
+    --buffer-background: var(--ion-color-success-contrast);
+    --background: none;
+    --progress-background: var(--ion-color-success);
+  }
+}
+
+ion-card{
+  --background: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
+  ion-item{
+    --background: transparent;
+    color: white;
+  }
+}
+
+.ion-fab-button{
+  background: #27a501;
+  background: -moz-linear-gradient(-45deg, #27a501 0%, #cff12b 100%);
+  background: -webkit-linear-gradient(-45deg, #27a501 0%,#cff12b 100%);
+  background: linear-gradient(135deg, #27a501 0%,#cff12b 100%);
+  color: #ffffff;
+  border-radius: 100px;
+  margin-left: 10px;
+  margin-right: 10px;
+  ion-icon{
+    background: var(--ion-color-success-contrast) !important;
+  }
+}
+.cancelAlert{
+  color: var(--ion-color-medium);
+}
+.playAlert{
+  color: var(--ion-color-success);
+}
+.smallFontsp{
+  font-size: small !important;
+}
+.italicText {
+  font-style: italic !important;
+}
+.orange{
+  color: orange;
+}
+.yellow{
+  color: var(--ion-color-warning);
+}
+.boldText{
+  font-weight: bold !important;
+}
+.playBtn, .favBtn{
+  margin-inline-start: 6px !important;
+}
+.favBtn{
+  ion-icon{
+    font-size: 2.5em !important;
+  }
+}
+.noMarginTop{
+  margin-top: 0 !important;
+}

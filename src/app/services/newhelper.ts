@@ -47,11 +47,10 @@ export class newhelper {
     try { this.loading.dismiss().catch(() => {}); } catch (e) {}
     try { this.loadingCtrl.dismiss().catch(() => {}); } catch (e) {}
   }
-
-      async presentToastWithOptions(data) {
+      async presentToastWithOptions(data, position: any = 'bottom') {
         const toast = await this.toastController.create({
           header: data,
-          position: 'bottom',
+          position,
           duration: 2000,
           buttons: [
             {

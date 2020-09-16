@@ -3,7 +3,7 @@
     <name>School of Gurbani</name>
     <description>School of Gurbani</description>
     <author email="02baweja@gmail.com" href="https://satgurutechnologies.com/">Satguru Technologies Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8101" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -118,4 +118,5 @@
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <plugin name="cordova-plugin-android-permissions" spec="^1.0.2" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.2" />
+    <allow-navigation href="http://localhost:8101" sessionid="152468fe" />
 </widget>

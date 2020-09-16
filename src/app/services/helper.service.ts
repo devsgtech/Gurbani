@@ -10,15 +10,15 @@ import {
   Platform,
   PopoverController,
   ToastController
-} from '@ionic/angular'; 
+} from '@ionic/angular';
 // import {Toast} from '@ionic-native/toast/ngx';
 // import {Keyboard} from '@ionic-native/keyboa//rd/ngx';
-import {DatePipe} from '@angular/common';
 import _ from 'lodash';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 // import {AppVersion} from '@ionic-native/app-version/ngx';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
+import {APP_URLS, VARS} from './constantString';
 
 declare var window;
 @Injectable({
@@ -363,101 +363,57 @@ export class HelperService {
   static checkEventData(ev, evName = null, data = true) {
     return data ? (ev && ev.eventName  && ev.eventName === evName && ev.data) : (ev && ev.eventName  && ev.eventName === evName);
   }
-  // getApp(type = 'VersionNumber') {
-  //   return new Promise(resolve => {
-  //     this.platform.ready().then(async () => {
-  //       if (type === 'AppName') {
-  //         await this.appVersion.getAppName().then((res) => {
-  //           return resolve(res);
-  //         }).catch(() => {});
-  //       }
-  //       if (type === 'PackageName') {
-  //         return await this.appVersion.getPackageName().then((res) => {
-  //           return resolve(res);
-  //         }).catch(() => {});
-  //       }
-  //       if (type === 'VersionCode') {
-  //         return await this.appVersion.getVersionCode().then((res) => {
-  //           return resolve(res);
-  //         }).catch(() => {});
-  //       }
-  //       if (type === 'VersionNumber') {
-  //         await this.appVersion.getVersionNumber().then((res) => {
-  //           return resolve(res);
-  //         }).catch(() => {});
-  //       }
-  //     }).catch(() => {});
-  //   });
-  // }
-  // getUUID() {
-  //   return new Promise(resolve => {
-  //     this.platform.ready().then(async () => {
-  //       this.uniqueDeviceID.get().then(async (uuid: any) => {
-  //         return resolve(uuid);
-  //       }).catch((e) => {
-  //         console.log('uuid error- ', e);
-  //         return resolve('1234587');
-  //       });
-  //     }).catch(() => {});
-  //   });
-  // }
-  // listenBackBtn() {
-  //   this.platform.backButton.subscribe(async () => {
-  //     const currentUrl = this.router.url;
-  //     console.log('currentUrl', currentUrl);
-  //     try {
-  //       const element = await this.loadingCtrl.getTop();
-  //       if (element) {
-  //         // element.dismiss().catch(() => {});
-  //         return;
-  //       }
-  //     } catch (error) {}
-  //     try {
-  //       const element = await this.actionSheetCtrl.getTop();
-  //       if (element) { element.dismiss().catch(() => {}); return; }
-  //     } catch (error) {}
-  //     try {
-  //       const element = await this.popOverCtrl.getTop();
-  //       if (element) { element.dismiss().catch(() => {}); return; }
-  //     } catch (error) {}
-  //     try {
-  //       const element = await this.modalCtrl.getTop();
-  //       if (element) { element.dismiss().catch(() => {}); return; }
-  //     } catch (error) {}
-  //     try {
-  //       const element = await this.menuCtrl.getOpen();
-  //       if (element) { this.menuCtrl.close().catch(() => {}); return; }
-  //     } catch (error) {}
-  //     if (((new Date().getTime()) - this.lastTimeBackPress) < this.timePeriodToExit) {
-  //       (navigator as any).app.exitApp();
-  //     } else if (_.includes([APP_URLS.ALERTS, APP_URLS.CHECKLIST, APP_URLS.MAP, APP_URLS.MORE], currentUrl)) {
-  //       await this.navCtrl.navigateRoot(APP_URLS.TABS, {state: {selectedTab: 'orders'}});
-  //     } else if (_.includes([APP_URLS.TABS, APP_URLS.ORDERS, APP_URLS.LOGIN, APP_URLS.VERIFICATION], currentUrl)) {
-  //       await this.presentNewToast(VARS.MSG_BACK_BUTTON, '' + this.timePeriodToExit);
-  //       this.lastTimeBackPress = (new Date().getTime());
-  //     }
-  //   });
-  // }
-  // async showPhotoInGallery(photosArray: any = [], index = 0, urlKey = 'url', titleKey = 'title') {
-  //   const photoArrayForModal = [];
-  //   _.forEach(photosArray, (value) => {
-  //     if (value[urlKey]) {
-  //       photoArrayForModal.push({
-  //         url : value[urlKey],
-  //         title: value[titleKey] || ''
-  //       });
-  //     }
-  //   });
-  //   const modal = await this.modalCtrl.create({
-  //     component: GalleryPage,
-  //     id: 'GalleryPage',
-  //     mode: 'ios',
-  //     componentProps: {
-  //       photos: photoArrayForModal,
-  //       initialSlide: index
-  //     }
-  //   });
-  //   await modal.present();
-  // }
+  async presentNewToast(msg = 'No action required.', dur = '2000', pos = 'center') {
+    this.dismissLoading();
+    try {
+      this.toastCtrl.dismiss().catch(() => {
+      });
+    } catch (e) {}
+    this.toast = await this.toastCtrl.create({
+      message: msg,
+      duration: +dur,
+      position: pos === 'center' ? 'middle' : pos === 'top' ? 'top' : 'bottom'
+    });
+    this.toast.present().catch(() => {});
+  }
+
+  listenBackBtn() {
+    this.platform.backButton.subscribe(async () => {
+      const currentUrl = this.router.url;
+      console.log('currentUrl', currentUrl);
+      try {
+        const element = await this.loadingCtrl.getTop();
+        if (element) {
+          // element.dismiss().catch(() => {});
+          return;
+        }
+      } catch (error) {}
+      try {
+        const element = await this.actionSheetCtrl.getTop();
+        if (element) { element.dismiss().catch(() => {}); return; }
+      } catch (error) {}
+      try {
+        const element = await this.popOverCtrl.getTop();
+        if (element) { element.dismiss().catch(() => {}); return; }
+      } catch (error) {}
+      try {
+        const element = await this.modalCtrl.getTop();
+        if (element) { element.dismiss().catch(() => {}); return; }
+      } catch (error) {}
+      try {
+        const element = await this.menuCtrl.getOpen();
+        if (element) { this.menuCtrl.close().catch(() => {}); return; }
+      } catch (error) {}
+      if (((new Date().getTime()) - this.lastTimeBackPress) < this.timePeriodToExit) {
+        (navigator as any).app.exitApp();
+      } else if (_.includes([APP_URLS.TABS_TAB2, APP_URLS.TABS_TAB3, APP_URLS.TABS_SETTING], currentUrl)) {
+        console.log('sss--');
+        await this.navCtrl.navigateRoot(APP_URLS.TABS_TAB1, {state: {selectedTab: 'search'}});
+      } else if (_.includes([APP_URLS.TABS_TAB1], currentUrl)) {
+        await this.presentNewToast(VARS.MSG_BACK_BUTTON, '' + this.timePeriodToExit);
+        this.lastTimeBackPress = (new Date().getTime());
+      }
+    });
+  }
 }
 
