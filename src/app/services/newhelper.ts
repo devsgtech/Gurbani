@@ -47,11 +47,12 @@ export class newhelper {
     try { this.loading.dismiss().catch(() => {}); } catch (e) {}
     try { this.loadingCtrl.dismiss().catch(() => {}); } catch (e) {}
   }
-      async presentToastWithOptions(data, position: any = 'bottom') {
+      async presentToastWithOptions(data, position: any = 'top') {
         const toast = await this.toastController.create({
           header: data,
           position,
           duration: 2000,
+          cssClass: 'myIonicToast',
           buttons: [
             {
               text: 'Ok',

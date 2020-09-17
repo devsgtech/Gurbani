@@ -363,7 +363,7 @@ export class HelperService {
   static checkEventData(ev, evName = null, data = true) {
     return data ? (ev && ev.eventName  && ev.eventName === evName && ev.data) : (ev && ev.eventName  && ev.eventName === evName);
   }
-  async presentNewToast(msg = 'No action required.', dur = '2000', pos = 'center') {
+  async presentNewToast(msg = 'No action required.', dur = '2000', pos = 'top') {
     this.dismissLoading();
     try {
       this.toastCtrl.dismiss().catch(() => {
@@ -372,6 +372,7 @@ export class HelperService {
     this.toast = await this.toastCtrl.create({
       message: msg,
       duration: +dur,
+      cssClass: 'myIonicToast',
       position: pos === 'center' ? 'middle' : pos === 'top' ? 'top' : 'bottom'
     });
     this.toast.present().catch(() => {});

@@ -472,7 +472,7 @@ export class ReadDetailPage implements OnInit {
               if (!dd){
                 this.presentAlertConfirm((i+1));
               } else {
-                this.newHelper.presentToastWithOptions('Shabad Not Found on Server', 'middle');
+                this.newHelper.presentToastWithOptions('Shabad Not Found on Server' );
               }
             }
           }
