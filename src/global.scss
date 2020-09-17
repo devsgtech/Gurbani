@@ -226,6 +226,21 @@ body.dark {
     display: none;
   }
 }
+.ios{
+  .filter-modal{
+    height: 345px;
+    ion-footer{
+      ion-toolbar{
+        align-self: auto !important;
+        ion-button{
+          display: table;
+          float: left;
+          margin-bottom: 11px !important;
+        }
+      }
+    }
+  }
+}
 ion-action-sheet{
   --color: var(--ion-color-primary-tint) !important;
   .action-sheet-title, .action-sheet-group-title {
