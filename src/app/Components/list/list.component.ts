@@ -687,6 +687,7 @@ export class ListComponent implements OnInit {
   removaFavourite(i) {
     console.log('i', i);
     this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
+      this.stopPlayRecording();
       console.log('sdata', sdata[i]);
       sdata.splice(i, 1);
       this.serverFileArray = sdata;
