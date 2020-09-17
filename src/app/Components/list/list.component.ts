@@ -469,7 +469,9 @@ export class ListComponent implements OnInit {
 
   async download(sf, i, dd, playAudio = true) {
     try {
-      this.stopPlayRecording();
+      if(playAudio){
+        this.stopPlayRecording();
+      }
     } catch (e) {}
     sf = this.serverFileArray[i];
     if (this.platform.is('android')) {

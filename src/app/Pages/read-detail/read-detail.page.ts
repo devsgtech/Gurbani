@@ -373,7 +373,9 @@ export class ReadDetailPage implements OnInit {
 
   async download(sf, i, dd, playAudio = true) {
     try {
-      this.stopPlayRecording();
+      if(playAudio){
+        this.stopPlayRecording();
+      }
     } catch (e) {}
     sf = this.serverFileArray[i];
     console.log('SfFull Data', sf);
