@@ -78,11 +78,6 @@ export class ListComponent implements OnInit {
         this.newallStop();
       });
     });
-    console.log('this.network.type', this.network.type, this.network.downlinkMax)
-    this.online = ((this.network.type !== this.network.Connection.NONE));
-    this.network.onChange().subscribe((ev) => {
-      this.online = ((ev.type !== this.network.Connection.NONE));
-    });
   }
   static scrollTo(index) {
     console.log('index-----', index);
@@ -92,6 +87,12 @@ export class ListComponent implements OnInit {
     this.newallStop();
   }
   ngOnInit() {
+    this.platform.ready().then(() => {
+      this.online = (this.network.type !== this.network.Connection.NONE);
+      this.network.onChange().subscribe((ev) => {
+        this.online = (ev.type === 'online');
+      });
+    }).catch(() => {});
     if (!this.isfav){
       this.fetchSql();
     }
@@ -274,7 +275,7 @@ export class ListComponent implements OnInit {
   }
 
   getProgressVal(e, f) {
-    return _.floor((e/f), 8);
+    return _.floor((e / f), 8);
   }
 ///////////////// DB Search///////////////////////
 
@@ -327,7 +328,7 @@ export class ListComponent implements OnInit {
       }
     }).catch(e => {
       this.newHelper.dismissLoading();
-      console.log('Error =>' , e)
+      console.log('Error =>' , e);
     });
 
   }
@@ -419,9 +420,9 @@ export class ListComponent implements OnInit {
       res.map(item => {
         item.duration = -1;
         item.position = 0;
-          item.isFileDownloaded = false;
-          item.isDownloading = false;
-          this.serverFileArray.push(item);
+        item.isFileDownloaded = false;
+        item.isDownloading = false;
+        this.serverFileArray.push(item);
       });
       this.serverFileArrayCopy = this.serverFileArray;
       event.target.complete();
@@ -444,9 +445,9 @@ export class ListComponent implements OnInit {
       res.map(item => {
         item.duration = -1;
         item.position = 0;
-          item.isFileDownloaded = false;
-          item.isDownloading = false;
-          this.serverFileArray.push(item);
+        item.isFileDownloaded = false;
+        item.isDownloading = false;
+        this.serverFileArray.push(item);
       });
       this.serverFileArrayCopy = this.serverFileArray;
       event.target.complete();
@@ -469,7 +470,7 @@ export class ListComponent implements OnInit {
 
   async download(sf, i, dd, playAudio = true) {
     try {
-      if(playAudio){
+      if (playAudio){
         this.stopPlayRecording();
       }
     } catch (e) {}
@@ -557,7 +558,7 @@ export class ListComponent implements OnInit {
                 sf.isFileDownloaded = false;
                 if (playAudio) {
                   if (!dd){
-                    this.presentAlertConfirm((i+1));
+                    this.presentAlertConfirm((i + 1));
                   } else {
                     this.newHelper.presentToastWithOptions('Shabad Not Found on Server');
                   }
@@ -776,8 +777,8 @@ export class ListComponent implements OnInit {
   checkWriter(writerId){
     let name = '-';
     try {
-      this.writerNames.map(wr=>{
-        if(wr._id === writerId){
+      this.writerNames.map(wr => {
+        if (wr._id === writerId){
           name = wr.writer_name;
         }
       });
@@ -788,8 +789,8 @@ export class ListComponent implements OnInit {
   checkRaag(raagId){
     let raag = '-';
     try {
-      this.raagJsonArray.map(rg=>{
-        if(rg._id === raagId){
+      this.raagJsonArray.map(rg => {
+        if (rg._id === raagId){
           raag = rg.raag_english;
         }
       });
@@ -798,9 +799,9 @@ export class ListComponent implements OnInit {
   }
   playAllBtn() {
     if (this.isPlayingAll) {
-      this.newallStop()
+      this.newallStop();
     } else {
-      this.playAll()
+      this.playAll();
     }
   }
 }

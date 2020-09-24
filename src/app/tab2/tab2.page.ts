@@ -1,4 +1,4 @@
-import { Component, OnInit ,ViewChild} from '@angular/core';
+import { Component, OnInit , ViewChild} from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
@@ -18,7 +18,7 @@ import { ListComponent } from 'src/app/Components/list/list.component';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit {
-  @ViewChild(ListComponent) listComp:ListComponent;
+  @ViewChild(ListComponent) listComp: ListComponent;
 
   favourite = true;
   storageDirectory: any; currPlayingFile: MediaObject;
@@ -27,19 +27,19 @@ export class Tab2Page implements OnInit {
   serverFileArray: any;
   listItemFromDb = [];
   isPlayingAll = false;
-  driveAudio:any;
-  online :boolean = true;
+  driveAudio: any;
+  online = true;
   constructor(public platform: Platform,
-    private file: File,
-    private transfer: FileTransfer,
-    private androidPermissions: AndroidPermissions,
-    private igdb: shabadDB,
-    private menu: MenuController,
-    private storage: Storage,
-    public changeui: ChangeUIService,
-    private newHelper: newhelper,
-    private network: Network,
-    private media: Media) {
+              private file: File,
+              private transfer: FileTransfer,
+              private androidPermissions: AndroidPermissions,
+              private igdb: shabadDB,
+              private menu: MenuController,
+              private storage: Storage,
+              public changeui: ChangeUIService,
+              private newHelper: newhelper,
+              private network: Network,
+              private media: Media) {
     this.platform.ready().then(() => {
       if (this.platform.is('ios')) {
         this.storageDirectory = this.file.dataDirectory;
@@ -56,7 +56,12 @@ export class Tab2Page implements OnInit {
     currentId.scrollIntoView({ behavior: 'smooth' });
   }
   ngOnInit() {
-    
+    this.platform.ready().then(() => {
+      this.online = (this.network.type !== this.network.Connection.NONE);
+      this.network.onChange().subscribe((ev) => {
+        this.online = (ev.type === 'online');
+      });
+    }).catch(() => {});
   }
   ionViewWillLeave() {
     this.stopPlaying(null);
@@ -65,22 +70,18 @@ export class Tab2Page implements OnInit {
 
   ionViewWillEnter() {
     this.listComp.getDataFromLocalStorage();
-    this.online = (this.network.type !== this.network.Connection.NONE);
-    this.network.onChange().subscribe((ev) => {
-      this.online = (ev.type === 'online');
-    });
     this.getDataFromLocalStorage();
   }
- 
+
 
   getDataFromLocalStorage() {
     this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
-      console.log(sdata, 'Storage Data',sdata)
+      console.log(sdata, 'Storage Data', sdata);
       this.listItemFromDb = sdata;
-    }).catch(e => console.log("Error =>" ,e));
+    }).catch(e => console.log('Error =>' , e));
   }
 
-  /////////////////Play Favourite //////////////////////
+  ///////////////// Play Favourite //////////////////////
   async download(sf, i, dd) {
     this.stopPlaying(sf);
     await this.platform.ready();
@@ -108,49 +109,49 @@ export class Tab2Page implements OnInit {
       this.createAngDir(sf, i, dd);
     }).catch(err => {
       if (err.message == 'PATH_EXISTS_ERR') {
-        this.createAngDir(sf, i, dd)
+        this.createAngDir(sf, i, dd);
       }
     });
   }
 
   createAngDir(sf, i, dd) {
-    console.log('CreateDirc Function', this.storageDirectory + '.shabad', 'ang_' + sf.ang_id)
+    console.log('CreateDirc Function', this.storageDirectory + '.shabad', 'ang_' + sf.ang_id);
     this.file.createDir(this.storageDirectory + '.shabad', 'ang_' + sf.ang_id, false).then(response => {
       console.log('Ang Directory created', response);
-      this.downloadAudioFile(sf, i, dd)
+      this.downloadAudioFile(sf, i, dd);
     }).catch(err => {
       console.log('Could not create directory "my_downloads" ', err);
       if (err.message == 'PATH_EXISTS_ERR') {
-        this.downloadAudioFile(sf, i, dd)
+        this.downloadAudioFile(sf, i, dd);
       }
     });
   }
 
 
   downloadAudioFile(sf, i, dd) {
-    let checkFileUrl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/';
-    let FileName = 'shabad_' + sf._id + '.mp3';
+    const checkFileUrl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/';
+    const FileName = 'shabad_' + sf._id + '.mp3';
     this.file.checkFile(checkFileUrl, FileName).then((entry) => {
-      let nurl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3';
+      const nurl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3';
       sf.isDownloading = false;
       this.ply1(sf, i, dd, nurl);
     })
       .catch((err) => {
-       
-        let url = 'https://firebasestorage.googleapis.com/v0/b/testgurubani.appspot.com/o/ang_' + sf.ang_id + '%2Fshabad_' + sf._id + '.mp3?alt=media&token=fcfe83f3-f21c-4d77-a4b8-438f0e53281a'
+
+        const url = 'https://firebasestorage.googleapis.com/v0/b/testgurubani.appspot.com/o/ang_' + sf.ang_id + '%2Fshabad_' + sf._id + '.mp3?alt=media&token=fcfe83f3-f21c-4d77-a4b8-438f0e53281a';
         const fileTransfer: FileTransferObject = this.transfer.create();
-        if(!this.online){
+        if (!this.online){
           this.checkNetwork();
         } else{
           sf.isDownloading = true;
-        fileTransfer.download(url, this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
-          let nurl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3';
+          fileTransfer.download(url, this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
+          const nurl = this.storageDirectory + '/.shabad/' + 'ang_' + sf.ang_id + '/shabad_' + sf._id + '.mp3';
           this.ply1(sf, i, dd, nurl);
         })
-          .catch((err) => {
+          .catch((err: any) => {
             if (err.http_status == 404) {
               sf.isDownloading = false;
-              this.newHelper.presentToastWithOptions('File Not Found on Server')
+              this.newHelper.presentToastWithOptions('File Not Found on Server');
             }
           });
         }
@@ -162,7 +163,7 @@ export class Tab2Page implements OnInit {
   }
 
   ply1(sf, i, dd, url) {
-    console.log('url',url)
+    console.log('url', url);
     sf.isDownloading = false;
     sf.isPlaying = true;
     const file: MediaObject = this.media.create(url);
@@ -170,10 +171,10 @@ export class Tab2Page implements OnInit {
     this.driveAudio.play();
     this.driveAudio.onSuccess.subscribe(() => {
       this.stopPlaying(sf);
-    })
+    });
   }
   stopPlaying(sf) {
-    sf? sf.isPlaying = false:null;
+    sf ? sf.isPlaying = false : null;
     if (this.driveAudio) {
       this.driveAudio.stop();
     }
@@ -181,15 +182,15 @@ export class Tab2Page implements OnInit {
 
 
   removaFavourite(i) {
-    console.log('i',i)
+    console.log('i', i);
 
     this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
-    console.log('sdata',sdata[i])
-     sdata.splice(i, 1);
-      this.listItemFromDb = sdata;
-      this.storage.set('_SGTECH_GURBANI_FAV', sdata);
+    console.log('sdata', sdata[i]);
+    sdata.splice(i, 1);
+    this.listItemFromDb = sdata;
+    this.storage.set('_SGTECH_GURBANI_FAV', sdata);
     }).catch(e => console.log(e));
   }
-  /////////////////Play End favourite/////////////////////
+  ///////////////// Play End favourite/////////////////////
 }
 

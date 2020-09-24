@@ -27,9 +27,9 @@ export class ReadDetailPage implements OnInit {
   serverFileArrayCopy = [];
   sqlScript = '';
   storageDirectory: any;
-  online :boolean = true;
+  online = true;
   getDurationInterval: any;
-  sahibName= '';
+  sahibName = '';
   writerNames = writes.writerArray;
   raagJsonArray = raags.raagArray;
   searchOpt = '';
@@ -81,6 +81,12 @@ export class ReadDetailPage implements OnInit {
     });
   }
   ngOnInit() {
+    this.platform.ready().then(() => {
+      this.online = (this.network.type !== this.network.Connection.NONE);
+      this.network.onChange().subscribe((ev) => {
+        this.online = (ev.type === 'online');
+      });
+    }).catch(() => {});
   }
   readBook(item) {
     // this.listShow = true;
@@ -92,30 +98,30 @@ export class ReadDetailPage implements OnInit {
       case 1:
         offset = 0;
         limit = 385;
-        textArray = [limit, offset]
-        this.sqlScript = "SELECT * FROM shabad WHERE source_id='G' LIMIT ? OFFSET ?";
-        this.searchFilterDataNotReset(this.sqlScript, textArray)
+        textArray = [limit, offset];
+        this.sqlScript = 'SELECT * FROM shabad WHERE source_id=\'G\' LIMIT ? OFFSET ?';
+        this.searchFilterDataNotReset(this.sqlScript, textArray);
         break;
       case 2:
         offset = 39313;
         limit = 210;
-        textArray = [limit, offset]
-        this.sqlScript = "SELECT * FROM shabad WHERE source_id='G' LIMIT ? OFFSET ?";
-        this.searchFilterDataNotReset(this.sqlScript, textArray)
+        textArray = [limit, offset];
+        this.sqlScript = 'SELECT * FROM shabad WHERE source_id=\'G\' LIMIT ? OFFSET ?';
+        this.searchFilterDataNotReset(this.sqlScript, textArray);
         break;
       case 3:
         offset = 11587;
         limit = 2027;
-        textArray = [limit, offset]
-        this.sqlScript = "SELECT * FROM shabad WHERE source_id='G' LIMIT ? OFFSET ?";
-        this.searchFilterDataNotReset(this.sqlScript, textArray)
+        textArray = [limit, offset];
+        this.sqlScript = 'SELECT * FROM shabad WHERE source_id=\'G\' LIMIT ? OFFSET ?';
+        this.searchFilterDataNotReset(this.sqlScript, textArray);
         break;
       case 4:
         offset = 533;
         limit = 56;
-        textArray = [limit, offset]
-        this.sqlScript = "SELECT * FROM shabad WHERE source_id='G' LIMIT ? OFFSET ?";
-        this.searchFilterDataNotReset(this.sqlScript, textArray)
+        textArray = [limit, offset];
+        this.sqlScript = 'SELECT * FROM shabad WHERE source_id=\'G\' LIMIT ? OFFSET ?';
+        this.searchFilterDataNotReset(this.sqlScript, textArray);
         break;
     }
     console.log('limit----', limit);
@@ -129,10 +135,7 @@ export class ReadDetailPage implements OnInit {
     this.newallStop();
   }
   ionViewWillEnter() {
-    this.online = (this.network.type !== this.network.Connection.NONE);
-    this.network.onChange().subscribe((ev) => {
-      this.online = (ev.type === 'online');
-    });
+
     this.newallStop();
     this.testnextFileIndex = 0;
   }
@@ -143,25 +146,25 @@ export class ReadDetailPage implements OnInit {
     this.arrayText = arrayText;
     this.igdb.commonFilter(sqlText, arrayText).then((res) => {
       res.map(item => {
-        item.duration= -1;
-        item.position=0;
-        item.isFileDownloaded= false;
-        item.isDownloading= false;
+        item.duration = -1;
+        item.position = 0;
+        item.isFileDownloaded = false;
+        item.isDownloading = false;
         this.serverFileArrayCopy.push(item);
       });
       this.pushData();
-    })
+    });
   }
   pushData() {
     for (let i = 0; i < 10; i++) {
-      this.serverFileArray.push(this.serverFileArrayCopy[i])
+      this.serverFileArray.push(this.serverFileArrayCopy[i]);
     }
   }
   loadData(event) {
-    let leng = this.serverFileArray.length + 10;
+    const leng = this.serverFileArray.length + 10;
     for (let i = this.serverFileArray.length; i < leng; i++) {
-      if(i < this.serverFileArrayCopy.length ){
-        this.serverFileArray.push(this.serverFileArrayCopy[i])
+      if (i < this.serverFileArrayCopy.length ){
+        this.serverFileArray.push(this.serverFileArrayCopy[i]);
       } else{
         event.target.disabled = true;
       }
@@ -193,7 +196,7 @@ export class ReadDetailPage implements OnInit {
       f.duration = -1;
       f.position = 0;
       f.isDownloading = false;
-    })
+    });
   }
   setDuration(sFile) {
     this.getDurationInterval = setInterval(() => {
@@ -363,7 +366,7 @@ export class ReadDetailPage implements OnInit {
     this.cancelAll = true;
     this.isPlayingAll = false;
     try {
-      if(this.currPlayingFile){
+      if (this.currPlayingFile){
         this.currPlayingFile.stop();
         this.currPlayingFile.release();
       }
@@ -373,7 +376,7 @@ export class ReadDetailPage implements OnInit {
 
   async download(sf, i, dd, playAudio = true) {
     try {
-      if(playAudio){
+      if (playAudio){
         this.stopPlayRecording();
       }
     } catch (e) {}
@@ -470,7 +473,7 @@ export class ReadDetailPage implements OnInit {
             sf.isFileDownloaded = false;
             if (playAudio) {
               if (!dd){
-                this.presentAlertConfirm((i+1));
+                this.presentAlertConfirm((i + 1));
               } else {
                 this.newHelper.presentToastWithOptions('Shabad Not Found on Server' );
               }
@@ -516,21 +519,21 @@ export class ReadDetailPage implements OnInit {
   }
   checkWriter(writerId){
     let name = '';
-    this.writerNames.map(wr=>{
-      if(wr._id === writerId){
+    this.writerNames.map(wr => {
+      if (wr._id === writerId){
         name = wr.writer_name;
       }
-    })
+    });
     return name;
   }
 
   checkRaag(raagId){
     let raag = '';
-    this.raagJsonArray.map(rg=>{
-      if(rg._id === raagId){
+    this.raagJsonArray.map(rg => {
+      if (rg._id === raagId){
         raag = rg.raag_english;
       }
-    })
+    });
     return raag;
   }
 }
