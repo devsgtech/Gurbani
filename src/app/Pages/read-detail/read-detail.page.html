@@ -4,7 +4,8 @@
       <ion-back-button mode="md"></ion-back-button>
     </ion-buttons>
     <ion-title>
-      <p class="p1">{{sahibName}}</p>
+      <p class="m0">{{sahibName?.punjabiWord}}</p>
+      <p class="m0 f12">{{sahibName?.englishWord}}</p>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -21,10 +22,10 @@
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
       <ion-item no-margin [id]="'currentPlayReadItemId'+i" lines="none">
         <ion-label>
-          <h2>{{sf?sf.punjabiVersion: ''}}</h2>
+          <h2 [ngClass]="changeui.gurmukhiFont">{{sf?sf.punjabiVersion: ''}}</h2>
         </ion-label>
         <ion-button color="myWhite" fill="clear" slot="end" class="playBtn"
-                    (click)="!sf.isPlaying?onPlay(sf, i): stopPlayRecording()">
+                    (click)="!sf.isPlaying?onPlay(sf, i): newallStop()">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>

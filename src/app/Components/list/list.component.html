@@ -1,5 +1,6 @@
 <ion-backdrop *ngIf="backdrop"></ion-backdrop>
-<ion-content>
+<ion-content [scrollEvents]="true">
+  
   <div class="favouriteCount" *ngIf="isfav">
     <h3 >Favourite items</h3>
     <h3 >[ {{totalFavourite}} ]</h3>
@@ -14,21 +15,21 @@
     </ng-container>
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
       <ion-item no-margin [id]="'currentPlayItemId'+i" lines="none">
-        <ion-label>
-          <h2 [innerHTML]="sf?.punjabiVersion | highlight: searchString"></h2>
+        <ion-label (click)="goToAnglist(sf.ang_id)">
+          <h2 [innerHTML]="sf?.punjabiVersion | highlight: searchString" [ngClass]="changeui.gurmukhiFont"></h2>
         </ion-label>
         <ion-button color="myWhite" fill="clear" slot="end" class="playBtn"
-        (click)="!sf.isPlaying?onPlay(sf, i): stopPlayRecording()">
+        (click)="!sf.isPlaying?onPlay(sf, i): newallStop()">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>
           <ion-icon *ngIf="!sf.isDownloading && !sf.isPlaying" name="play"></ion-icon>
         </ion-button>
       </ion-item>
       <ion-item no-margin  lines="none">
-        <ion-label class="noMarginTop">
+        <ion-label class="noMarginTop" (click)="goToAnglist(sf.ang_id)">
           <p class="italicText" *ngIf="sf.transliteration && changeui.phonetic" [ngClass]="changeui.phoneticFont" [innerHTML]="sf?.transliteration | highlight: searchString"></p>
           <p *ngIf="sf.english_ssk && changeui.english" [ngClass]="changeui.fontSize" [innerHTML]="sf?.english_ssk | highlight: searchString"></p>
-          <p class="smallFontsp ion-text-wrap italicText">By <span class="orange boldText ion-text-capitalize" [innerHTML]="checkWriter(sf.writer_id) | highlight: searchString"></span> in <span class="yellow boldText ion-text-capitalize" [innerHTML]="checkRaag(sf.raag_id) |  highlight: searchString"></span> on <span class="boldText">Ang {{sf.ang_id}}</span></p>
+          <p class="smallFontsp ion-text-wrap italicText">By <span class="orange boldText ion-text-capitalize" [innerHTML]="checkWriter(sf.writer_id) | highlight: searchString"></span> in <span class="yellow boldText ion-text-capitalize" [innerHTML]="checkRaag(sf.raag_id) |  highlight: searchString"></span> on <span class="boldText" (click)="goToAnglist(sf.ang_id)">Ang {{sf.ang_id}}</span></p>
         </ion-label>
         <ion-button fill="clear" class="no-background favBtn" slot="end" (click)="saveLocalFav(sf)" *ngIf="!isfav">
         <ion-icon name="heart" [ngClass]="sf?.isFavourite?'isFav':'notFav'" ></ion-icon>

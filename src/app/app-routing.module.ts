@@ -6,7 +6,11 @@ const routes: Routes = [
   {path: 'setting-tab', loadChildren: () => import('./setting-tab/setting-tab.module').then( m => m.SettingTabPageModule)},
   {path: 'search', loadChildren: () => import('./Pages/search/search.module').then( m => m.SearchPageModule)},
   {path: 'about', loadChildren: () => import('./Pages/about/about.module').then( m => m.AboutPageModule)},
-  {path: 'read-detail', loadChildren: () => import('./Pages/read-detail/read-detail.module').then( m => m.ReadDetailPageModule)},
+  {path: 'read-detail', loadChildren: () => import('./Pages/read-detail/read-detail.module').then( m => m.ReadDetailPageModule)},  {
+    path: 'ang-list',
+    loadChildren: () => import('./Pages/ang-list/ang-list.module').then( m => m.AngListPageModule)
+  },
+
 
 ];
 @NgModule({

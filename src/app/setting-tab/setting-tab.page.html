@@ -2,8 +2,9 @@
   <ion-toolbar>
     <ion-title>
       <label>
-        <p class="p0">School of</p>
-        <p class="p1">GURUBANI</p>
+        <!-- <p class="p0">School of</p> -->
+        <!-- <p class="p1">GURUBANI</p> -->
+        <p class="p1">Gurbani School</p>
       </label>
     </ion-title>
   </ion-toolbar>
@@ -22,6 +23,19 @@
       </ion-segment>
     </div>
   </ion-item>
+  <ion-item class="toggle-switch" lines="none">
+    <ion-label slot="start">Gurmukhi</ion-label>
+  </ion-item>
+  <ion-item>
+    <div>
+      <label>Font Size</label>
+      <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="gurmukhiFont" (ngModelChange)="gurmukhiFontChange()" snaps color="dark">
+        <ion-label slot="start" class="small-font">A</ion-label>
+        <ion-label slot="end" class="big-font">A</ion-label>
+      </ion-range>
+    </div>
+  </ion-item>
+
   <ion-item class="toggle-switch" [lines]="changeui.phonetic ? 'none' : 'full'">
     <ion-label slot="start">Phonetic Translation</ion-label>
     <ion-toggle  mode="ios" slot="end" [(ngModel)]="changeui.phonetic"></ion-toggle>

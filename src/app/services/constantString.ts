@@ -25,6 +25,7 @@ export enum APP_URLS {
   TABS_SETTING  = '/tabs/setting',
   SETTING_TAB   = '/setting-tab',
   READ_DETAIL   = '/read-detail',
+  ANG_LIST      = '/ang-list'
 }
 export const raags = {
   raagArray : [

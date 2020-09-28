@@ -16,6 +16,7 @@ export class SettingTabPage implements OnInit {
   false = false;
   englishTranslation: any;
   phoneticFont: any = 16;
+  gurmukhiFont: any = 16;
   @Input() name: string;
   mainForm: FormGroup;
   Data= [];
@@ -64,6 +65,22 @@ export class SettingTabPage implements OnInit {
     }
     if(this.phoneticFont == 24 ){
       this.changeui.phoneticFont = 'font-24'
+    }
+  }
+
+  gurmukhiFontChange(){
+    console.log(this.gurmukhiFont, 'this.font')
+    if(this.gurmukhiFont == 12 ){
+      this.changeui.gurmukhiFont = 'font-12'
+    }
+    if(this.gurmukhiFont == 16 ){
+      this.changeui.gurmukhiFont = 'font-16'
+    }
+    if(this.gurmukhiFont == 20 ){
+      this.changeui.gurmukhiFont = 'font-20'
+    }
+    if(this.gurmukhiFont == 24 ){
+      this.changeui.gurmukhiFont = 'font-24'
     }
   }
 change(){

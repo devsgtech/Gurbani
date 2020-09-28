@@ -10,7 +10,8 @@ export class ChangeUIService {
   english :Boolean = true;
 
   fontSize = 'font-16';
-  phoneticFont = 'font-16'
+  phoneticFont = 'font-16';
+  gurmukhiFont  = 'font-16';
   darkMode : boolean = false;
   themeToggleValue = 1;
   constructor(

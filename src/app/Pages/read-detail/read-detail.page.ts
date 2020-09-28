@@ -29,7 +29,7 @@ export class ReadDetailPage implements OnInit {
   storageDirectory: any;
   online = true;
   getDurationInterval: any;
-  sahibName = '';
+  sahibName :any;
   writerNames = writes.writerArray;
   raagJsonArray = raags.raagArray;
   searchOpt = '';
@@ -93,7 +93,7 @@ export class ReadDetailPage implements OnInit {
     let offset = 0;
     let limit = 0;
     let textArray = [];
-    this.sahibName = item.punjabiWord;
+    this.sahibName = item;
     switch (item.id) {
       case 1:
         offset = 0;
@@ -261,7 +261,7 @@ export class ReadDetailPage implements OnInit {
     }, 100);
   }
   playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
-    this.scrollTo(index);
+    if(this.isPlayingAll) this.scrollTo(index);
     let currentPlayFile: any;
     if (sFile) {
       currentPlayFile = sFile;
@@ -450,7 +450,7 @@ export class ReadDetailPage implements OnInit {
         this.checkNetwork();
         this.newallStop();
       } else{
-        if (playAudio) {
+        if (playAudio && this.isPlayingAll) {
           sf.isDownloading = true;
           this.scrollTo(i);
         }

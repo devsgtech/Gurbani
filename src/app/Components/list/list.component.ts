@@ -7,12 +7,13 @@ import { shabadDB } from 'src/app/services/shabadDB';
 import { newhelper } from 'src/app/services/newhelper';
 import {Storage} from '@ionic/storage';
 import { ChangeUIService } from 'src/app/services/change-ui.service';
-import { raags, VARS, writes } from 'src/app/services/constantString';
+import { APP_URLS, raags, VARS, writes } from 'src/app/services/constantString';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { FilterModalComponentComponent } from 'src/app/Modal/filter-modal-component/filter-modal-component.component';
 import { AlertController } from '@ionic/angular';
 import _ from 'lodash';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-list',
@@ -23,6 +24,7 @@ export class ListComponent implements OnInit {
   @Input()  isfav: any;
   @Input()  filterData: any;
   @Input()  searchString: any;
+  @Input()  angPage: any;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   searchOpt = '';
   storageDirectory: any; currPlayingFile: MediaObject;
@@ -56,6 +58,7 @@ export class ListComponent implements OnInit {
               private androidPermissions: AndroidPermissions,
               private storage: Storage,
               private network: Network,
+              private helper: HelperService,
               public alertController: AlertController,
               public modalController: ModalController,
               // private helper : HelperService,
@@ -78,6 +81,10 @@ export class ListComponent implements OnInit {
         this.newallStop();
       });
     });
+
+    this.helper.event$.subscribe(value => {
+     this.setFavourite();
+    });
   }
   static scrollTo(index) {
     console.log('index-----', index);
@@ -93,7 +100,7 @@ export class ListComponent implements OnInit {
         this.online = (ev.type === 'online');
       });
     }).catch(() => {});
-    if (!this.isfav){
+    if (!this.isfav && !this.angPage){
       this.fetchSql();
     }
   }
@@ -201,8 +208,16 @@ export class ListComponent implements OnInit {
       });
     }, 100);
   }
+
+  nnscrollTo(index) {
+    document.getElementById('currentPlayItemId' + index.toString()).scrollIntoView({ behavior: 'smooth' });
+    console.log('index-----', index);
+  }
   playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
-    ListComponent.scrollTo(index);
+    if(this.isPlayingAll){
+      // ListComponent.scrollTo(index);
+      this.nnscrollTo(index)
+    }
     const currentPlayFile = (sFile) ? sFile : this.serverFileArray[0];
     this.isPlayingAll = !isSingle;
     try {
@@ -311,7 +326,7 @@ export class ListComponent implements OnInit {
         this.newHelper.dismissLoading();
         this.getData();
       } else{
-        this.newHelper.presentLoadingWithOptions('Hold on, preparing your data. This may take some time!');
+        // this.newHelper.presentLoadingWithOptions('Hold on, preparing your data. This may take some time!');
         this.igdb.dbState().subscribe((res) => {
           if (res) {
             this.igdb.fetchSongs().subscribe(item => {
@@ -535,7 +550,7 @@ export class ListComponent implements OnInit {
           this.checkNetwork();
           this.newallStop();
         } else{
-          if (playAudio) {
+          if (playAudio && this.isPlayingAll) {
             sf.isDownloading = true;
             ListComponent.scrollTo(i);
           }
@@ -774,7 +789,7 @@ export class ListComponent implements OnInit {
   onPlay(sf, i) {
     this.cancelAllAndPlayOne(sf, i, true);
   }
-  checkWriter(writerId){
+  checkWriter(writerId){ 
     let name = '-';
     try {
       this.writerNames.map(wr => {
@@ -803,5 +818,22 @@ export class ListComponent implements OnInit {
     } else {
       this.playAll();
     }
+  }
+
+  emptyServerArry(){
+    console.log('Function Call');
+    this.serverFileArrayCopy = []; 
+    this.serverFileArray     =  [];
+  }
+  goToAnglist(id){
+      console.log('go list call',id);
+      let data_ ={
+        newFilter : 2, 
+        newSearch : id.toString()
+      } 
+      if(!this.isfav){ 
+        if(!this.angPage)this.newallStop()
+        this.helper.pushPage(APP_URLS.ANG_LIST,data_).catch(() => {});
+      }
   }
 }

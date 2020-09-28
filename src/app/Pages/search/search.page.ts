@@ -367,4 +367,8 @@ export class SearchPage  implements OnInit {
   getIfDot() {
     return !(this.filterData && !this.filterData.searchMode && (this.filterData.scriptures === 1) && !this.filterData.writer && !this.filterData.raag);
   }
+
+  test(){
+    console.log('search back')
+  }
 }
