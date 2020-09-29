@@ -59,6 +59,7 @@ ion-title{
     }
 }
 ion-content{
+  scroll-behavior: true;
   .empty-fav{
     text-align: center;
   }

@@ -48,4 +48,9 @@ export class AngListPage implements OnInit {
 
   }
 
+  nnscrollTo(index) {
+    document.getElementById('currentPlayItemId' + index.toString()).scrollIntoView({ behavior: 'smooth' });
+    console.log('index-----', index); 
+  }
+
 }

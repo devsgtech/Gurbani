@@ -211,7 +211,7 @@ export class ListComponent implements OnInit {
 
   nnscrollTo(index) {
     document.getElementById('currentPlayItemId' + index.toString()).scrollIntoView({ behavior: 'smooth' });
-    console.log('index-----', index);
+    console.log('index-----',  document.getElementById('currentPlayItemId' + index.toString()));
   }
   playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
     if(this.isPlayingAll){
