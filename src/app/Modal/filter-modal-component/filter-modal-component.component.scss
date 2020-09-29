@@ -19,7 +19,7 @@ div{
 ion-toolbar{
     display: flex;
     align-items: center;
-  --background: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
+  --background: var(--ion-color-primary);
     height: 45px;
     .p0{
       color: #FFFF;
@@ -37,7 +37,7 @@ ion-toolbar{
   height: 57px !important;
   flex-direction: row;
   ion-button{
-    --background: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
+    --background: var(--ion-color-primary);
     color: var(--ion-color-success-contrast);
     border-radius: 100px;
     width: 100%;
@@ -49,7 +49,7 @@ ion-footer{
   ion-toolbar{
     --background: transparent !important;
     ion-button{
-      --background: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
+      --background: var(--ion-color-primary);
       color: var(--ion-color-success-contrast);
       --border-radius: 5px !important;
       width: calc(50% - 8px);

@@ -8,9 +8,10 @@ ion-header{
         height: 40px;
       }
       ion-button{
-        background:var(--ion-color-light);
+        background: var(--ion-color-dark);
         ion-icon{
           padding: 5px 0;
+          color: var(--ion-color-secondary-contrast);
         }
       }
       ion-select{
@@ -31,7 +32,7 @@ ion-header{
           border-radius: 5px 0 0 5px;
         }
         ion-label{
-          color: var(--ion-color-light) !important;
+          color: var(--ion-color-secondary-contrast) !important;
           background: var(--ion-color-dark) !important;
           padding: 13px 15px;
           border-radius: 0 5px 5px 0;

@@ -13,7 +13,7 @@ ion-toolbar{
       }
       .p1{
           margin: 0;
-          color: #27a501;
+          color: var(--ion-color-primary);
       }
       }
     }
@@ -57,7 +57,7 @@ ion-list{
 }
 
 ion-card{
-    --background: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
+    --background: var(--ion-color-primary);
     ion-item{
         --background: transparent;
         color: white;

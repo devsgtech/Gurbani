@@ -2,8 +2,8 @@
     <!-- <ion-backdrop *ngIf="backdrop"></ion-backdrop> -->
     <ion-toolbar >
       <ion-backdrop *ngIf="backdrop"></ion-backdrop>
-      <ion-button slot="start" fill="clear" color="dark" (click)="filterModal()">
-        <ion-icon src="assets/icon/filter-icon.svg"></ion-icon>
+      <ion-button slot="start" fill="clear"  (click)="filterModal()">
+        <ion-icon name="funnel"></ion-icon>
         <span class="red-dot" *ngIf="getIfDot()">•</span>
       </ion-button>
       <ion-select mode="ios" interface="popover" [interfaceOptions]="{header: 'Select Ang'}" slot="start"
@@ -16,7 +16,7 @@
       </ion-select>
       <ion-item class="ion-no-padding" lines="none">
         <ion-label slot="end" class="ion-no-padding" >
-          <ion-icon name="search" color="white"></ion-icon>
+          <ion-icon name="search" ></ion-icon>
         </ion-label>
 
         <ion-input type="text" placeholder="Search" debounce="500" [(ngModel)]="searchString" (ngModelChange)="consoleData()"></ion-input>

@@ -8,14 +8,14 @@ ion-title{
         }
         .p1{
             margin: 0;
-            color: #27a501;
+            color: var(--ion-color-primary);
         }
     }
   
 }
 .reset{
-    color: #27a501;
-    --color: #27a501;
+    color: var(--ion-color-primary);
+    --color: var(--ion-color-primary);
     padding-right: 16px;
 }
 
@@ -38,10 +38,10 @@ ion-item{
             ion-icon{
                 margin-right: 5px;
             }
-            --background-checked: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
+            --background-checked: var(--ion-color-primary);
             --border-color: grey;
             --color	:var( --ion-color-primary-dark);
-            --indicator-color: linear-gradient(135deg, #27a501 0%, #cff12b 100%);
+            --indicator-color: var(--ion-color-primary);
             // --color-checked: white;
             height: 35px;
             display: flex;
@@ -62,7 +62,7 @@ ion-range{
         padding: 16px 16px 0 16px;
     };
     ion-toggle {
-        --background-checked: linear-gradient(135deg, #27a501 0%, #cff12b 100%);;
+        --background-checked: var(--ion-color-primary);
     }
 }
 .small-font{

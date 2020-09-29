@@ -29,7 +29,7 @@
   <ion-item>
     <div>
       <label>Font Size</label>
-      <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="gurmukhiFont" (ngModelChange)="gurmukhiFontChange()" snaps color="dark">
+      <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="gurmukhiFont" (ngModelChange)="gurmukhiFontChange()" snaps color="primary">
         <ion-label slot="start" class="small-font">A</ion-label>
         <ion-label slot="end" class="big-font">A</ion-label>
       </ion-range>
@@ -43,7 +43,7 @@
   <ion-item *ngIf="changeui.phonetic">
     <div>
       <label>Font Size</label>
-      <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="phoneticFont" (ngModelChange)="phoneticchangeFont()" snaps color="dark">
+      <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="phoneticFont" (ngModelChange)="phoneticchangeFont()" snaps color="primary">
         <ion-label slot="start" class="small-font">A</ion-label>
         <ion-label slot="end" class="big-font">A</ion-label>
       </ion-range>
@@ -56,9 +56,9 @@
   <ion-item *ngIf="changeui.english">
     <div>
       <label>Font Size</label>
-      <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="font" (ngModelChange)="changeFont()" snaps color="dark">
+      <ion-range min="12" max="24" step="4" value="12" [(ngModel)]="font" (ngModelChange)="changeFont()" snaps color="primary">
         <ion-label slot="start" class="small-font">A</ion-label>
-        <ion-label slot="end" class="big-font">A</ion-label>
+        <ion-label slot="end" class="big-font">A</ion-label> 
       </ion-range>
     </div>
   </ion-item>
