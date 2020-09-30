@@ -26,6 +26,8 @@ declare var window;
 })
 export class HelperService {
   event$: BehaviorSubject<any> = new BehaviorSubject(null);
+  playEvent$: BehaviorSubject<any> = new BehaviorSubject(null);
+
   private mutationObserver: MutationObserver;
   lastTimeBackPress = 0; timePeriodToExit = 2000;
   DH: any = 0; DW: any = 0; _LODASH = _;

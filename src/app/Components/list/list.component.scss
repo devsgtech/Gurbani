@@ -138,8 +138,10 @@ ion-fab{
   // background: linear-gradient(135deg, #27a501 0%,#cff12b 100%);
   color: #ffffff;
   border-radius: 100px;
-  margin-left: 10px;
+  margin-left: 23px;
   margin-right: 10px;
+  z-index: 1001;
+  pointer-events: true;
   ion-icon{
     background: var(--ion-color-success-contrast) !important;
   }

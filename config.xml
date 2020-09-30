@@ -3,7 +3,7 @@
     <name>School of Gurbani</name>
     <description>School of Gurbani</description>
     <author email="02baweja@gmail.com" href="https://satgurutechnologies.com/">Satguru Technologies Team</author>
-    <content original-src="index.html" src="http://localhost:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
