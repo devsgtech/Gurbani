@@ -7,7 +7,7 @@ import { SearchPageRoutingModule } from './search-routing.module';
 
 import { SearchPage } from './search.page';
 import {ComponentsModule} from '../../Components/components.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -16,7 +16,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     IonicModule,
     SearchPageRoutingModule,
     ComponentsModule,
-    ReactiveFormsModule
   ],
   declarations: [SearchPage]
 })

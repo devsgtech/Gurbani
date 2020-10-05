@@ -25,6 +25,7 @@ export class ListComponent implements OnInit {
   @Input()  filterData: any;
   @Input()  searchString: any;
   @Input()  angPage: any;
+  @Input()  content:any;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   searchOpt = '';
   storageDirectory: any; currPlayingFile: MediaObject;
@@ -86,9 +87,9 @@ export class ListComponent implements OnInit {
      this.setFavourite();
     });
   }
-  static scrollTo(index) {
+   scrollTo(index) {
     console.log('index-----', index);
-    document.getElementById('currentPlayItemId' + index.toString()).scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(this.content + index.toString()).scrollIntoView({ behavior: 'smooth' });
   }
   ionViewDidLeave(){
     this.newallStop();
@@ -215,8 +216,7 @@ export class ListComponent implements OnInit {
   }
   playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
     if(this.isPlayingAll){
-      // ListComponent.scrollTo(index);
-      this.nnscrollTo(index)
+      this.scrollTo(index);
     }
     const currentPlayFile = (sFile) ? sFile : this.serverFileArray[0];
     this.isPlayingAll = !isSingle;
@@ -552,7 +552,7 @@ export class ListComponent implements OnInit {
         } else{
           if (playAudio && this.isPlayingAll) {
             sf.isDownloading = true;
-            ListComponent.scrollTo(i);
+            this.scrollTo(i);
           }
           fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
             const nurl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';

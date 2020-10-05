@@ -27,6 +27,7 @@ export class SearchPage  implements OnInit {
   }
   sqlScript = '';
   checkDidFilter : boolean = false;
+  contentId="tedt";
   constructor(
     public changeui: ChangeUIService,
     public modalController: ModalController,

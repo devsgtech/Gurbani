@@ -14,7 +14,7 @@
       </div>
     </ng-container>
     <ng-container *ngFor="let sf of serverFileArray; let i=index">
-      <ion-item no-margin [id]="'currentPlayItemId'+i" lines="none">
+      <ion-item no-margin [id]="content +i" lines="none">
         <ion-label (click)="goToAnglist(sf.ang_id)">
           <h2 [innerHTML]="sf?.punjabiVersion | highlight: searchString" [ngClass]="changeui.gurmukhiFont"></h2>
         </ion-label>
