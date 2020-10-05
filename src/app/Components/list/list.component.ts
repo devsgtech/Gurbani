@@ -87,9 +87,9 @@ export class ListComponent implements OnInit {
      this.setFavourite();
     });
   }
-  static scrollTo(index) {
+   scrollTo(index) {
     console.log('index-----', index);
-    document.getElementById('currentPlayItemId' + index.toString()).scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(this.content + index.toString()).scrollIntoView({ behavior: 'smooth' });
   }
   ionViewDidLeave(){
     this.newallStop();
@@ -211,8 +211,8 @@ export class ListComponent implements OnInit {
   }
 
   nnscrollTo(index) {
-    document.getElementById('currentPlayItemId' + index.toString()).scrollIntoView({ behavior: 'smooth' });
-    console.log('index-----',  document.getElementById('currentPlayItemId' + index.toString()));
+    document.getElementById(this.content + index.toString()).scrollIntoView({ behavior: 'smooth' });
+    console.log('index-----',  document.getElementById(this.content + index.toString()));
   }
   playRecording(sFile = null, index = 0, isSingle = false, newUrl = null) {
     if(this.isPlayingAll){
@@ -553,7 +553,7 @@ export class ListComponent implements OnInit {
         } else{
           if (playAudio && this.isPlayingAll) {
             sf.isDownloading = true;
-            ListComponent.scrollTo(i);
+            this.nnscrollTo(i)
           }
           fileTransfer.download(url, this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3').then((entry) => {
             const nurl = this.storageDirectory + '/' + VARS.shabadDirectory + '/' + VARS.angDir + sf.ang_id + '/shabad_' + sf._id + '.mp3';

@@ -19,6 +19,8 @@ export class AngListPage implements OnInit {
     raag      : 0,
   }
   searchString = '';
+  content="angPage";
+
   constructor(
     private helper: HelperService,
   ) { }
