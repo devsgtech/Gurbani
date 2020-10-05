@@ -122,14 +122,14 @@ ion-content{
   height: 90%;
 }
 ion-fab{
-  display: flex;
-  left: 0;
-  right: 0;
-  margin: 0;
+  display: block;
+  width: 100%;
+  left: 28px;
+  //right: 0;
+  //margin: 0;
   /* background: red; */
-  justify-content: center;
-  align-items: center;
-
+  //justify-content: center;
+  //align-items: center;
 }
 .ion-fab-button{
   background: var(--ion-color-primary);
@@ -137,11 +137,12 @@ ion-fab{
   // background: -webkit-linear-gradient(-45deg, #27a501 0%,#cff12b 100%);
   // background: linear-gradient(135deg, #27a501 0%,#cff12b 100%);
   color: #ffffff;
+  margin: 0 auto;
+  display: table;
   border-radius: 100px;
-  margin-left: 23px;
-  margin-right: 10px;
   z-index: 1001;
-  pointer-events: true;
+  pointer-events: all !important;
+  visibility: visible !important;
   ion-icon{
     background: var(--ion-color-success-contrast) !important;
   }

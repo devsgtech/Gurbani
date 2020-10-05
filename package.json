@@ -118,7 +118,8 @@
       "cordova-plugin-dbcopy": {}
     },
     "platforms": [
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

@@ -11,17 +11,14 @@ export class TabsPage {
   @ViewChild('myTabs') tabs: IonTabs;
 
   activeTabName = '';
-  showcut :boolean = false;
+  showcut = false;
   constructor( private modalController: ModalController,
-    private helper: HelperService, 
+               private helper: HelperService,
        ) {}
-  
+
   getSelectedTab(){
     this.activeTabName = this.tabs.getSelected();
-    if(this.activeTabName === 'tab1'){
-      this.showcut = true;
-    } else{
-      this.showcut = false;
-    }
+    console.log('ttt', this.activeTabName);
+    this.showcut = this.activeTabName === 'tab1';
   }
 }
