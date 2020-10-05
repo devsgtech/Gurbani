@@ -24,6 +24,7 @@ export class ListComponent implements OnInit {
   @Input()  isfav: any;
   @Input()  filterData: any;
   @Input()  searchString: any;
+  @Input()  content: any;
   @Input()  angPage: any;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   searchOpt = '';
