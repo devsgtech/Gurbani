@@ -18,7 +18,7 @@
         <ion-label (click)="goToAnglist(sf.ang_id)">
           <h2 [innerHTML]="sf?.punjabiVersion | highlight: searchString" [ngClass]="changeui.gurmukhiFont"></h2>
         </ion-label>
-        <ion-button color="myWhite" fill="clear" slot="end" class="playBtn"
+        <ion-button color="myWhite playBtn" fill="clear" slot="end" class="playBtn"
         (click)="!sf.isPlaying?onPlay(sf, i): newallStop()">
           <ion-spinner color="myWhite" *ngIf="sf.isDownloading" name="crescent"></ion-spinner>
           <ion-icon *ngIf="!sf.isDownloading && sf.isPlaying" name="square"></ion-icon>

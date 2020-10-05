@@ -38,7 +38,7 @@ ion-toolbar{
   flex-direction: row;
   ion-button{
     --background: var(--ion-color-primary);
-    color: var(--ion-color-success-contrast);
+    color: var(--ion-color-primary-contrast);
     border-radius: 100px;
     width: 100%;
    
@@ -48,13 +48,16 @@ ion-toolbar{
 ion-footer{
   ion-toolbar{
     --background: transparent !important;
-    ion-button{
-      --background: var(--ion-color-primary);
-      color: var(--ion-color-primary-contrast);
-      --border-radius: 5px !important;
-      width: calc(50% - 8px);
-      margin: 4px !important;
+    .btnBottom{
+      ion-button{
+        --background: var(--ion-color-primary);
+        color: #FFFF;
+        --border-radius: 5px !important;
+        width: calc(50% - 8px);
+        margin: 4px !important;
+      }
     }
+   
   }
 }
 ion-footer::before{

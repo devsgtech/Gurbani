@@ -1,4 +1,9 @@
 ion-toolbar{
+
+  --background: var(--ion-color-light) !important;
+    ion-back-button {
+      color: var(--ion-color-primary-contrast);
+    }
   ion-button{
     ion-icon{
       color: var(--ion-color-dark) !important;
@@ -13,7 +18,7 @@ ion-toolbar{
       }
       .p1{
         margin: 0;
-        color: var(--ion-color-primary);
+        color: var(--ion-color-primary-contrast);
       }
     }
   }
@@ -39,11 +44,12 @@ ion-list{
       font-family: MontserratItalic, sans-seriftalic;
     }
     ion-button {
-      background: var(--ion-color-primary);
+      color: var(--ion-color-secondary-contrast) !important;
+      background: var(--ion-color-dark) !important;
       // background: -moz-linear-gradient(-45deg, #27a501 0%, #cff12b 100%);
       // background: -webkit-linear-gradient(-45deg, #27a501 0%,#cff12b 100%);
       // background: linear-gradient(135deg, #27a501 0%,#cff12b 100%);
-      color: #ffffff;
+   
       border-radius: 100px;
       height: 40px;
       width: 40px;

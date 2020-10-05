@@ -1,6 +1,5 @@
 ion-toolbar{
-  
-  background: var(--ion-color-success-contrast) !important;
+  --background: var(--ion-color-light) !important;
 }
 ion-title{
  
@@ -12,7 +11,7 @@ ion-title{
         }
         .p1{
             margin: 0;
-            color:var(--ion-color-primary) ;
+            color: var(--ion-color-primary-contrast);
         }
     }
 }

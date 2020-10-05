@@ -1,4 +1,6 @@
 ion-toolbar{
+  --background: var(--ion-color-light) !important;
+ 
   ion-button{
     ion-icon{
       color: var(--ion-color-dark) !important;
@@ -13,7 +15,7 @@ ion-toolbar{
       }
       .p1{
           margin: 0;
-          color: var(--ion-color-primary);
+          color: var(--ion-color-primary-contrast);
       }
       }
     }
@@ -57,10 +59,11 @@ ion-list{
 }
 
 ion-card{
-    --background: var(--ion-color-primary);
+  // color: var(--ion-color-secondary-contrast) !important;
+  background: var(--ion-color-dark) !important;
     ion-item{
         --background: transparent;
-        color: white;
+        color: var(--ion-color-secondary-contrast) !important;
     }
 }
 

@@ -1,17 +1,21 @@
 
-ion-title{
-    label{
-        .p0{
-            margin: 0;
-            font-weight: 600;
-            font-size: small;
+ion-toolbar{
+  --background: var(--ion-color-light) !important;
+
+        ion-title{
+        label{
+            .p0{
+                margin: 0;
+                font-weight: 600;
+                font-size: small;
+            }
+            .p1{
+                margin: 0;
+                color: var(--ion-color-primary-contrast);
+            }
         }
-        .p1{
-            margin: 0;
-            color: var(--ion-color-primary);
-        }
+    
     }
-  
 }
 .reset{
     color: var(--ion-color-primary);

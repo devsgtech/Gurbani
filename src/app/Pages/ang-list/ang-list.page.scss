@@ -1,3 +1,10 @@
-.p1{
-  color: var(--ion-color-primary);
-}
+ion-toolbar{
+
+  --background: var(--ion-color-light) !important;
+    ion-back-button {
+      color: var(--ion-color-primary-contrast);
+    }
+    .p1{
+      color: var(--ion-color-primary-contrast);
+    }
+  }
