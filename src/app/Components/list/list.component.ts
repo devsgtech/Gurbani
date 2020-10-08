@@ -119,7 +119,7 @@ export class ListComponent implements OnInit {
       this.getDataFromLocalStorage();
     }
     this.testnextFileIndex = 0;
-    this.setFavourite();
+    // this.setFavourite();
     this.testnextFileIndex = 0;
   }
   async checkNetwork() {
@@ -355,17 +355,44 @@ export class ListComponent implements OnInit {
     this.offset = 0;
     this.igdb.getDataOffset(this.offset).then((res) => {
       console.log('Response after Get Data From DB', res);
-      res.map(item => {
-        item.duration = -1;
-        item.position = 0;
-        item.isFileDownloaded = false;
-        item.isDownloading = false;
-        this.serverFileArray.push(item);
+      res.map(sa => {
+        sa.isFavourite = false;
       });
-      this.serverFileArrayCopy = this.serverFileArray;
+      console.log('Set Favourite function call');
+      this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
+        if (sdata){
+          sdata.map(i => {
+            res.map(li => {
+              if (li._id == i._id){
+                li.isFavourite = true;
+                console.log(li, 'Li inside Set fav');
+              }
+            });
+          });
+        }
+        if (!sdata || sdata.length == 0 ){
+          res.map(li => {
+            li.isFavourite = false;
+          });
+        }
+      }).catch(e => console.log(e));
+      setTimeout(() => {
+        res.map(item => {
+          item.duration = -1;
+          item.position = 0;
+          item.isFileDownloaded = false;
+          item.isDownloading = false;
+          this.serverFileArray.push(item);
+        });
+        this.serverFileArrayCopy = this.serverFileArray;
+        if (res.length == 0){
+          this.noRecords = true;
+        }
+      }, 300);
+    
       this.newHelper.dismissLoading();
       // this.prepareAudioFile();
-      this.setFavourite();
+      // this.setFavourite();
     }).catch(() => {});
   }
 
@@ -711,6 +738,9 @@ export class ListComponent implements OnInit {
       this.storage.set('_SGTECH_GURBANI_FAV', sdata);
       this.totalFavourite = sdata.length;
     }).catch(e => console.log(e));
+    setTimeout(() => {
+    this.helper.event$.next(true);
+    }, 300)
     this.newHelper.presentToastWithOptions('Shabad Removed Successfully');
   }
 ///////////////// Get Data From Local Sorage for Favourite End//////////////////
@@ -763,18 +793,42 @@ export class ListComponent implements OnInit {
     this.checkDidFilter = true;
     this.igdb.commonFilter(sqlText, arrayText).then((res) => {
       console.log('Response From Common Filter', res);
-      res.map(item => {
-        item.duration = -1;
-        item.position = 0;
-        item.isFileDownloaded = false;
-        item.isDownloading = false;
-        this.serverFileArray.push(item);
+      res.map(sa => {
+        sa.isFavourite = false;
       });
-      this.serverFileArrayCopy = this.serverFileArray;
-      if (res.length == 0){
-        this.noRecords = true;
-      }
-      this.setFavourite();
+      console.log('Set Favourite function call');
+      this.storage.get('_SGTECH_GURBANI_FAV').then((sdata: any) => {
+        if (sdata){
+          sdata.map(i => {
+            res.map(li => {
+              if (li._id == i._id){
+                li.isFavourite = true;
+                console.log(li, 'Li inside Set fav');
+              }
+            });
+          });
+        }
+        if (!sdata || sdata.length == 0 ){
+          res.map(li => {
+            li.isFavourite = false;
+          });
+        }
+      }).catch(e => console.log(e));
+      setTimeout(() => {
+        res.map(item => {
+          item.duration = -1;
+          item.position = 0;
+          item.isFileDownloaded = false;
+          item.isDownloading = false;
+          this.serverFileArray.push(item);
+        });
+        this.serverFileArrayCopy = this.serverFileArray;
+        if (res.length == 0){
+          this.noRecords = true;
+        }
+      }, 300);
+     
+      // this.setFavourite();
       // this.prepareAudioFile();
     });
 

@@ -43,9 +43,10 @@ export class AngListPage implements OnInit {
     }
   getData(){
     this.listComp.emptyServerArry()
-    let text = '%' + this.searchString + '%'
+    let text = this.searchString;
     let arrayText = [text,0];
-    let sql =  'SELECT * FROM shabad WHERE source_id="G" AND  ang_id LIKE ?  LIMIT 10 OFFSET ?';
+    let sql = 'SELECT * FROM shabad WHERE (source_id="G" AND ang_id=?) LIMIT 10 OFFSET ? ';
+    // let sql =  'SELECT * FROM shabad WHERE source_id="G" AND  ang_id LIKE ?  LIMIT 10 OFFSET ?';
     this.listComp.searchFilterData(sql, arrayText);
 
   }

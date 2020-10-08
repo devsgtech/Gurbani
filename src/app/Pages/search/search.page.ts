@@ -45,6 +45,9 @@ export class SearchPage  implements OnInit {
         this.listComp.newallStop();
       });
     });
+    this.helper.event$.subscribe(value => {
+      this.listComp.setFavourite();
+     });
   }
 
   ngOnInit(){
@@ -62,7 +65,7 @@ export class SearchPage  implements OnInit {
     }
     ionViewWillEnter(){
       this.listComp.newallStop();
-      this.listComp.setFavourite();
+      // this.listComp.setFavourite();
     }
 
     ionViewDidLeave(){
